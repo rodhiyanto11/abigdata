@@ -11,10 +11,22 @@ import VueRouter from 'vue-router';
 import moment from 'moment';
 import { Form, HasError, AlertError } from 'vform';
 import Datepicker from 'vuejs-datepicker';
-import VueProgressBar from 'vue-progressbar'
+import VueProgressBar from 'vue-progressbar';
+import swal from 'sweetalert2';
+
 
 Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
+window.form = Form;
+window.Datepicker = Datepicker;
+window.swal = swal;
+const Toast = swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000
+});
+window.toast = Toast;
 Vue.use(VueRouter);
 Vue.use(VueProgressBar, {
     color: '#bffaf3',
@@ -29,8 +41,6 @@ Vue.use(VueProgressBar, {
   location: 'top',
   inverse: false
 })
-window.form = Form;
-window.Datepicker = Datepicker;
 
 let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },

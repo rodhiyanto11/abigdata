@@ -2,10 +2,10 @@
     <div class="container">
         <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Users Component</h3>
+                <h3 class="card-title">Users</h3>
                 <div class="card-tools">
                     <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
-                        Add New <i class="fas fa-user-plus"></i>
+                        <i class="fas fa-user-plus"></i>
                     </button>
                 </div>
                 
@@ -138,8 +138,18 @@
                 this.form.post('api/user')
                 .then((response) => {
                     this.$Progress.finish()
+                    $("#exampleModal").close();
+                    toast.fire({
+                      type: 'success',
+                      title: 'Request Success'
+                    })
                 }, (response) => {
                     this.$Progress.fail()
+                    $("#exampleModal").modal('hide');
+                    toast.fire({
+                      type: 'error',
+                      title: 'Request Fail'
+                    })
                 })
              },
              
