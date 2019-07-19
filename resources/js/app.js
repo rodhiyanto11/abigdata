@@ -7,7 +7,48 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import VueRouter from 'vue-router';
+import moment from 'moment';
+import { Form, HasError, AlertError } from 'vform';
+import Datepicker from 'vuejs-datepicker';
+import VueProgressBar from 'vue-progressbar'
 
+Vue.component(HasError.name, HasError);
+Vue.component(AlertError.name, AlertError);
+Vue.use(VueRouter);
+Vue.use(VueProgressBar, {
+    color: '#bffaf3',
+  failedColor: '#874b4b',
+  thickness: '20px',
+  transition: {
+    speed: '0.2s',
+    opacity: '0s',
+    termination: 300
+  },
+  autoRevert: true,
+  location: 'top',
+  inverse: false
+})
+window.form = Form;
+window.Datepicker = Datepicker;
+
+let routes = [
+    { path: '/dashboard', component: require('./components/Dashboard.vue').default },
+    { path: '/profile', component: require('./components/Profile.vue').default },
+    { path: '/users', component: require('./components/Users.vue').default }
+  ]
+  const router = new VueRouter({
+      mode : 'history',
+    routes // short for `routes: routes`
+  })
+
+  //==format text==\\
+  Vue.filter('ucWords',function(text){
+    return  text.charAt(0).toUpperCase() + text.slice(1);
+  });
+  Vue.filter('completedate',function(date){
+      return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+  })
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -29,4 +70,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    router,
+    
 });
