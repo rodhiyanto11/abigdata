@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
@@ -13,6 +14,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(){
+        $this->middleware('api');
+    }
     public function index()
     {
         //
@@ -32,19 +36,22 @@ class UserController extends Controller
         $this->validate($request,
         [
             'name'      => 'required|string|max:191',
-            'username'  => 'required|string|max:191',
+            'username'  => 'required|string|max:191|unique:users',
             'email'     => 'required|string|email|max:191|unique:users',
             'password'  => 'required|string|min:8|confirmed',
          
         ]);
         
-        return User::create([
+        $data = User::create([
             'name' => $request['name'],
             'username' => $request['username'],
             'email' => $request['email'],
             'expired_date' => isset($request['expired_date']) && strlen($request['expired_date']) > 0 ? $request['expired_date'] : null ,
             'password' => Hash::make($request['password']),
         ]);
+        return response([
+            'data' => $data
+        ],Response::HTTP_CREATED);
     }
 
     /**
@@ -68,6 +75,33 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        
+        $validatepwd = strlen($request->password) > 0 ? 'required|string|min:8|confirmed' : '';
+        
+       
+        $this->validate($request,
+        [
+            'name'      => 'required|string|max:191',
+            'username'  => 'required|string|max:191',
+            'email'     => 'required|string|email|max:191',
+            'password'  =>  $validatepwd
+        ]);
+        
+        $update = User::findOrFail($request->id);
+        $update->name = $request->name; 
+        $update->username = $request->username; 
+        $update->email = $request->email;
+        if(strlen($request->password) > 0){
+            $update->password = Hash::make($request->password);
+        }
+        if(strlen($request->expired_date) > 0){
+            $update->expired_date = $request->expired_date;
+        } 
+        $update->save();
+        //return ['message' => 'User is Updated'];
+        return response([
+            'data' => $update
+        ],Response::HTTP_CREATED);
     }
 
     /**
@@ -79,5 +113,8 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+        $delete = User::findOrFail($id);
+        $delete = $delete->delete();
+        return ['message' => 'User deleted' ];
     }
 }

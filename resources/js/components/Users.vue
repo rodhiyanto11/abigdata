@@ -4,7 +4,7 @@
               <div class="card-header">
                 <h3 class="card-title">Users</h3>
                 <div class="card-tools">
-                    <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                    <button class="btn btn-success" @click="createModal">
                         <i class="fas fa-user-plus"></i>
                     </button>
                 </div>
@@ -31,10 +31,10 @@
                       <td>{{ user.created_at | completedate}}</td>
                       <td>{{ user.expired_date | completedate}}</td>
                       <td>
-                        <a href="#" data-toggle="tooltip" data-placement="left" title="Edit">
+                        <a href="#" data-toggle="tooltip" data-placement="left" title="Edit" @click = "editModal(user)" >
                             <i class="fas fa-edit blue" ></i>
                         </a> 
-                        <a href="#" data-toggle="tooltip" data-placement="right" title="Delete">
+                        <a href="#" data-toggle="tooltip" data-placement="right" title="Delete" @click = "deleteUser(user.id)">
                             <i class="fas fa-trash red" ></i>
                         </a>
                       </td>
@@ -49,12 +49,13 @@
                     <div class="modal-dialog modal-dialog-centerd" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                          <h5 class="modal-title" id="exampleModalLabel" v-show="editmode" >Edit</h5>
+                          <h5 class="modal-title" id="exampleModalLabel" v-show="!editmode" >Create</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                        <form  @submit.prevent = "createUser">
+                        <form  @submit.prevent = "editmode ? updateUser() : createUser()">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Name</label>
@@ -107,7 +108,8 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary" v-show="!editmode">Create</button>
+                            <button type="submit" class="btn btn-warning" v-show="editmode" >Update</button>
                             </div>
                          </form>
                       </div>
@@ -117,12 +119,16 @@
 </template>
 
 <script>
+import { setInterval } from 'timers';
     export default {
         data: function () {
             return{
+                editmode : false,
                 users :{},
                 form : new form({
+                    id: '',
                     name :  '',
+                    username :  '',
                     email :  '',
                     password :  '',
                     expired_date :  '',
@@ -138,22 +144,88 @@
                 this.form.post('api/user')
                 .then((response) => {
                     this.$Progress.finish()
-                    $("#exampleModal").close();
+                    $("#exampleModal").modal('hide');
+                    Fire.$emit('AfterCreate');
                     toast.fire({
                       type: 'success',
                       title: 'Request Success'
                     })
                 }, (response) => {
                     this.$Progress.fail()
-                    $("#exampleModal").modal('hide');
+                  //  $("#exampleModal").modal('hide');
                     toast.fire({
                       type: 'error',
-                      title: 'Request Fail'
+                      title: 'Request Error'
                     })
                 })
              },
-             
-          
+             updateUser(){
+                this.$Progress.start();
+                this.form.put('api/user/'+this.form.id)
+                .then((response) => {
+                  this.$Progress.finish();
+                  $("#exampleModal").modal('hide');
+                    Fire.$emit('AfterCreate');
+                    toast.fire({
+                      type: 'success',
+                      title: 'Request Success'
+                    })
+                },(response) =>{
+                   this.$Progress.fail()
+                  toast.fire({
+                      type: 'error',
+                      title: 'Request Error'
+                    })
+                })
+                .catch( () => {
+                  toast.fire({
+                      type: 'error',
+                      title: 'Request Error'
+                    })
+                })
+             },
+             deleteUser(id){
+               swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                if (result.value) {
+                  this.$Progress.start();
+                  this.form.delete('api/user/'+id)
+                  .then((response) => {
+                    Fire.$emit('AfterCreate');
+                    this.$Progress.finish()
+                    toast.fire({
+                      type: 'success',
+                      title: 'Request Success'
+                      })
+                  },(response)=>{
+                    this.$Progress.fail()
+                    toast.fire({
+                      type: 'error',
+                      title: 'Request Error'
+                      })
+                  })
+                  
+                }
+              })
+             } ,
+             createModal (){
+               this.editmode = false;
+               this.form.reset();
+               $('#exampleModal').modal('show');
+             },
+             editModal (user){
+               this.editmode = true;
+               this.form.reset();
+               $('#exampleModal').modal('show');
+               this.form.fill(user)
+             }
         },
         components: {
             'datepicker' : Datepicker,
@@ -161,6 +233,10 @@
             },
         created() {
             this.loadUser();
+            Fire.$on('AfterCreate',() =>{
+              this.loadUser();
+            })
+           // setInterval(this.loadUser,3000)
             //console.log('Component mounted.')
         }
     }

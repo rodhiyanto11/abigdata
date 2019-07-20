@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,15 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+//dd(User::all());
+$route = array(
+   // 'user' => 'API\UserController'
+    0 => array('name' => 'user', 'path' => 'API\UserController')
+);
+for($i = 0 ; $i < count($route) ; $i++){
+    Route::apiResources([
+       $route[$i]['name'] => $route[$i]['path']
+    ]);
+}
 
-Route::apiResources([
-    'user' => 'API\UserController'
-]);
+//Route::apiResources('{path}', 'HomeController@index')->where( 'path','([A-z\d-\/_.]+)?' );

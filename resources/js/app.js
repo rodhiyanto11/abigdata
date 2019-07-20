@@ -26,6 +26,7 @@ const Toast = swal.mixin({
   showConfirmButton: false,
   timer: 3000
 });
+window.Fire = new Vue();
 window.toast = Toast;
 Vue.use(VueRouter);
 Vue.use(VueProgressBar, {
@@ -41,6 +42,7 @@ Vue.use(VueProgressBar, {
   location: 'top',
   inverse: false
 })
+
 
 let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
