@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+
 class UserController extends Controller
 {
     /**
@@ -17,9 +18,11 @@ class UserController extends Controller
     public function __construct(){
         $this->middleware('auth:api');
     }
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if(isset($request->getsession) && $request->getsession == true){
+            return auth('api')->user();
+        }
         return User::latest()->paginate(10);
     }
 
@@ -60,9 +63,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        
+        
     }
 
     /**
