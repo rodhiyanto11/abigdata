@@ -20,7 +20,7 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
-        if(isset($request->getsession) && $request->getsession == true){
+        if(isset($request->getprofile) && $request->getprofile == true){
             return auth('api')->user();
         }
         return User::latest()->paginate(10);
@@ -81,8 +81,7 @@ class UserController extends Controller
         //
         
         $validatepwd = strlen($request->password) > 0 ? 'required|string|min:8|confirmed' : '';
-        
-       
+
         $this->validate($request,
         [
             'name'      => 'required|string|max:191',
