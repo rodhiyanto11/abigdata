@@ -23,7 +23,7 @@ class UserController extends Controller
         if(isset($request->getprofile) && $request->getprofile == true){
             return auth('api')->user();
         }
-        return User::latest()->paginate(10);
+        return User::latest()->paginate(3);
     }
 
     /**

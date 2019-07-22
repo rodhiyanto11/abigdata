@@ -24,7 +24,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="user in users" :key="user.id">
+                    <tr v-for="user in users.data" :key="user.id">
                       <td>{{ user.id }}</td>
                       <td>{{ user.name | ucWords }}</td>
                       <td>{{ user.username | ucWords }}</td>
@@ -43,6 +43,12 @@
                 </table>
               </div>
               <!-- /.card-body -->
+              <div class="card-footer">
+                <pagination :data="users" @pagination-change-page="getResults">
+                  <span slot="prev-nav">&lt; Previous</span>
+                  <span slot="next-nav">Next &gt;</span>
+                </pagination>
+              </div>
             </div>
             <!---Modal-->
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -137,7 +143,7 @@ import { setInterval } from 'timers';
         },
         methods: {
             loadUser : function(){
-                axios.get("api/user").then(  ({ data }) => (this.users = data.data) );
+                axios.get("api/user").then(  ({ data }) => (this.users = data) );
             },
             createUser: function () {
                 this.$Progress.start();
@@ -225,7 +231,14 @@ import { setInterval } from 'timers';
                this.form.reset();
                $('#exampleModal').modal('show');
                this.form.fill(user)
-             }
+             },
+             getResults(page = 1) {
+               console.log(page)
+                axios.get('api/user?page=' + page)
+                  .then(response => {
+                    this.users = response.data;
+                  });
+              }
         },
         components: {
             'datepicker' : Datepicker,

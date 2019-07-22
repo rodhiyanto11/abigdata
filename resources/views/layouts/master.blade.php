@@ -118,19 +118,42 @@
                       Users
                     </p>
                 </router-link>
-                
+                <router-link to="/pages" class="nav-link">
+                  <i class="nav-icon fas fa-archive"></i>
+                  <p>
+                    Pages
+                  </p>
+                </router-link>
+                <router-link to="/roles" class="nav-link">
+                  <i class="nav-icon fas fa-book"></i>
+                  <p>
+                    Roles
+                  </p>
+                </router-link>
+                <router-link to="/userroles" class="nav-link">
+                  <i class="nav-icon fas fa-address-book"></i>
+                  <p>
+                    User Roles
+                  </p>
+                </router-link>
+                <router-link to="/pageroles" class="nav-link">
+                  <i class="nav-icon fas fa-box-open"></i>
+                  <p>
+                    Page Roles
+                  </p>
+                </router-link>
               </li>
-             
+              <li class="nav-item">
+                  <router-link to="/developer" class="nav-link">
+                    <i class="nav-icon fas fa-cogs"></i>
+                    <p>
+                      Developer
+                    </p>
+                  </router-link>
+                </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <router-link to="/developer" class="nav-link">
-              <i class="nav-icon fas fa-cogs"></i>
-              <p>
-                Developer
-              </p>
-            </router-link>
-          </li> 
+           
           <li class="nav-item">
                 <a href="{{ route('logout') }}" class="nav-link"
                 onclick="event.preventDefault();
