@@ -5,6 +5,12 @@
                 <passport-clients></passport-clients>
                 <passport-authorized-clients></passport-authorized-clients>
                 <passport-personal-access-tokens></passport-personal-access-tokens>
+                <router-link to="/userprofile" class="nav-link">
+                      <i class="nav-icon fas fa-user-alt"></i>
+                      <p>
+                        Profile
+                      </p>
+                </router-link>
             </div>
         </div>
     </div>

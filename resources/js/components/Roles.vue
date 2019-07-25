@@ -1,23 +1,263 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Example Component</div>
-
-                    <div class="card-body">
-                        I'm an example component.
-                    </div>
+        <div class='card'>
+            <div class="card-header">
+                <h3 class="card-title">Roles</h3>
+                <div class="card-tools">
+                    <button class="btn btn-success" @click="createModal()">
+                        <i class="fas fa-user-plus"></i>
+                    </button>
                 </div>
             </div>
+            <div class="card-body table-responsive p-0" style="height: 300px;">
+                <table class="table table-head-fixed">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Note</th>
+                      <th>Create Date</th>
+                      <th>Modify</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="role in roles.data" :key="role.id">
+                      <td>{{ role.name | ucWords }}</td>
+                      <td>{{ role.note }}</td>
+                      <td>{{ role.created_at | completedate}}</td>
+                      <td>
+                        <a href="#" data-toggle="tooltip" data-placement="left" title="Edit" @click = "editModal(role)" >
+                            <i class="fas fa-edit blue" ></i>
+                        </a> 
+                        <a href="#" data-toggle="tooltip" data-placement="right" title="Delete" @click = "deleteRole(role.id)">
+                            <i class="fas fa-trash red" ></i>
+                        </a>
+                         <a href="#" data-toggle="tooltip" data-placement="left" title="Edit" @click = "editModalPages(role)" >
+                            <i class="fas fa-edit blue" ></i>
+                        </a> 
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                    <pagination :data="roles" @pagination-change-page="getResults">
+                       <span slot="prev-nav">&lt; Previous</span>
+                       <span slot="next-nav">Next &gt;</span>
+                     </pagination>
+                 </div>
+        </div>
+        <div class="modal fade" id="pages" tabindex="-1" role="dialog" aria-labelledby="pages" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centerd" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="pagesLabel"  >Role Name : {{form.name  | ucWords}}</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form  @submit.prevent = "editmodepages ? updatePages() : createPages()">
+                        <div class="modal-body">
+                            <div v-for="page in pages">
+                               <input type="checkbox" v-model="item.category" :id="'category_' + page.id" :value="page.id"  />
+                               {{page.name}}
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" v-show="!editmodepages">Create</button>
+                        <button type="submit" class="btn btn-warning" v-show="editmodepages" >Update</button>
+                        </div>
+                     </form>
+                  </div>
+                </div>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centerd" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel" v-show="editmode" >Edit</h5>
+                      <h5 class="modal-title" id="exampleModalLabel" v-show="!editmode" >Create</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form  @submit.prevent = "editmode ? updateRole() : createRole()">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Name<span class="mandatory" >*</span></label>
+                                <input v-model="form.name" type="text" name="name"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('name') }"
+                                placeholder="name"
+                                >
+                                <has-error :form="form" field="name"></has-error>
+                            </div>
+                            <div class="form-group">
+                                    <label>Note</label>
+                                    <textarea rows="4" cols="50"
+                                        v-model="form.note" 
+                                        class="form-control" 
+                                        :class="{ 'is-invalid': form.errors.has('note') }"
+                                    >      
+                                    </textarea>
+                                    <has-error :form="form" field="note"></has-error>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" v-show="!editmode">Create</button>
+                        <button type="submit" class="btn btn-warning" v-show="editmode" >Update</button>
+                        </div>
+                     </form>
+                  </div>
+                </div>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
+        data : function(){
+            return {
+                editmode :false,
+                editmodepages :false,
+                roles           : {},
+                pages           : {},
+                rolepages       : {},
+                pageses          : {},
+                pageselected : [],
+                form            : new form({
+                    id          : '',
+                    name        : '',
+                    note        : '',
+                    create_at   : ''
+                }),
+               item: {
+                  category: [1,2]
+                }
+                
+            }
+            
+        },
+        methods : {
+            loadrole : function(){
+               
+                axios.get("api/role").then(  ({ data }) => (this.roles = data) );
+            },
+            createModal (){
+               this.editmode = false;
+               this.form.reset();
+               $('#exampleModal').modal('show');
+             },
+             editModal (user){
+               this.editmode = true;
+               this.form.reset();
+               $('#exampleModal').modal('show');
+               this.form.fill(user)
+             },
+             editModalPages(role){
+               console.log(this.item)
+               this.form.fill(role)
+               this.editmodepages = true;
+             //  this.form.reset();
+               axios.get("api/page?req=all").then(  ({ data }) => (this.pages = data.data) );
+               //console.log(this.pages)
+               axios.get("api/page?req=role&id="+role.id)
+               .then(  ({ data }) => (this.pageses = data.data));
+               
+               $('#pages').modal('show');
+               //this.form.fill(user)
+             },
+             createRole: function () {
+                this.$Progress.start();
+                this.form.post('api/role')
+                .then((response) => {
+                    this.$Progress.finish()
+                    $("#exampleModal").modal('hide');
+                    Fire.$emit('AfterCreate');
+                    toast.fire({
+                      type: 'success',
+                      title: 'Request Success'
+                    })
+                }, (response) => {
+                    this.$Progress.fail()
+                  //  $("#exampleModal").modal('hide');
+                    toast.fire({
+                      type: 'error',
+                      title: 'Request Error'
+                    })
+                })
+             },
+             updateRole(){
+                this.$Progress.start();
+                this.form.put('api/role/'+this.form.id)
+                .then((response) => {
+                  this.$Progress.finish();
+                  $("#exampleModal").modal('hide');
+                    Fire.$emit('AfterCreate');
+                    toast.fire({
+                      type: 'success',
+                      title: 'Request Success'
+                    })
+                },(response) =>{
+                   this.$Progress.fail()
+                  toast.fire({
+                      type: 'error',
+                      title: 'Request Error'
+                    })
+                })
+                .catch( () => {
+                  toast.fire({
+                      type: 'error',
+                      title: 'Request Error'
+                    })
+                })
+             },
+             deleteRole(id){
+               swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                if (result.value) {
+                  this.$Progress.start();
+                  this.form.delete('api/role/'+id)
+                  .then((response) => {
+                    Fire.$emit('AfterCreate');
+                    this.$Progress.finish()
+                    toast.fire({
+                      type: 'success',
+                      title: 'Request Success'
+                      })
+                  },(response)=>{
+                    this.$Progress.fail()
+                    toast.fire({
+                      type: 'error',
+                      title: 'Request Error'
+                      })
+                  })
+                  
+                }
+              })
+             } ,
+             getResults(page = 1) {
+               console.log(page)
+                axios.get('api/role?page=' + page)
+                  .then(response => {
+                    this.roles = response.data;
+                  });
+              }
+
+        },
+        created (){
+            this.loadrole();
+            Fire.$on('AfterCreate',() =>{
+              this.loadrole();
+            })
         }
+       
     }
 </script>

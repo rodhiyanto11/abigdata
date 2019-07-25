@@ -20,8 +20,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //dd(User::all());
 $route = array(
    // 'user' => 'API\UserController'
-    0 => array('name' => 'user', 'path' => 'API\UserController')
+    0 => array('name' => 'user', 'path' => 'API\UserController'),
+    1 => array('name' => 'role', 'path' => 'API\RoleController'),
+    2 => array('name' => 'page', 'path' => 'API\PageController'),
 );
+//dd($route);
 for($i = 0 ; $i < count($route) ; $i++){
     Route::apiResources([
        $route[$i]['name'] => $route[$i]['path']

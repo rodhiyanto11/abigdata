@@ -1,17 +1,18 @@
 <?php
 
 namespace App;
+
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class Page extends Model
 {
     //
     use HasApiTokens,Notifiable;
-    protected $table = 'roles';
+    protected $table = 'pages';
     protected $fillable = [
-        'id','name','note','create_at',
+        'name','model','controller','note','view','create_at'
     ];
-    
+  
 }

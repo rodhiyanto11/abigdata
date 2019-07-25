@@ -136,13 +136,24 @@
                     User Roles
                   </p>
                 </router-link>
-                <router-link to="/pageroles" class="nav-link">
+                <router-link to="/rolepages" class="nav-link">
                   <i class="nav-icon fas fa-box-open"></i>
                   <p>
-                    Page Roles
+                    Role Pages
                   </p>
                 </router-link>
               </li>
+             <!-- @foreach($menus as $menu)
+              <li class="nav-item">
+                <router-link to="/{{ strtolower($menu->view) }}" :client-id="$data['rating']" class="nav-link">
+                  <i class="nav-icon fas fa-box-open"></i>
+                  <p>
+                      {{ ucwords($menu->name) }}
+                  </p>
+                </router-link>
+              </li>
+              @endforeach-->
+           
               <li class="nav-item">
                   <router-link to="/developer" class="nav-link">
                     <i class="nav-icon fas fa-cogs"></i>

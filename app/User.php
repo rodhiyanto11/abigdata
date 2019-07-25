@@ -6,7 +6,10 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use App\UserRole;
+use App\Role;
+use App\Page;
+use App\RolePage;
 class User extends Authenticatable
 {
     use HasApiTokens,Notifiable;
@@ -17,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','create_at','expired_date','username'
+        'name', 'email', 'password','create_at','expired_date','username','role_id'
     ];
 
     /**
@@ -37,4 +40,5 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
 }

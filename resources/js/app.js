@@ -52,7 +52,7 @@ let routes = [
     { path: '/pages', component: require('./components/Pages.vue').default },
     { path: '/roles', component: require('./components/Roles.vue').default },
     { path: '/userroles', component: require('./components/Userroles.vue').default },
-    { path: '/pageroles', component: require('./components/Pageroles.vue').default },
+    { path: '/rolepages', component: require('./components/RolePages.vue').default },
     { path: '/users', component: require('./components/Users.vue').default },
     
   ]

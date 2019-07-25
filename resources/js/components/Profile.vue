@@ -24,15 +24,15 @@
                             <div class="row">
                             <div class="col-sm-4 border-right">
                                 <div class="description-block">
-                                <h5 class="description-header">Name</h5>
-                                <span class="description-text">{{ form.name | ucWords }}LES</span>
+                                <h5 class="description-header">Name<span class="mandatory" >*</span></h5>
+                                <span class="description-text">{{ form.name | ucWords }}</span>
                                 </div>
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-4 border-right">
                                 <div class="description-block">
-                                <h5 class="description-header">Username</h5>
+                                <h5 class="description-header">Username<span class="mandatory" >*</span></h5>
                                 <span class="description-text">{{ form.username| ucWords }}</span>
                                 </div>
                                 <!-- /.description-block -->
@@ -66,7 +66,7 @@
                                 <div class="tab-pane active" id="settings">
                                     <form class="form-horizontal" @submit.prevent = "updateUser()">
                                             <div class="form-group">
-                                                <label>Name</label>
+                                                <label>Name<span class="mandatory" >*</span></label>
                                                 <input v-model="form.name" type="text" name="name"
                                                 class="form-control" :class="{ 'is-invalid': form.errors.has('name') }"
                                                 placeholder="name"
@@ -74,7 +74,7 @@
                                                 <has-error :form="form" field="name"></has-error>
                                             </div>
                                             <div class="form-group">
-                                                    <label>Username</label>
+                                                    <label>Username<span class="mandatory" >*</span></label>
                                                     <input v-model="form.username" type="text" name="username"
                                                     class="form-control" :class="{ 'is-invalid': form.errors.has('username') }"
                                                     placeholder="username"
@@ -82,12 +82,27 @@
                                                     <has-error :form="form" field="username"></has-error>
                                                 </div>
                                             <div class="form-group">
-                                                <label>Email</label>
+                                                <label>Email<span class="mandatory" >*</span></label>
                                                 <input v-model="form.email" type="email" name="email"
                                                 class="form-control" :class="{ 'is-invalid': form.errors.has('email') }"
                                                 placeholder="email"
                                                 >
                                                 <has-error :form="form" field="email"></has-error>
+                                            </div>
+                                            <div class="form-group">
+                                                    <label>Date</label>
+                                                    <datepicker  :bootstrap-styling="true"  v-model="form.expired_date" name="expired_date"
+                                                    :class="{ 'is-invalid': form.errors.has('expired_date') }"
+                                                    placeholder="expired_date" >
+                                                    </datepicker>
+                                                    <has-error :form="form" field="expired_date"></has-error>
+                                            </div>
+                                             <div class="form-group">
+                                                    <label>Role</label>
+                                                    <select name="role_id" id="role_id" v-model="form.role_id"  class="form-control" :class="{ 'is-invalid': form.errors.has('role_id') }">
+                                                         <option v-for="role in roles.data" :key="role.id" :value="role.id" >{{ role.name }}</option>
+                                                    </select>
+                                                    <has-error :form="form" field="role_id"></has-error>
                                             </div>
                                             <div class="form-group">
                                                 <label>Password</label>
@@ -105,14 +120,7 @@
                                                 >
                                                 <has-error :form="form" field="password_confirmation"></has-error>
                                             </div>
-                                            <div class="form-group">
-                                                    <label>Date</label>
-                                                    <datepicker  :bootstrap-styling="true"  v-model="form.expired_date" name="expired_date"
-                                                    :class="{ 'is-invalid': form.errors.has('expired_date') }"
-                                                    placeholder="expired_date" >
-                                                    </datepicker>
-                                                    <has-error :form="form" field="expired_date"></has-error>
-                                            </div>
+                                            
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-block btn-success" >Update Profile</button>
                                             </div>
@@ -136,6 +144,7 @@
     export default {
         data: function(){
             return{
+                roles : {},
                 form : new form({
                     id : '',
                     name :  '',
@@ -143,15 +152,20 @@
                     email :  '',
                     password :  '',
                     expired_date :  '',
-                })
+                    role_id :  '',
+                }),
+
             }
         },
         mounted() {
             console.log('Component mounted.')
         },
         methods : {
+            loadRoles : function(){
+                axios.get("api/role?req=all").then(  ({ data }) => (this.roles = data) );
+            },
            loadUser : function(){
-                axios.get("api/user?=getsession=true").then(  ({ data }) => (this.form.fill(data.data[0])) );
+                axios.get("api/user?getprofile=true").then(  ({ data }) => (this.form.fill(data.data)) );
             },
             updateUser : function(){
                  swal.fire({
@@ -201,7 +215,10 @@
           
             },
         created () {
-            this.loadUser()
+            this.loadRoles();
+            console.log(this.roles)
+            this.loadUser();
+             console.log(this.form)
         }    
     }
 </script>

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -20,10 +22,15 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
+       
         if(isset($request->getprofile) && $request->getprofile == true){
-            return auth('api')->user();
+            return ['data' => auth('api')->user() ];
         }
-        return User::latest()->paginate(3);
+        if(isset($request->req) &&  $request->req == 'menu'){
+            return $this->showmenu();
+        }
+       
+        return User::latest()->paginate(10);
     }
 
     /**
@@ -42,6 +49,7 @@ class UserController extends Controller
             'username'  => 'required|string|max:191|unique:users',
             'email'     => 'required|string|email|max:191|unique:users',
             'password'  => 'required|string|min:8|confirmed',
+            'role_id'  =>  'required|int',
          
         ]);
         
@@ -49,6 +57,7 @@ class UserController extends Controller
             'name' => $request['name'],
             'username' => $request['username'],
             'email' => $request['email'],
+            'role_id' => $request['role_id'],
             'expired_date' => isset($request['expired_date']) && strlen($request['expired_date']) > 0 ? $request['expired_date'] : null ,
             'password' => Hash::make($request['password']),
         ]);
@@ -87,6 +96,7 @@ class UserController extends Controller
             'name'      => 'required|string|max:191',
             'username'  => 'required|string|max:191',
             'email'     => 'required|string|email|max:191',
+            'role_id'    => 'required|int',
             'password'  =>  $validatepwd
         ]);
         
@@ -94,6 +104,7 @@ class UserController extends Controller
         $update->name = $request->name; 
         $update->username = $request->username; 
         $update->email = $request->email;
+        $update->role_id = $request->role_id;
         if(strlen($request->password) > 0){
             $update->password = Hash::make($request->password);
         }
@@ -118,6 +129,23 @@ class UserController extends Controller
         //
         $delete = User::findOrFail($id);
         $delete = $delete->delete();
-        return ['message' => 'User deleted' ];
+        return response([
+            'data' => $delete
+        ],Response::HTTP_CREATED);
+    }
+    public function showmenu(){
+        $datapages = DB::table('users')
+        
+        ->join('role_pages', 'role_pages.role_id', '=', 'user.role_id')
+        ->join('pages', 'pages.id', '=', 'role_pages.page_id')
+        ->select('pages.*')
+        ->where('users.id',Auth::user()->id)
+        //->where('pages.id','1')
+        ->get();
+   // dd($datapages); 
+
+        return response([
+            'data' => $datapages
+        ],Response::HTTP_CREATED);
     }
 }

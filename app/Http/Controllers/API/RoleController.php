@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use App\Role;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class RoleController extends Controller
 {
@@ -12,10 +14,20 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function __construct(){
+        $this->middleware('auth:api');
+    }
+    public function index(Request $request)
     {
         //
-        return Role::latest()->paginate(3);
+      //  dd(1);
+      if(isset($request->req) &&  $request->req == 'all'){
+          //dd(1);
+          return ['data'=> Role::all()];
+      }else{
+        return Role::latest()->paginate(10);
+      }
+       
     }
 
     /**
@@ -27,6 +39,19 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request,
+        [
+            'name'      => 'required|string|max:191',
+           
+        ]);
+        
+        $data = Role::create([
+            'name' => $request['name'],
+            'note' => $request['note'],
+        ]);
+        return response([
+            'data' => $data
+        ],Response::HTTP_CREATED);
     }
 
     /**
@@ -50,8 +75,22 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         //
+       //dd($id);
+        $this->validate($request,
+        [
+            'name'      => 'required|string|max:191',
+           
+        ]);
+        
+        $update = Role::findOrFail($id);
+       // dd($update);
+        $update->name = $request->name;
+        $update->note = $request->note;
+        $update->save();
+        return response([
+            'data' => $update
+        ],Response::HTTP_CREATED);
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -61,5 +100,10 @@ class RoleController extends Controller
     public function destroy($id)
     {
         //
+        $delete = Role::findOrFail($id);
+        $delete = $delete->delete();
+        return response([
+            'data' => $delete
+        ],Response::HTTP_CREATED);
     }
 }
