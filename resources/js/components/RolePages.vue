@@ -178,13 +178,65 @@
           },
           update : function (){
             console.log(2);
-          }
-
+          },
+          /*addRoute: function() {
+          /*axios.get('http://127.0.0.1:8000/api/user?req=menu&id=4')
+          .then(response => {
+           
+               response.data.data.forEach(type => {
+                   var com = './'+type.model+'s.vue';
+                  
+                    this.$router.addRoutes(
+                    [{
+                      path: '/'+type.view,
+                      component: require(''+com+'').default
+                    }
+                    ]);
+               });
+                
+                    
+                /*this.$router.addRoutes(
+                        [{
+                          path: '/pages',
+                          component: require('./Pages.vue').default
+                        }])  */     
+             
+            //})
+             //.catch(error => {
+              
+            //});*/
+           /* axios.get('http://127.0.0.1:8000/api/user?req=menu')
+          .then(response => {
+           
+               response.data.data.forEach(type => {
+                   var com = './'+type.model+'s.vue';
+                  console.log(com);
+                    this.$router.addRoutes(
+                    [{
+                      path: '/'+type.view,
+                      component: require(''+com+'').default
+                    }
+                    ]);
+               });
+                
+                    
+                /*this.$router.addRoutes(
+                        [{
+                          path: '/pages',
+                          component: require('./Pages.vue').default
+                        }])   */    
+             
+           // })
+           // .catch(error => {
+              
+            //});
+          //}*/
         },
         created(){
           this.loadpages();
           this.loadrole();
           this.loadpagerole();
+          this.addRoute();
           Fire.$on('AfterCreate',() =>{
               this.loadpagerole();
             })

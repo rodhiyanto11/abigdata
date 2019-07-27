@@ -205,11 +205,11 @@
 <script src="{{ asset('js/app.js')  }}"></script>
 <script src="{{ asset('js/jquery-ui.js')  }}"></script>
 <script>
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip();
+//$(function () {
+  //$('[data-toggle="tooltip"]').tooltip();
  
   
-})
+//})
 </script>
 </body>
 </html>
