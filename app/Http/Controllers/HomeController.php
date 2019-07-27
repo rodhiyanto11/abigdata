@@ -24,16 +24,47 @@ class HomeController extends Controller
     public function index($getmenu = null)
     {
         //dd($getmenu);
-        $datapages = DB::table('users')
-            ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
-            ->join('role_pages', 'role_pages.role_id', '=', 'user_roles.role_id')
-            ->join('pages', 'pages.id', '=', 'role_pages.page_id')
-            ->select('pages.*', 'pages.id', 'role_pages.page_id')
-            ->where('users.id','=',Auth::user()->id)
-            ->get();
-       // dd($datapages); 
+        //next looping role baru di fetch jadi menu kecil2
+        $datarole = DB::table('roles')->get()->toArray();
+        //dd($datarole);
+        //foreach($datarole as $dataroles){
+            $datapages['admin'] = DB::table('users')
+                            ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
+                            ->join('role_pages', 'role_pages.role_id', '=', 'user_roles.role_id')
+                            ->join('pages', 'pages.id', '=', 'role_pages.page_id')
+                            ->join('roles', 'roles.id', '=', 'users.role_id')
+                            ->select('pages.*', 'pages.id', 'role_pages.page_id')
+                            ->where('users.id','=',Auth::user()->id)
+                            ->where('roles.name','=','admin')
+                            ->get();
+            if(count($datapages['admin']) > 0){
+                $datapages['users'] = DB::table('users')
+                            //->join('user_roles', 'users.id', '=', 'user_roles.user_id')
+                            ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
+                            ->join('pages', 'pages.id', '=', 'role_pages.page_id')
+                            ->join('roles', 'roles.id', '=', 'role_pages.role_id')
+                            ->select('pages.*', 'pages.id', 'role_pages.page_id')
+                           // ->where('users.id','=',Auth::user()->id)
+                            ->where('roles.name','<>','admin')
+                            ->get();  
+            }else{
+                $datapages['users'] = DB::table('users')
+                            //->join('user_roles', 'users.id', '=', 'user_roles.user_id')
+                            ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
+                            ->join('pages', 'pages.id', '=', 'role_pages.page_id')
+                            ->join('roles', 'roles.id', '=', 'role_pages.role_id')
+                            ->select('pages.*', 'pages.id', 'role_pages.page_id')
+                            ->where('users.id','=',Auth::user()->id)
+                            ->where('roles.name','<>','admin')
+                            ->get();  
+            }                
+                          
+       // }
+        //dd($datapages);
+        
+       //dd($datapages); 
    
-        return view('home',['menus'=>$datapages]);
+        return view('home',$data = ['menus'=>$datapages]);
       
         
     }

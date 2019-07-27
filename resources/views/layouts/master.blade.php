@@ -17,6 +17,7 @@
     <!-- Google Font: Source Sans Pro -->
  </head>
 <body class="hold-transition sidebar-mini">
+
 <div class="wrapper" id="app">
 
   <!-- Navbar -->
@@ -82,16 +83,15 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-               
             <li class="nav-item">
-                <router-link to="/dashboard" class="nav-link">
-                  <i class="nav-icon fas fa-tachometer-alt" ></i>
-                  <p>
-                    Dashboard
-                  
-                  </p>
-                </router-link>
-            </li>     
+             <router-link to="/home" class="nav-link">
+               <i class="nav-icon fas fa-home" ></i>
+               <p>
+                 Home
+               </p>
+             </router-link>
+            </li>   
+            
             <li class="nav-item">
                     <router-link to="/profile" class="nav-link">
                       <i class="nav-icon fas fa-user-alt"></i>
@@ -100,10 +100,11 @@
                       </p>
                     </router-link>
             </li> 
-               
-          <li class="nav-item has-treeview">
+           @if(isset($menus['admin']) && count($menus['admin']) > 0 )    
+           <li class="nav-item has-treeview">
                 <!--<li class="nav-item has-treeview menu-open">-->
-            <a href="#" class="nav-link active">
+            <!--<a href="#" class="nav-link active">-->
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cog"></i>
               <p>
                 Management
@@ -111,43 +112,44 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              
+              @foreach($menus['admin'] as $menu)
               <li class="nav-item">
-                <router-link to="/users" class="nav-link">
-                    <i class="nav-icon fas fa-users"></i>
+              <router-link to="/{{$menu->view}}" class="nav-link">
+                    <i class="nav-icon {{ $menu->icons }}"></i>
                     <p>
-                      Users
+                      {{  ucwords($menu->name) }}
                     </p>
                 </router-link>
-                <router-link to="/pages" class="nav-link">
-                  <i class="nav-icon fas fa-archive"></i>
-                  <p>
-                    Pages
-                  </p>
-                </router-link>
-                <router-link to="/roles" class="nav-link">
-                  <i class="nav-icon fas fa-book"></i>
-                  <p>
-                    Roles
-                  </p>
-                </router-link>
-                <router-link to="/rolepages" class="nav-link">
-                  <i class="nav-icon fas fa-address"></i>
-                  <p>
-                    Role Pages
-                  </p>
-                </router-link>
-           
-              <li class="nav-item">
-                  <router-link to="/developer" class="nav-link">
-                    <i class="nav-icon fas fa-cogs"></i>
-                    <p>
-                      Developer
-                    </p>
-                  </router-link>
-                </li>
+               </li> 
+              @endforeach
+             
             </ul>
           </li>
-           
+           @endif
+           <li class="nav-item has-treeview">
+           <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-cog"></i>
+              <p>
+                Content
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              
+              @foreach($menus['users'] as $menu)
+              <li class="nav-item">
+              <router-link to="/{{$menu->view}}" class="nav-link">
+                    <i class="nav-icon {{ $menu->icons }}"></i>
+                    <p>
+                      {{  ucwords($menu->name) }}
+                    </p>
+                </router-link>
+               </li> 
+              @endforeach
+             
+            </ul>
+           </li>
           <li class="nav-item">
                 <a href="{{ route('logout') }}" class="nav-link"
                 onclick="event.preventDefault();
@@ -205,11 +207,11 @@
 <script src="{{ asset('js/app.js')  }}"></script>
 <script src="{{ asset('js/jquery-ui.js')  }}"></script>
 <script>
-//$(function () {
-  //$('[data-toggle="tooltip"]').tooltip();
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
  
   
-//})
+})
 </script>
 </body>
 </html>

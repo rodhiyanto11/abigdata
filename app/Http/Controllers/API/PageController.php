@@ -56,6 +56,7 @@ class PageController extends Controller
             'name'      => 'required|string|max:191',
             'model'     => 'required|string|max:191',
             'controller'=> 'required|string|max:191',
+            'routename'=> 'required|string|max:191',
             'view'      => 'string|max:191',
             
         ]);
@@ -64,6 +65,7 @@ class PageController extends Controller
             'name' => ucwords(strtolower($request['name'])),
             'model' =>  ucwords(strtolower($request['model'])),
             'controller' => $request['controller'],
+            'routename' => $request['routename'],
             'view' => $request['view'],
             'note' => $request['note'],
         ]);
@@ -100,6 +102,7 @@ class PageController extends Controller
            'name'      => 'required|string|max:191',
            'model'     => 'required|string|max:191',
            'controller'=> 'required|string|max:191',
+           'routename'=> 'required|string|max:191',
            'view'      => 'string|max:191',
           
        ]);
@@ -109,6 +112,7 @@ class PageController extends Controller
        $update->name            = ucwords(strtolower($request->name));
        $update->model           = ucwords(strtolower($request->model));
        $update->controller      = $request->controller;
+       $update->routename       = $request->routename;
        $update->note            = $request->note;
        $update->save();
 

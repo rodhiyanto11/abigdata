@@ -17,6 +17,7 @@
                       <th>Model</th>
                       <th>Controller</th>
                       <th>View</th>
+                      <th>Route Name</th>
                       <th>Note</th>
                       <th>Create Date</th>
                       <th>Modify</th>
@@ -28,6 +29,7 @@
                       <td>{{ page.model | ucWords }}</td>
                       <td>{{ page.controller | ucWords }}</td>
                       <td>{{ page.view | ucWords }}</td>
+                      <td>{{ page.routename | ucWords }}</td>
                       <td>{{ page.note }}</td>
                       <td>{{ page.created_at | completedate}}</td>
                       <td>
@@ -86,12 +88,20 @@
                                 <has-error :form="form" field="controller"></has-error>
                             </div>
                             <div class="form-group">
-                                <label>View<span class="mandatory" >* (contoh : 'Users')</span></label>
+                                <label>View<span class="mandatory" >* (contoh : 'users')</span></label>
                                 <input v-model="form.view" type="text" name="view"
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('view') }"
                                 placeholder="view"
                                 >
                                 <has-error :form="form" field="view"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Route Name<span class="mandatory" >* (contoh : 'Users')</span></label>
+                                <input v-model="form.routename" type="text" name="routename"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('routename') }"
+                                placeholder="routename"
+                                >
+                                <has-error :form="form" field="routename"></has-error>
                             </div>
                             <div class="form-group">
                                     <label>Note</label>
@@ -130,6 +140,7 @@
                     model       : '',
                     controller  : '',
                     view        : '',
+                    routename        : '',
                     note        : '',
                     create_at   : ''
                 })

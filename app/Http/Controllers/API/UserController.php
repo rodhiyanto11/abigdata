@@ -134,14 +134,24 @@ class UserController extends Controller
         ],Response::HTTP_CREATED);
     }
     public function showmenu(){
-        $datapages = DB::table('users')
+        if(Auth::user()->role_id == 1){
+            $datapages = DB::table('users')
+            ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
+            ->join('pages', 'pages.id', '=', 'role_pages.page_id')
+            ->select('pages.*')
+            //->where('users.id',Auth::user()->id)
+            //->where('pages.id','6')
+            ->get();
+        }else{
+            $datapages = DB::table('users')
+            ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
+            ->join('pages', 'pages.id', '=', 'role_pages.page_id')
+            ->select('pages.*')
+            ->where('users.id',Auth::user()->id)
+            //->where('pages.id','6')
+            ->get();
+        }
         
-        ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
-        ->join('pages', 'pages.id', '=', 'role_pages.page_id')
-        ->select('pages.*')
-        ->where('users.id',Auth::user()->id)
-        //->where('pages.id','6')
-        ->get();
    // dd($datapages); 
 
         return response([

@@ -16,22 +16,50 @@
 
 <script>
     export default {
+       data : function(){
+          return {
+            no : 0,
+          }
+       },  
         methods : {
             addRoute: function() {
           
           axios.get('http://127.0.0.1:8000/api/user?req=menu')
           .then(response => {
-           
-               response.data.data.forEach(type => {
-                   var com = './'+type.model+'s.vue';
-                  //console.log(com);
+              //console.log(response)
+               console.log(response.data.data.length) 
+               for(var i  = 0; i < response.data.data.length ; i++){
+                   console.log(i);
+                   var type = response.data.data[i].view;
+                   console.log(type)
+                   this.$router.addRoutes(
+                    [{
+                      path: '/'+response.data.data[i].routename,
+                      component: require('/'+response.data.data[i].view+'.vue').default
+                    }
+                    ]);
+               }
+               
+               /*for(var i = 0; i < response.data.data.length ; i++){
+                   console.log(i)
+                   console.log(response.data.data[0].view)
+                   //console.log(this.no);
+                   var type = response.data.data[i];
+                  // console.log(type)
+                   var com = './'+type.views+'s.vue';
+                   // console.log(type.routename);
                     this.$router.addRoutes(
                     [{
-                      path: '/'+type.view,
+                      path: '/'+type.routename,
                       component: require(''+com+'').default
                     }
                     ]);
-               });
+               }*/
+               //response.data.data.forEach(type => {
+                   
+                  
+                   
+              // });
                  
              
             })

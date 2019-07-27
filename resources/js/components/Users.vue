@@ -96,7 +96,7 @@
                                 <div class="form-group">
                                         <label>Role</label>
                                         <select name="role_id" id="role_id" v-model="form.role_id"  class="form-control" :class="{ 'is-invalid': form.errors.has('role_id') }">
-                                          <option v-for="role in roles.data" :key="role.id">{{ role.name }}</option>
+                                          <option v-for="role in roles.data" :key="role.id" :value="role.id">{{ role.name }}</option>
                                         </select>
                                   </div>
                                 <div class="form-group">

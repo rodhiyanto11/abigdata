@@ -236,7 +236,7 @@
           this.loadpages();
           this.loadrole();
           this.loadpagerole();
-          this.addRoute();
+          //this.addRoute();
           Fire.$on('AfterCreate',() =>{
               this.loadpagerole();
             })
