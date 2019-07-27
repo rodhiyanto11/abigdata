@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -130,29 +130,12 @@
                     Roles
                   </p>
                 </router-link>
-                <router-link to="/userroles" class="nav-link">
-                  <i class="nav-icon fas fa-address-book"></i>
-                  <p>
-                    User Roles
-                  </p>
-                </router-link>
                 <router-link to="/rolepages" class="nav-link">
-                  <i class="nav-icon fas fa-box-open"></i>
+                  <i class="nav-icon fas fa-address"></i>
                   <p>
                     Role Pages
                   </p>
                 </router-link>
-              </li>
-             <!-- @foreach($menus as $menu)
-              <li class="nav-item">
-                <router-link to="/{{ strtolower($menu->view) }}" :client-id="$data['rating']" class="nav-link">
-                  <i class="nav-icon fas fa-box-open"></i>
-                  <p>
-                      {{ ucwords($menu->name) }}
-                  </p>
-                </router-link>
-              </li>
-              @endforeach-->
            
               <li class="nav-item">
                   <router-link to="/developer" class="nav-link">

@@ -31,9 +31,6 @@
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Delete" @click = "deleteRole(role.id)">
                             <i class="fas fa-trash red" ></i>
                         </a>
-                         <a href="#" data-toggle="tooltip" data-placement="left" title="Edit" @click = "editModalPages(role)" >
-                            <i class="fas fa-edit blue" ></i>
-                        </a> 
                       </td>
                     </tr>
                   </tbody>
@@ -46,33 +43,9 @@
                      </pagination>
                  </div>
         </div>
-        <div class="modal fade" id="pages" tabindex="-1" role="dialog" aria-labelledby="pages" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centerd" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="pagesLabel"  >Role Name : {{form.name  | ucWords}}</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <form  @submit.prevent = "editmodepages ? updatePages() : createPages()">
-                        <div class="modal-body">
-                            <div v-for="page in pages">
-                               <input type="checkbox" v-model="item.category" :id="'category_' + page.id" :value="page.id"  />
-                               {{page.name}}
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" v-show="!editmodepages">Create</button>
-                        <button type="submit" class="btn btn-warning" v-show="editmodepages" >Update</button>
-                        </div>
-                     </form>
-                  </div>
-                </div>
-        </div>
+        
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centerd" role="document">
+                <div class="modal-dialog modal-full  modal-dialog-centerd" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalLabel" v-show="editmode" >Edit</h5>
@@ -119,22 +92,13 @@
         data : function(){
             return {
                 editmode :false,
-                editmodepages :false,
                 roles           : {},
-                pages           : {},
-                rolepages       : {},
-                pageses          : {},
-                pageselected : [],
                 form            : new form({
                     id          : '',
                     name        : '',
                     note        : '',
                     create_at   : ''
                 }),
-               item: {
-                  category: [1,2]
-                }
-                
             }
             
         },
@@ -154,19 +118,7 @@
                $('#exampleModal').modal('show');
                this.form.fill(user)
              },
-             editModalPages(role){
-               console.log(this.item)
-               this.form.fill(role)
-               this.editmodepages = true;
-             //  this.form.reset();
-               axios.get("api/page?req=all").then(  ({ data }) => (this.pages = data.data) );
-               //console.log(this.pages)
-               axios.get("api/page?req=role&id="+role.id)
-               .then(  ({ data }) => (this.pageses = data.data));
-               
-               $('#pages').modal('show');
-               //this.form.fill(user)
-             },
+             
              createRole: function () {
                 this.$Progress.start();
                 this.form.post('api/role')

@@ -30,8 +30,8 @@ class PageController extends Controller
                // dd($request->id);
                $data = DB::table('role_pages')
                ->where('role_pages.role_id',$request->id)
-               ->select('role_pages.page_id')
-               ->get()->toArray();
+               ->select('role_pages.*')
+               ->get();
               // dd($data);
                 return ['data'=> $data];
                     

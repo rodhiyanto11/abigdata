@@ -13,6 +13,7 @@ import { Form, HasError, AlertError } from 'vform';
 import Datepicker from 'vuejs-datepicker';
 import VueProgressBar from 'vue-progressbar';
 import swal from 'sweetalert2';
+import Axios from 'axios';
 
 
 Vue.component(HasError.name, HasError);
@@ -99,9 +100,8 @@ Vue.component(
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+Axios.defaults.baseURL = 'http://192.168.1.12:2122';
 const app = new Vue({
     el: '#app',
-    router,
-    
+    router,  
 });

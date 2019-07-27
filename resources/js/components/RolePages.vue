@@ -2,7 +2,7 @@
     <div class="container">
        <div class="card">
            <div class="card-header">
-                <h3 class="card-title">Users</h3>
+                <h3 class="card-title">Role Page</h3>
                 <div class="card-tools">
                     <button class="btn btn-success" @click="createModal">
                         <i class="fas fa-user-plus"></i>
@@ -13,33 +13,31 @@
                 <table class="table table-head-fixed">
                   <thead>
                     <tr>
-                      <th>Name</th>
-                      <th>Username</th>
+                      <th>Role Name</th>
+                      <th>Page Name</th>
                       <th>Create Date</th>
-                      <th>Expired Date</th>
                       <th>Modify</th>
                     </tr>
                   </thead>
-                  <!--<tbody>
-                    <tr v-for="user in users.data" :key="user.id">
-                      <td>{{ user.name | ucWords }}</td>
-                      <td>{{ user.username | ucWords }}</td>
-                      <td>{{ user.created_at | completedate}}</td>
-                      <td>{{ user.expired_date | completedate}}</td>
+                  <tbody>
+                    <tr v-for="datarole in dataroles" :key="datarole.id">
+                      <td>{{ datarole.role_name | ucWords }}</td>
+                      <td>{{ datarole.page_name | ucWords }}</td>
+                      <td>{{ datarole.created_at | completedate}}</td>
                       <td>
-                        <a href="#" data-toggle="tooltip" data-placement="left" title="Edit" @click = "editModal(user)" >
+                        <a href="#" data-toggle="tooltip" data-placement="left" title="Edit" @click = "editModal(datarole)" >
                             <i class="fas fa-edit blue" ></i>
                         </a> 
-                        <a href="#" data-toggle="tooltip" data-placement="right" title="Delete" @click = "deleteUser(user.id)">
+                        <a href="#" data-toggle="tooltip" data-placement="right" title="Delete" @click = "deleterolepage(datarole.id)">
                             <i class="fas fa-trash red" ></i>
                         </a>
                       </td>
                     </tr>
-                  </tbody>-->
+                  </tbody>
                 </table>
               </div>
               <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centerd" role="document">
+                    <div class="modal-dialog modal-full  modal-dialog-centerd" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
                           <h5 class="modal-title" id="exampleModalLabel" v-show="editmode" >Edit</h5>
@@ -48,62 +46,25 @@
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                        <form  @submit.prevent = "yy">
+                        <form  @submit.prevent = "editmode ? update() : create()">
                             <div class="modal-body">
-                                <div class="form-group">
-                                    <label>Name<span class="mandatory" >*</span></label>
-                                    <input v-model="form.name" type="text" name="name"
-                                    class="form-control" :class="{ 'is-invalid': form.errors.has('name') }"
-                                    placeholder="name"
-                                    >
+                                <div class="form-group" v-show="!editmode">
+                                    <input type="hidden" name="id" v-model="form.id">
+                                    <input type="hidden" name="header" v-model="form.header">
+                                    <label>Role Name<span class="mandatory" >*</span></label>
+                                     <select name="role_id" id="role_id" v-model="form.role_id"  class="form-control" :class="{ 'is-invalid': form.errors.has('role_id') }">
+                                          <option v-for="role in roles" :key="role.id" v-bind:value="role.id">{{ role.name | ucWords }}</option>
+                                      </select>
                                     <has-error :form="form" field="name"></has-error>
                                 </div>
                                 <div class="form-group">
-                                        <label>Username<span class="mandatory" >*</span></label>
-                                        <input v-model="form.username" type="text" name="username"
-                                        class="form-control" :class="{ 'is-invalid': form.errors.has('username') }"
-                                        placeholder="username"
-                                        >
-                                        <has-error :form="form" field="username"></has-error>
-                                    </div>
-                                <div class="form-group">
-                                    <label>Email<span class="mandatory" >*</span></label>
-                                    <input v-model="form.email" type="email" name="email"
-                                    class="form-control" :class="{ 'is-invalid': form.errors.has('email') }"
-                                    placeholder="email"
-                                    >
-                                    <has-error :form="form" field="email"></has-error>
+                                    <label>Page Name<span class="mandatory" >*</span></label>
+                                     <select name="page_id" id="page_id" v-model="form.page_id"  class="form-control" :class="{ 'is-invalid': form.errors.has('page_id') }">
+                                          <option v-for="page in pages" :key="page.id" v-bind:value="page.id">{{ page.name | ucWords }}</option>
+                                      </select>
+                                    <has-error :form="form" field="name"></has-error>
                                 </div>
-                                <div class="form-group">
-                                        <label>Date</label>
-                                        <datepicker  :bootstrap-styling="true"  v-model="form.expired_date" name="expired_date"
-                                        :class="{ 'is-invalid': form.errors.has('expired_date') }"
-                                         placeholder="expired_date" >
-                                        </datepicker>
-                                        <has-error :form="form" field="expired_date"></has-error>
-                                </div>
-                                <div class="form-group">
-                                        <label>Role</label>
-                                        <select name="role_id" id="role_id" v-model="form.role_id"  class="form-control" :class="{ 'is-invalid': form.errors.has('role_id') }">
-                                          <option v-for="role in roles.data" :key="role.id">{{ role.name }}</option>
-                                        </select>
-                                  </div>
-                                <div class="form-group">
-                                    <label>Password<span class="mandatory" >* (wajib input untuk pembuatan user baru)</span></label>
-                                    <input v-model="form.password" type="password" name="password"
-                                    class="form-control" :class="{ 'is-invalid': form.errors.has('password') }"
-                                    placeholder="password"
-                                    >
-                                    <has-error :form="form" field="password"></has-error>
-                                </div>
-                                <div class="form-group">
-                                    <label>Confirmation</label>
-                                    <input v-model="form.password_confirmation" type="password" name="password_confirmation"
-                                    class="form-control" :class="{ 'is-invalid': form.errors.has('password_confirmation') }"
-                                    placeholder="password_confirmation"
-                                    >
-                                    <has-error :form="form" field="password_confirmation"></has-error>
-                                </div>
+                                
                                 
                             </div>
                             <div class="modal-footer">
@@ -122,8 +83,111 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
+        data : function(){
+          return {
+            editmode : false,
+            dataroles : {},
+            roles : {},
+            pages : {},
+            
+            form : new form({
+              header : "rolepages",
+              id : '',
+              page_id : '',
+              role_id : '',
+              page_name : '',
+              role_name : ''
+            })
+          }
+        },
+        methods : {
+          loadpages : function(){
+            axios.get('api/page?req=all')
+            .then (({data}) => this.pages = data.data)
+          },
+          loadrole : function (){
+            axios.get('api/role?req=all')
+            .then (({data}) => this.roles = data.data)
+          },
+          loadpagerole : function (){
+            axios.get('api/role?req=pagerole')
+            .then (({data}) => this.dataroles = data)
+          },
+          createModal : function(){
+            this.editmode = false;
+            this.form.reset()
+            $("#exampleModal").modal('show');
+          },
+          editModal : function(dataroles){
+              this.editmode = true;
+               this.form.reset();
+               $('#exampleModal').modal('show');
+               this.form.fill(dataroles)
+          },
+          deleterolepage: function(){
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                if (result.value) {
+                  this.$Progress.start();
+                  this.form.delete('api/role/'+id+'/rolepages')
+                  .then((response) => {
+                    Fire.$emit('AfterCreate');
+                    this.$Progress.finish()
+                    toast.fire({
+                      type: 'success',
+                      title: 'Request Success'
+                      })
+                  },(response)=>{
+                    this.$Progress.fail()
+                    toast.fire({
+                      type: 'error',
+                      title: 'Request Error'
+                      })
+                  })
+                  
+                }
+              })
+          },
+          create : function(){
+             this.$Progress.start();
+                this.form.post('api/role')
+                .then((response) => {
+                    this.$Progress.finish()
+                    $("#exampleModal").modal('hide');
+                    Fire.$emit('AfterCreate');
+                    toast.fire({
+                      type: 'success',
+                      title: 'Request Success'
+                    })
+                }, (response) => {
+                    this.$Progress.fail()
+                  //  $("#exampleModal") .modal('hide');
+                    toast.fire({
+                      type: 'error',
+                      title: 'Request Error'
+                    })
+                })
+
+          },
+          update : function (){
+            console.log(2);
+          }
+
+        },
+        created(){
+          this.loadpages();
+          this.loadrole();
+          this.loadpagerole();
+          Fire.$on('AfterCreate',() =>{
+              this.loadpagerole();
+            })
         }
     }
 </script>

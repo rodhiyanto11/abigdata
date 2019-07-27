@@ -4,9 +4,10 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Role;
+use App\RolePage;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
-
+use Illuminate\Support\Facades\DB;
 class RoleController extends Controller
 {
     /**
@@ -24,9 +25,18 @@ class RoleController extends Controller
       if(isset($request->req) &&  $request->req == 'all'){
           //dd(1);
           return ['data'=> Role::all()];
-      }else{
-        return Role::latest()->paginate(10);
       }
+      if(isset($request->req) && $request->req == 'pagerole' ){
+            //dd(2);
+            return DB::table('role_pages')
+                    ->join('roles','roles.id','=','role_pages.role_id')
+                    ->join('pages','pages.id','=','role_pages.page_id')
+                    ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at')
+                    ->get();     
+        
+      }
+        return Role::latest()->paginate(10);
+      
        
     }
 
@@ -39,10 +49,30 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         //
+        //dd($request->page_id);
+
+        if(isset($request->header) && $request->header == 'rolepages'){
+            //dd($request->page_id);
+            $this->validate($request,
+            [
+                'role_id'      => 'required|max:191',
+                'page_id'      => 'required|max:191',
+            ]);
+
+            $data = RolePage::create([
+                'role_id'      => $request['role_id'],
+                'page_id'      => $request['page_id'],
+            ]);
+            return response([
+                'data' => $data
+            ],Response::HTTP_CREATED);
+        }else{
+            //dd(1);
+            //roleinsert
         $this->validate($request,
         [
-            'name'      => 'required|string|max:191',
-           
+            'name' => 'required|string|max:191',
+            
         ]);
         
         $data = Role::create([
@@ -52,6 +82,9 @@ class RoleController extends Controller
         return response([
             'data' => $data
         ],Response::HTTP_CREATED);
+        }
+
+        
     }
 
     /**
@@ -97,9 +130,10 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,$method = null)
     {
         //
+        dd($method);
         $delete = Role::findOrFail($id);
         $delete = $delete->delete();
         return response([

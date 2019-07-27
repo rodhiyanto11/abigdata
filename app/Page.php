@@ -14,5 +14,8 @@ class Page extends Model
     protected $fillable = [
         'name','model','controller','note','view','create_at'
     ];
+    public function rolepage(){
+        return $this->hasMany('App\RolePage');
+    }
   
 }
