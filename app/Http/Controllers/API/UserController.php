@@ -29,7 +29,13 @@ class UserController extends Controller
         if(isset($request->req) &&  $request->req == 'menu'){
             return $this->showmenu();
         }
-       
+        if(isset($request->search) && strlen($request->search) > 0 ){
+            return User::latest()
+                        ->where('username', 'ilike', '%' . $request->search . '%')
+                        ->orWhere('name', 'ilike', '%' . $request->search . '%')
+                        ->orWhere('email', 'ilike', '%' . $request->search . '%')
+                        ->paginate(10);    
+        }
         return User::latest()->paginate(10);
     }
 

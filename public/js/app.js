@@ -2093,10 +2093,20 @@ __webpack_require__.r(__webpack_exports__);
     loadpage: function loadpage() {
       var _this = this;
 
-      axios.get("api/page").then(function (_ref) {
-        var data = _ref.data;
-        return _this.pages = data;
-      });
+      //console.log(this.$parent.search.length);
+      if (this.$parent.search.length == 0) {
+        // console.log(1);
+        axios.get("api/page").then(function (_ref) {
+          var data = _ref.data;
+          return _this.pages = data;
+        });
+      } else {
+        //console.log(2);
+        axios.get("api/page?search=" + this.$parent.search).then(function (_ref2) {
+          var data = _ref2.data;
+          return _this.pages = data;
+        });
+      }
     },
     createModal: function createModal() {
       this.editmode = false;
@@ -2207,6 +2217,10 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this6 = this;
 
+    Fire.$on('searching', function () {
+      _this6.loadpage(); //console.log(2); 
+
+    });
     this.loadpage();
     Fire.$on('AfterCreate', function () {
       _this6.loadpage();
@@ -2605,7 +2619,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#exampleModal').modal('show');
       this.form.fill(dataroles);
     },
-    deleterolepage: function deleterolepage() {
+    deleterolepage: function deleterolepage(id) {
       var _this4 = this;
 
       swal.fire({
@@ -2620,7 +2634,7 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this4.$Progress.start();
 
-          _this4.form["delete"]('api/role/' + id + '/rolepages').then(function (response) {
+          _this4.form.get('api/role?req=delete&id=' + id).then(function (response) {
             Fire.$emit('AfterCreate');
 
             _this4.$Progress.finish();
@@ -2847,10 +2861,19 @@ __webpack_require__.r(__webpack_exports__);
     loadrole: function loadrole() {
       var _this = this;
 
-      axios.get("api/role").then(function (_ref) {
-        var data = _ref.data;
-        return _this.roles = data;
-      });
+      console.log(this.$parent.search);
+
+      if (this.$parent.search.length == 0) {
+        axios.get("api/role").then(function (_ref) {
+          var data = _ref.data;
+          return _this.roles = data;
+        });
+      } else {
+        axios.get("api/role?search=" + this.$parent.search).then(function (_ref2) {
+          var data = _ref2.data;
+          return _this.roles = data;
+        });
+      }
     },
     createModal: function createModal() {
       this.editmode = false;
@@ -2961,6 +2984,11 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this6 = this;
 
+    Fire.$on('searching', function () {
+      _this6.loadrole();
+
+      console.log(2);
+    });
     this.loadrole();
     Fire.$on('AfterCreate', function () {
       _this6.loadrole();
@@ -3145,6 +3173,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3166,16 +3196,23 @@ __webpack_require__.r(__webpack_exports__);
     loadUser: function loadUser() {
       var _this = this;
 
-      axios.get("api/user").then(function (_ref) {
-        var data = _ref.data;
-        return _this.users = data;
-      });
+      if (this.$parent.search.length == 0) {
+        axios.get("api/user").then(function (_ref) {
+          var data = _ref.data;
+          return _this.users = data;
+        });
+      } else {
+        axios.get("api/user?search=" + this.$parent.search).then(function (_ref2) {
+          var data = _ref2.data;
+          return _this.users = data;
+        });
+      }
     },
     loadRoles: function loadRoles() {
       var _this2 = this;
 
-      axios.get("api/role?req=all").then(function (_ref2) {
-        var data = _ref2.data;
+      axios.get("api/role?req=all").then(function (_ref3) {
+        var data = _ref3.data;
         return _this2.roles = data;
       });
     },
@@ -3291,6 +3328,9 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this7 = this;
 
+    Fire.$on('searching', function () {
+      _this7.loadUser();
+    });
     this.loadRoles();
     this.loadUser();
     Fire.$on('AfterCreate', function () {
@@ -65342,6 +65382,8 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(_vm._f("ucWords")(user.username)))]),
                   _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(user.email))]),
+                  _vm._v(" "),
                   _c("td", [
                     _vm._v(_vm._s(_vm._f("completedate")(user.created_at)))
                   ]),
@@ -65859,6 +65901,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Name")]),
         _vm._v(" "),
         _c("th", [_vm._v("Username")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Email")]),
         _vm._v(" "),
         _c("th", [_vm._v("Create Date")]),
         _vm._v(" "),
@@ -84440,7 +84484,16 @@ Vue.component('passport-personal-access-tokens', __webpack_require__(/*! ./compo
 
 var app = new Vue({
   el: '#app',
-  router: router
+  router: router,
+  data: {
+    search: ''
+  },
+  methods: {
+    searchit: function searchit() {
+      //console.log('..searching.')
+      Fire.$emit('searching');
+    }
+  }
 });
 
 /***/ }),

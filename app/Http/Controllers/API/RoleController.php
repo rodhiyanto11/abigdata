@@ -8,6 +8,7 @@ use App\RolePage;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
+
 class RoleController extends Controller
 {
     /**
@@ -20,12 +21,19 @@ class RoleController extends Controller
     }
     public function index(Request $request)
     {
+       // dd($request->search);
         //
       //  dd(1);
       if(isset($request->req) &&  $request->req == 'all'){
           //dd(1);
           return ['data'=> Role::all()];
       }
+      if(isset($request->search) &&  strlen($request->search) > 0){
+        //dd(1);
+        return Role::latest()
+                    ->where('name', 'ilike', '%' . $request->search . '%')      
+                    ->paginate(10);
+    }
       if(isset($request->req) && $request->req == 'pagerole' ){
             //dd(2);
             return DB::table('role_pages')
@@ -34,6 +42,14 @@ class RoleController extends Controller
                     ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at')
                     ->get();     
         
+      }
+      if(isset($request->req) && $request->req == 'delete' ){
+          //dd(2);
+        $delete = RolePage::findOrFail($request->id);
+        $delete = $delete->delete();
+        return response([
+            'data' => $delete
+        ],Response::HTTP_CREATED);
       }
         return Role::latest()->paginate(10);
       
@@ -133,7 +149,7 @@ class RoleController extends Controller
     public function destroy($id,$method = null)
     {
         //
-        dd($method);
+        //dd($method);
         $delete = Role::findOrFail($id);
         $delete = $delete->delete();
         return response([

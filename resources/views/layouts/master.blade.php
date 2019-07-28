@@ -42,16 +42,16 @@
        
     </ul>
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+    
+      <div class="input-group input-group-sm ">
+        <input class="form-control form-control-navbar" @keyup.enter="searchit" v-model="search" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
+          <button class="btn btn-navbar" @onclick="searchit" type="submit">
             <i class="fas fa-search"></i>
           </button>
         </div>
       </div>
-    </form>
+    
 
     
   </nav>
@@ -63,7 +63,7 @@
     <a href="index3.html" class="brand-link">
     <img src="{{ asset('img/logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-1"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">Big Data Analytics</span>
+      <span class="brand-text font-weight-light">Big Data</span><span><i style="font-size:10px"> Admedika</i></span>
     </a>
 
     <!-- Sidebar -->
@@ -112,16 +112,25 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              
+              <?php 
+              $color = array(
+                'blue','indigo','purple','pink','red','orange','yellow','green','teal','cyan'
+              );
+              $color_random = array_rand($color,count($color));
+
+              ?>
+              <?php $i = 0; ?>
               @foreach($menus['admin'] as $menu)
+              
               <li class="nav-item">
               <router-link to="/{{$menu->view}}" class="nav-link">
-                    <i class="nav-icon {{ $menu->icons }}"></i>
+                    <i class="nav-icon {{ $menu->icons }} {{ $color[$color_random[$i]] }}"></i>
                     <p>
                       {{  ucwords($menu->name) }}
                     </p>
                 </router-link>
                </li> 
+               <?php $i++; ?>
               @endforeach
              
             </ul>
@@ -136,16 +145,17 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              
+            <?php $i = 0; ?>
               @foreach($menus['users'] as $menu)
               <li class="nav-item">
               <router-link to="/{{$menu->view}}" class="nav-link">
-                    <i class="nav-icon {{ $menu->icons }}"></i>
+                    <i class="nav-icon {{ $menu->icons }} {{ $color[$color_random[$i]] }}"></i>
                     <p>
                       {{  ucwords($menu->name) }}
                     </p>
                 </router-link>
                </li> 
+               <?php $i++; ?>
               @endforeach
              
             </ul>

@@ -17,6 +17,7 @@
                     <tr>
                       <th>Name</th>
                       <th>Username</th>
+                      <th>Email</th>
                       <th>Create Date</th>
                       <th>Expired Date</th>
                       <th>Modify</th>
@@ -26,6 +27,7 @@
                     <tr v-for="user in users.data" :key="user.id">
                       <td>{{ user.name | ucWords }}</td>
                       <td>{{ user.username | ucWords }}</td>
+                      <td>{{ user.email}}</td>
                       <td>{{ user.created_at | completedate}}</td>
                       <td>{{ user.expired_date | completedate}}</td>
                       <td>
@@ -137,6 +139,7 @@ import { setInterval } from 'timers';
                 editmode : false,
                 users : {},
                 roles : {},
+                
                 form : new form({
                     id: '',
                     name :  '',
@@ -149,7 +152,12 @@ import { setInterval } from 'timers';
         },
         methods: {
             loadUser : function(){
-                axios.get("api/user").then(  ({ data }) => (this.users = data) );
+                if(this.$parent.search.length == 0 ){
+                  axios.get("api/user").then(  ({ data }) => (this.users = data) );
+                }else{
+                  axios.get("api/user?search="+this.$parent.search).then(  ({ data }) => (this.users = data) );
+                }
+                
             },
             loadRoles : function(){
                 axios.get("api/role?req=all").then(  ({ data }) => (this.roles = data) );
@@ -254,6 +262,9 @@ import { setInterval } from 'timers';
           
             },
         created() {
+          Fire.$on('searching',()=>{
+            this.loadUser();
+          })
           this.loadRoles();
             this.loadUser();
             Fire.$on('AfterCreate',() =>{

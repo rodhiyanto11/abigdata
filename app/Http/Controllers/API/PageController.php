@@ -22,6 +22,7 @@ class PageController extends Controller
     public function index(Request $request)
     {
         //
+        //dd($request->search);
         if(isset($request->req) && $request->req == 'all'){
             return ['data'=> Page::all()];
         }
@@ -37,6 +38,12 @@ class PageController extends Controller
                     
                 
             }
+        }
+        if(isset($request->search)){
+            //dd(2);
+            return Page::latest()
+                        ->where('name', 'ilike', '%' . $request->search . '%')
+                        ->paginate(10);
         }
         return Page::latest()->paginate(10);
         

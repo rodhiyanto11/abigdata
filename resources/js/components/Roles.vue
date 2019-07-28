@@ -104,8 +104,13 @@
         },
         methods : {
             loadrole : function(){
-               
-                axios.get("api/role").then(  ({ data }) => (this.roles = data) );
+              console.log(this.$parent.search);
+               if(this.$parent.search.length == 0 ){
+                  axios.get("api/role").then(  ({ data }) => (this.roles = data) );
+                }else{
+                  axios.get("api/role?search="+this.$parent.search).then(  ({ data }) => (this.roles = data) );
+                }
+                
             },
             createModal (){
                this.editmode = false;
@@ -205,6 +210,11 @@
 
         },
         created (){
+            Fire.$on('searching',()=>{
+
+              this.loadrole()
+              console.log(2); 
+            })
             this.loadrole();
             Fire.$on('AfterCreate',() =>{
               this.loadrole();

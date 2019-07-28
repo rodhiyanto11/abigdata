@@ -139,12 +139,7 @@
     <script>
     $(function(){
         $('#login100-form-btn').focus();
-        $('.ogin100-form').submit(function(event){
-            var verified = grecaptcha.getResponse();
-            if(verified.length ==== 0){
-                event.preventDefault();
-            }
-        })
+       
     })
     </script>
 </body>

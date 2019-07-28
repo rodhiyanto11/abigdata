@@ -149,8 +149,15 @@
         },
         methods : {
             loadpage : function(){
-               
-                axios.get("api/page").then(  ({ data }) => (this.pages = data) );
+              //console.log(this.$parent.search.length);
+               if(this.$parent.search.length == 0){
+                // console.log(1);
+                 axios.get("api/page").then(  ({ data }) => (this.pages = data) );
+               }else{
+                 //console.log(2);
+                 axios.get("api/page?search="+this.$parent.search).then(  ({ data }) => (this.pages = data) );
+               }
+                
             },
             createModal (){
                this.editmode = false;
@@ -249,6 +256,10 @@
         },
         
         created (){
+            Fire.$on('searching',()=>{
+              this.loadpage()
+              //console.log(2); 
+            })
             this.loadpage();
             Fire.$on('AfterCreate',() =>{
               this.loadpage();

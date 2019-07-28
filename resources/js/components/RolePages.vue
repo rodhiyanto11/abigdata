@@ -124,7 +124,7 @@
                $('#exampleModal').modal('show');
                this.form.fill(dataroles)
           },
-          deleterolepage: function(){
+          deleterolepage: function(id){
             swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -136,7 +136,7 @@
               }).then((result) => {
                 if (result.value) {
                   this.$Progress.start();
-                  this.form.delete('api/role/'+id+'/rolepages')
+                  this.form.get('api/role?req=delete&id='+id)
                   .then((response) => {
                     Fire.$emit('AfterCreate');
                     this.$Progress.finish()
