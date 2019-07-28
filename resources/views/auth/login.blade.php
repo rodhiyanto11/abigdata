@@ -10,6 +10,7 @@
 	<title>Big Data</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
 <!--===============================================================================================-->
@@ -38,7 +39,7 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-85 p-b-20">
-                <form method="POST" class="ogin100-form validate-form" action="{{ route('login') }}">    
+                <form method="POST" class="ogin100-form " action="{{ route('login') }}">    
 					<span class="login100-form-title p-b-70">
                         Big Data <i style="font-size:15px;color:red;">Admedika</i>
 					</span>
@@ -48,7 +49,7 @@
                         @csrf
 
                         <div class="form-group row">
-                             <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Enter username">
+                             <div class="wrap-input100 m-t-85 m-b-35" >
                                 <input class="input100 @error('email') is-invalid @enderror" id="email" type="text" name ="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                                 <span class="focus-input100" data-placeholder="Username"></span>
                                 @error('email')
@@ -57,7 +58,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="wrap-input100 validate-input m-t-30 m-b-35" data-validate = "Enter password">
+                            <div class="wrap-input100  m-t-30 m-b-35" >
                                 <input class="input100 @error('password') is-invalid @enderror" id="password" type="password" name ="password" value="{{ old('password') }}" required autocomplete="password" autofocus>
                                 <span class="focus-input100" data-placeholder="Password"></span>
                                 @error('password')
@@ -94,10 +95,21 @@
                                 @endif
                             </div>
                         </div>-->
+                        <div class="row  m-t-10 m-b-35" >
+                        <div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}">
+                            @if($errors->has('g-recapctha-response'))
+                                <span class='invalid-feedback' style="display:block">
+                                        <strong>{{$errors->first('g-recapctha-response')}}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        </div>
                         <div class="container-login100-form-btn">
 						<button type="submit" class="login100-form-btn">
 							Login
 						</button>
+                        
+
 					</div>
 				</form>
 			</div>
@@ -123,9 +135,16 @@
 	<script src="{{asset('login-draw/vendor/countdowntime/countdowntime.js')}}"></script>
 <!--===============================================================================================-->
 	<script src="{{asset('login-draw/js/main.js')}}"></script>
+    
     <script>
     $(function(){
         $('#login100-form-btn').focus();
+        $('.ogin100-form').submit(function(event){
+            var verified = grecaptcha.getResponse();
+            if(verified.length ==== 0){
+                event.preventDefault();
+            }
+        })
     })
     </script>
 </body>

@@ -18,7 +18,7 @@
                             <div class="col-sm-12 border-right">
                                 <div class="description-block">
                                 <h5 class="description-header">Page Not Found 404</h5>
-                                <router-link to="/home" class="btn btn-danger" data-toggle="tooltip" data-placement="right" title="Home">
+                                <router-link to="/home" class="btn btn-danger"   title="Home">
                                     <i class="nav-icon fas fa-home"></i>
                                     
                                 </router-link>

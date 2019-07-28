@@ -63253,12 +63253,7 @@ var render = function() {
                       "router-link",
                       {
                         staticClass: "btn btn-danger",
-                        attrs: {
-                          to: "/home",
-                          "data-toggle": "tooltip",
-                          "data-placement": "right",
-                          title: "Home"
-                        }
+                        attrs: { to: "/home", title: "Home" }
                       },
                       [_c("i", { staticClass: "nav-icon fas fa-home" })]
                     )
