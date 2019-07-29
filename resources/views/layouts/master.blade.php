@@ -8,12 +8,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="X-Frame-Options" content="allow">
 
   <title>Big Data Analytics</title>
 
   <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
+    <script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
     <!-- Google Font: Source Sans Pro -->
  </head>
 <body class="hold-transition sidebar-mini">
@@ -217,6 +219,7 @@
 
 <script src="{{ asset('js/app.js')  }}"></script>
 <script src="{{ asset('js/jquery-ui.js')  }}"></script>
+
 <script>
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
