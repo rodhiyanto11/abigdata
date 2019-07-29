@@ -13,7 +13,7 @@ import { Form, HasError, AlertError } from 'vform';
 import Datepicker from 'vuejs-datepicker';
 import VueProgressBar from 'vue-progressbar';
 import swal from 'sweetalert2';
-import VueTableau from 'vue-tableau';
+//import VueTableau from 'vue-tableau';
 import Axios from 'axios';
 
 
@@ -22,7 +22,7 @@ Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
 Vue.component('pagination', require('laravel-vue-pagination'));
 window.form = Form;
-window.VueTableau = VueTableau;
+//window.VueTableau = VueTableau;
 //import VueTableau from 'vue-tableau';
 window.Datepicker = Datepicker;
 window.swal = swal;

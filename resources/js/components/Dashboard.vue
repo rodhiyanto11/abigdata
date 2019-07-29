@@ -30,8 +30,8 @@
                //console.log(response.data.data.length) 
                for(var i  = 0; i < response.data.data.length ; i++){
                 // console.log(i);
-                   var type = response.data.data[i].view;
-                  // console.log(type)
+                   var type = response.data.data[i];
+                   console.log(type)
                    this.$router.addRoutes(
                     [{
                       path: '/'+response.data.data[i].routename,

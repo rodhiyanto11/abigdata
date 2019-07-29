@@ -15,8 +15,8 @@ class CreateRolePagesTable extends Migration
     {
         Schema::create('role_pages', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('role_id')->unique();
-            $table->integer('page_id')->unique();
+            $table->integer('role_id');
+            $table->integer('page_id');
             $table->timestamps();
         });
     }

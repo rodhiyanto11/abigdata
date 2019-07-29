@@ -141,8 +141,8 @@ class UserController extends Controller
     }
     public function showmenu(){
         if(Auth::user()->role_id == 1){
-            $datapages = DB::table('users')
-            ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
+            $datapages = DB::table('role_pages')
+           // ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
             ->join('pages', 'pages.id', '=', 'role_pages.page_id')
             ->select('pages.*')
             //->where('users.id',Auth::user()->id)

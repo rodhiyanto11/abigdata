@@ -88,7 +88,7 @@
                                 <has-error :form="form" field="controller"></has-error>
                             </div>
                             <div class="form-group">
-                                <label>View<span class="mandatory" >* (contoh : 'users')</span></label>
+                                <label>View<span class="mandatory" >* (contoh : 'Users')</span></label>
                                 <input v-model="form.view" type="text" name="view"
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('view') }"
                                 placeholder="view"
@@ -96,7 +96,7 @@
                                 <has-error :form="form" field="view"></has-error>
                             </div>
                             <div class="form-group">
-                                <label>Route Name<span class="mandatory" >* (contoh : 'Users')</span></label>
+                                <label>Route Name<span class="mandatory" >* (contoh : 'users')</span></label>
                                 <input v-model="form.routename" type="text" name="routename"
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('routename') }"
                                 placeholder="routename"
