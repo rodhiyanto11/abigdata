@@ -2889,8 +2889,7 @@ __webpack_require__.r(__webpack_exports__);
     loadrole: function loadrole() {
       var _this = this;
 
-      console.log(this.$parent.search);
-
+      //console.log(this.$parent.search);
       if (this.$parent.search.length == 0) {
         axios.get("api/role").then(function (_ref) {
           var data = _ref.data;
@@ -3013,9 +3012,8 @@ __webpack_require__.r(__webpack_exports__);
     var _this6 = this;
 
     Fire.$on('searching', function () {
-      _this6.loadrole();
+      _this6.loadrole(); //console.log(2); 
 
-      console.log(2);
     });
     this.loadrole();
     Fire.$on('AfterCreate', function () {

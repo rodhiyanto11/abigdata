@@ -24,7 +24,7 @@
                       <td>{{ datarole.role_name | ucWords }}</td>
                       <td>{{ datarole.page_name | ucWords }}</td>
                       <td>{{ datarole.created_at | completedate}}</td>
-                      <td>
+                      <td> 
                         <a href="#" data-toggle="tooltip" data-placement="left" title="Edit" @click = "editModal(datarole)" >
                             <i class="fas fa-edit blue" ></i>
                         </a> 

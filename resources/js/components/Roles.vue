@@ -104,7 +104,7 @@
         },
         methods : {
             loadrole : function(){
-              console.log(this.$parent.search);
+              //console.log(this.$parent.search);
                if(this.$parent.search.length == 0 ){
                   axios.get("api/role").then(  ({ data }) => (this.roles = data) );
                 }else{
@@ -213,7 +213,7 @@
             Fire.$on('searching',()=>{
 
               this.loadrole()
-              console.log(2); 
+              //console.log(2); 
             })
             this.loadrole();
             Fire.$on('AfterCreate',() =>{
