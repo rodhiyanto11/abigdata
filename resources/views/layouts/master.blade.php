@@ -147,7 +147,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-            <?php $i = 0; ?>
+            <?php 
+            $color = array(
+              'blue','indigo','purple','pink','red','orange','yellow','green','teal','cyan'
+            );
+            $color_random = array_rand($color,count($color));
+            $i = 0; ?>
               @foreach($menus['users'] as $menu)
               <li class="nav-item">
               <router-link to="/{{$menu->view}}" class="nav-link">

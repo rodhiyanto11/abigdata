@@ -63299,7 +63299,9 @@ var render = function() {
                   { staticClass: "description-block" },
                   [
                     _c("h5", { staticClass: "description-header" }, [
-                      _vm._v("Page Not Found 404")
+                      _vm._v(
+                        "Token is expired, click home button to create token and access this page"
+                      )
                     ]),
                     _vm._v(" "),
                     _c(

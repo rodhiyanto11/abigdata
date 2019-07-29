@@ -17,7 +17,7 @@
                             <div class="row">
                             <div class="col-sm-12 border-right">
                                 <div class="description-block">
-                                <h5 class="description-header">Page Not Found 404</h5>
+                                <h5 class="description-header">Token is expired, click home button to create token and access this page</h5>
                                 <router-link to="/home" class="btn btn-danger"   title="Home">
                                     <i class="nav-icon fas fa-home"></i>
                                     

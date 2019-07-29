@@ -34,9 +34,9 @@ class UserController extends Controller
                         ->where('username', 'ilike', '%' . $request->search . '%')
                         ->orWhere('name', 'ilike', '%' . $request->search . '%')
                         ->orWhere('email', 'ilike', '%' . $request->search . '%')
-                        ->paginate(10);    
+                        ->paginate(100);    
         }
-        return User::latest()->paginate(10);
+        return User::latest()->paginate(100);
     }
 
     /**

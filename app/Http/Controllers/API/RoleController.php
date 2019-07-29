@@ -32,7 +32,7 @@ class RoleController extends Controller
         //dd(1);
         return Role::latest()
                     ->where('name', 'ilike', '%' . $request->search . '%')      
-                    ->paginate(10);
+                    ->paginate(100);
     }
       if(isset($request->req) && $request->req == 'pagerole' ){
             //dd(2);
@@ -51,7 +51,7 @@ class RoleController extends Controller
             'data' => $delete
         ],Response::HTTP_CREATED);
       }
-        return Role::latest()->paginate(10);
+        return Role::latest()->paginate(100);
       
        
     }
