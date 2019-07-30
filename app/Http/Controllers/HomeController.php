@@ -29,7 +29,7 @@ class HomeController extends Controller
         //dd($datarole);
         //foreach($datarole as $dataroles){
             $datapages['admin'] = DB::table('users')
-                            ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
+                            //->join('user_roles', 'users.id', '=', 'user_roles.user_id')
                             ->join('role_pages', 'role_pages.role_id', '=', 'user_roles.role_id')
                             ->join('pages', 'pages.id', '=', 'role_pages.page_id')
                             ->join('roles', 'roles.id', '=', 'users.role_id')
