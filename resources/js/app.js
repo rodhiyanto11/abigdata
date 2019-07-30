@@ -106,7 +106,7 @@ Vue.component(
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-//Axios.defaults.baseURL = 'http://192.168.1.12:2122';
+Axios.defaults.baseURL = 'http://192.168.240.3:2122';
 const app = new Vue({
     el: '#app',
     router,  

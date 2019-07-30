@@ -24,7 +24,7 @@
         methods : {
             addRoute: function() {
           
-          axios.get('http://127.0.0.1:8000/api/user?req=menu')
+          axios.get('api/user?req=menu')
           .then(response => {
               //console.log(response)
                //console.log(response.data.data.length) 
