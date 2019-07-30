@@ -20,6 +20,10 @@ class CreatePagesTable extends Migration
             $table->string('controller');
             $table->string('view');
             $table->text('note')->nullable();
+            $table->text('routename')->nullable();
+            $table->text('position')->nullable();
+            $table->text('icons')->nullable();
+            $table->text('pagelink')->nullable();
             $table->timestamps();
         });
     }

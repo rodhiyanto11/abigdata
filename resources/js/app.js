@@ -13,7 +13,7 @@ import { Form, HasError, AlertError } from 'vform';
 import Datepicker from 'vuejs-datepicker';
 import VueProgressBar from 'vue-progressbar';
 import swal from 'sweetalert2';
-import VueTableau from 'vue-tableau';
+//import VueTableau from 'vue-tableau';
 import Axios from 'axios';
 
 
@@ -22,7 +22,7 @@ Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
 Vue.component('pagination', require('laravel-vue-pagination'));
 window.form = Form;
-window.VueTableau = VueTableau;
+//window.VueTableau = VueTableau;
 //import VueTableau from 'vue-tableau';
 window.Datepicker = Datepicker;
 window.swal = swal;
@@ -106,7 +106,7 @@ Vue.component(
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-//Axios.defaults.baseURL = 'http://192.168.1.12:2122';
+//Axios.defaults.baseURL = 'http://192.168.240.3:2122';
 const app = new Vue({
     el: '#app',
     router,  
