@@ -29,6 +29,16 @@ class UserController extends Controller
         if(isset($request->req) &&  $request->req == 'menu'){
             return $this->showmenu();
         }
+        if(isset($request->req) &&  $request->req == 'update' && isset($request->id)){
+          // dd(auth('api')->user()->id);
+            $update          = User::where('id', auth('api')->user()->id)->firstOrFail();
+            //dd($update);
+            $update->role_id = $request->id; 
+            $update->save();
+            return response([
+                'data' => $update
+            ],Response::HTTP_CREATED);
+        }
         if(isset($request->search) && strlen($request->search) > 0 ){
             return User::latest()
                         ->where('username', 'ilike', '%' . $request->search . '%')
@@ -102,7 +112,7 @@ class UserController extends Controller
             'name'      => 'required|string|max:191',
             'username'  => 'required|string|max:191',
             'email'     => 'required|string|email|max:191',
-            'role_id'    => 'required|int',
+            //'role_id'    => 'required|int',
             'password'  =>  $validatepwd
         ]);
         
@@ -110,7 +120,10 @@ class UserController extends Controller
         $update->name = $request->name; 
         $update->username = $request->username; 
         $update->email = $request->email;
-        $update->role_id = $request->role_id;
+        if(isset($request->role_id) && strlen($request->role_id )){
+            $update->role_id = $request->role_id;
+        }
+        
         if(strlen($request->password) > 0){
             $update->password = Hash::make($request->password);
         }
@@ -140,7 +153,7 @@ class UserController extends Controller
         ],Response::HTTP_CREATED);
     }
     public function showmenu(){
-        if(Auth::user()->role_id == 1){
+        /*if(Auth::user()->role_id == 1){
             $datapages = DB::table('role_pages')
            // ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
             ->join('pages', 'pages.id', '=', 'role_pages.page_id')
@@ -148,17 +161,18 @@ class UserController extends Controller
             //->where('users.id',Auth::user()->id)
             //->where('pages.id','6')
             ->get();
-        }else{
+        }else{*/
+            //dd(2);
             $datapages = DB::table('users')
             ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
             ->join('pages', 'pages.id', '=', 'role_pages.page_id')
             ->select('pages.*')
-            ->where('users.id',Auth::user()->id)
-            //->where('pages.id','6')
+            ->where('users.id',auth('api')->user()->id)
+           
             ->get();
-        }
+        //}
         
-   // dd($datapages); 
+        //dd($datapages); 
 
         return response([
             'data' => $datapages

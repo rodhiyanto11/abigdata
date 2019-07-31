@@ -55,7 +55,7 @@ let routes = [
     //{ path: '/dashboard', component: require('./components/Dashboard.vue').default },
     //{ path: '/developer', component: require('./components/Developer.vue').default },
     { path: '/profile', component: require('./components/Profile.vue').default },
-    { path: '*', component: require('./components/Notfound.vue').default },
+    { path: '*', component: require('./components/Dashboard.vue').default },
    // ////{ path: '/pages', component: require('./components/Pages.vue').default },
     //{ path: '/roles', component: require('./components/Roles.vue').default },
     //{ path: '/userroles', component: require('./components/Userroles.vue').default },
@@ -106,7 +106,7 @@ Vue.component(
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-//Axios.defaults.baseURL = 'http://192.168.240.3:2122';
+//Axios.defaults.baseURL = 'http://192.168.43.70:2122';
 const app = new Vue({
     el: '#app',
     router,  

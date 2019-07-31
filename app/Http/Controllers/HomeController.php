@@ -35,9 +35,9 @@ class HomeController extends Controller
                             ->join('roles', 'roles.id', '=', 'users.role_id')
                             ->select('pages.*', 'pages.id', 'role_pages.page_id')
                             ->where('users.id','=',Auth::user()->id)
-                            ->where('roles.name','=','admin')
+                            //->where('roles.name','=','admin')
                             ->get();
-            if(count($datapages['admin']) > 0){
+            /*if(count($datapages['admin']) > 0){
                // dd(1);
                 $datapages['users'] = DB::table('role_pages')
                            
@@ -58,7 +58,7 @@ class HomeController extends Controller
                             ->where('users.id','=',Auth::user()->id)
                             ->where('roles.name','<>','admin')
                             ->get();  
-            }                
+            }    */            
                           
        // }
         //dd($datapages);

@@ -18,12 +18,15 @@
     <div class="container">
         
                <div class="card">
-                <div id="app">
+                   <center>
+                <div  id="app">
                     
                 
                     <h1>{{ msg }}</h1>
                      <div ref="tableau"></div>    
+
                 </div>
+                </center>
     </div>
     </div>
     

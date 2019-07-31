@@ -35,6 +35,7 @@
                    this.$router.addRoutes(
                     [{
                       path: '/'+response.data.data[i].routename,
+                      name : response.data.data[i].routename,
                       component: require('/'+response.data.data[i].view+'.vue').default
                     }
                     ]);

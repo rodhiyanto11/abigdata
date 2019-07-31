@@ -22,7 +22,7 @@
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                            <div class="col-sm-4 border-right">
+                            <div class="col-sm-3 border-right">
                                 <div class="description-block">
                                 <h5 class="description-header">Name<span class="mandatory" >*</span></h5>
                                 <span class="description-text">{{ form.name | ucWords }}</span>
@@ -30,7 +30,7 @@
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
-                            <div class="col-sm-4 border-right">
+                            <div class="col-sm-3 border-right">
                                 <div class="description-block">
                                 <h5 class="description-header">Username<span class="mandatory" >*</span></h5>
                                 <span class="description-text">{{ form.username| ucWords }}</span>
@@ -38,10 +38,19 @@
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <div class="description-block">
                                 <h5 class="description-header">Expired Date</h5>
                                 <span class="description-text">{{ form.expired_date | completedate }}</span>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="description-block">
+                                <h5 class="description-header">Choose Roles</h5>
+                                     <select name="role_id" id="role_id" v-model="form.role_id"  class="form-control">
+                                            <option v-for="role in roles.data" :key="role.id" :value="role.id" @click="changerole(role.id)">{{ role.name }}</option>    
+                                    </select>
                                 </div>
                                 <!-- /.description-block -->
                             </div>
@@ -97,13 +106,13 @@
                                                     </datepicker>
                                                     <has-error :form="form" field="expired_date"></has-error>
                                             </div>
-                                             <div class="form-group">
+                                            <!--<div class="form-group">
                                                     <label>Role</label>
                                                     <select name="role_id" id="role_id" v-model="form.role_id"  class="form-control" :class="{ 'is-invalid': form.errors.has('role_id') }">
                                                          <option v-for="role in roles.data" :key="role.id" :value="role.id" >{{ role.name }}</option>
                                                     </select>
                                                     <has-error :form="form" field="role_id"></has-error>
-                                            </div>
+                                            </div>-->
                                             <div class="form-group">
                                                 <label>Password</label>
                                                 <input v-model="form.password" type="password" name="password"
@@ -145,6 +154,7 @@
         data: function(){
             return{
                 roles : {},
+                
                 form : new form({
                     id : '',
                     name :  '',
@@ -161,6 +171,14 @@
             console.log('Component mounted.')
         },
         methods : {
+            changerole: function(roleid){
+                console.log(roleid);
+                axios.get("api/user?req=update&id="+roleid).then(  ({ data }) => (
+                    //console.log(data)
+                    window.location.href = '/home'
+                ) );
+                
+            },
             loadRoles : function(){
                 axios.get("api/role?req=all").then(  ({ data }) => (this.roles = data) );
             },
@@ -185,8 +203,12 @@
                         this.$Progress.finish()
                         toast.fire({
                         type: 'success',
-                        title: 'Request Success'
+                        title: 'Request sucess, Please re-login'
                         })
+                        setTimeout(function(){
+                            document.getElementById('logout-form').submit();
+                        }, 3000);
+                        //setInt document.getElementById('logout-form').submit();
                     },(response)=>{
                         this.$Progress.fail()
                         toast.fire({

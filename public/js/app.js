@@ -1746,6 +1746,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1813,6 +1816,7 @@ __webpack_require__.r(__webpack_exports__);
 
           _this.$router.addRoutes([{
             path: '/' + response.data.data[i].routename,
+            name: response.data.data[i].routename,
             component: __webpack_require__("./resources/js/components sync recursive ^\\.\\/.*\\.vue$")("./" + response.data.data[i].view + ".vue")["default"]
           }]);
         }
@@ -2410,6 +2414,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2429,19 +2442,28 @@ __webpack_require__.r(__webpack_exports__);
     console.log('Component mounted.');
   },
   methods: {
+    changerole: function changerole(roleid) {
+      console.log(roleid);
+      axios.get("api/user?req=update&id=" + roleid).then(function (_ref) {
+        var data = _ref.data;
+        return (//console.log(data)
+          window.location.href = '/home'
+        );
+      });
+    },
     loadRoles: function loadRoles() {
       var _this = this;
 
-      axios.get("api/role?req=all").then(function (_ref) {
-        var data = _ref.data;
+      axios.get("api/role?req=all").then(function (_ref2) {
+        var data = _ref2.data;
         return _this.roles = data;
       });
     },
     loadUser: function loadUser() {
       var _this2 = this;
 
-      axios.get("api/user?getprofile=true").then(function (_ref2) {
-        var data = _ref2.data;
+      axios.get("api/user?getprofile=true").then(function (_ref3) {
+        var data = _ref3.data;
         return _this2.form.fill(data.data);
       });
     },
@@ -2466,8 +2488,11 @@ __webpack_require__.r(__webpack_exports__);
 
             toast.fire({
               type: 'success',
-              title: 'Request Success'
+              title: 'Request sucess, Please re-login'
             });
+            setTimeout(function () {
+              document.getElementById('logout-form').submit();
+            }, 3000); //setInt document.getElementById('logout-form').submit();
           }, function (response) {
             _this3.$Progress.fail();
 
@@ -63110,13 +63135,20 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "card" }, [
-      _c("div", { attrs: { id: "app" } }, [
-        _c("h1", [_vm._v(_vm._s(_vm.msg))]),
-        _vm._v(" "),
-        _c("div", { ref: "tableau" })
-      ])
-    ])
+    _c(
+      "div",
+      { staticClass: "card" },
+      [
+        _c("center", [
+          _c("div", { attrs: { id: "app" } }, [
+            _c("h1", [_vm._v(_vm._s(_vm.msg))]),
+            _vm._v(" "),
+            _c("div", { ref: "tableau" })
+          ])
+        ])
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []
@@ -63973,7 +64005,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "card-footer" }, [
             _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-sm-4 border-right" }, [
+              _c("div", { staticClass: "col-sm-3 border-right" }, [
                 _c("div", { staticClass: "description-block" }, [
                   _vm._m(0),
                   _vm._v(" "),
@@ -63983,7 +64015,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-sm-4 border-right" }, [
+              _c("div", { staticClass: "col-sm-3 border-right" }, [
                 _c("div", { staticClass: "description-block" }, [
                   _vm._m(1),
                   _vm._v(" "),
@@ -63993,7 +64025,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "col-sm-3" }, [
                 _c("div", { staticClass: "description-block" }, [
                   _c("h5", { staticClass: "description-header" }, [
                     _vm._v("Expired Date")
@@ -64004,6 +64036,65 @@ var render = function() {
                       _vm._s(_vm._f("completedate")(_vm.form.expired_date))
                     )
                   ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-3" }, [
+                _c("div", { staticClass: "description-block" }, [
+                  _c("h5", { staticClass: "description-header" }, [
+                    _vm._v("Choose Roles")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.role_id,
+                          expression: "form.role_id"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "role_id", id: "role_id" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.form,
+                            "role_id",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    _vm._l(_vm.roles.data, function(role) {
+                      return _c(
+                        "option",
+                        {
+                          key: role.id,
+                          domProps: { value: role.id },
+                          on: {
+                            click: function($event) {
+                              return _vm.changerole(role.id)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(role.name))]
+                      )
+                    }),
+                    0
+                  )
                 ])
               ])
             ])
@@ -64198,69 +64289,6 @@ var render = function() {
                             _vm._v(" "),
                             _c("has-error", {
                               attrs: { form: _vm.form, field: "expired_date" }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "form-group" },
-                          [
-                            _c("label", [_vm._v("Role")]),
-                            _vm._v(" "),
-                            _c(
-                              "select",
-                              {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.role_id,
-                                    expression: "form.role_id"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid": _vm.form.errors.has("role_id")
-                                },
-                                attrs: { name: "role_id", id: "role_id" },
-                                on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.$set(
-                                      _vm.form,
-                                      "role_id",
-                                      $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
-                                    )
-                                  }
-                                }
-                              },
-                              _vm._l(_vm.roles.data, function(role) {
-                                return _c(
-                                  "option",
-                                  {
-                                    key: role.id,
-                                    domProps: { value: role.id }
-                                  },
-                                  [_vm._v(_vm._s(role.name))]
-                                )
-                              }),
-                              0
-                            ),
-                            _vm._v(" "),
-                            _c("has-error", {
-                              attrs: { form: _vm.form, field: "role_id" }
                             })
                           ],
                           1
@@ -84464,7 +84492,7 @@ var routes = [{
   component: __webpack_require__(/*! ./components/Profile.vue */ "./resources/js/components/Profile.vue")["default"]
 }, {
   path: '*',
-  component: __webpack_require__(/*! ./components/Notfound.vue */ "./resources/js/components/Notfound.vue")["default"]
+  component: __webpack_require__(/*! ./components/Dashboard.vue */ "./resources/js/components/Dashboard.vue")["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',
@@ -84497,7 +84525,7 @@ Vue.component('passport-personal-access-tokens', __webpack_require__(/*! ./compo
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-//Axios.defaults.baseURL = 'http://192.168.240.3:2122';
+//Axios.defaults.baseURL = 'http://192.168.43.70:2122';
 
 var app = new Vue({
   el: '#app',

@@ -138,35 +138,7 @@
             </ul>
           </li>
            @endif
-           <li class="nav-item has-treeview">
-           <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-cog"></i>
-              <p>
-                Content
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-            <?php 
-            $color = array(
-              'blue','indigo','purple','pink','red','orange','yellow','green','teal','cyan'
-            );
-            $color_random = array_rand($color,count($color));
-            $i = 0; ?>
-              @foreach($menus['users'] as $menu)
-              <li class="nav-item">
-              <router-link to="/{{$menu->view}}" class="nav-link">
-                    <i class="nav-icon {{ $menu->icons }} {{ $color[$color_random[$i]] }}"></i>
-                    <p>
-                      {{  ucwords($menu->name) }}
-                    </p>
-                </router-link>
-               </li> 
-               <?php $i++; ?>
-              @endforeach
-             
-            </ul>
-           </li>
+          
           <li class="nav-item">
                 <a href="{{ route('logout') }}" class="nav-link"
                 onclick="event.preventDefault();

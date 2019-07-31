@@ -21,9 +21,7 @@ class RoleController extends Controller
     }
     public function index(Request $request)
     {
-       // dd($request->search);
-        //
-      //  dd(1);
+
       if(isset($request->req) &&  $request->req == 'all'){
           //dd(1);
           return ['data'=> Role::all()];
@@ -36,11 +34,21 @@ class RoleController extends Controller
     }
       if(isset($request->req) && $request->req == 'pagerole' ){
             //dd(2);
-            return DB::table('role_pages')
+            if(isset($request->id)){
+                return DB::table('role_pages')
+                    ->join('roles','roles.id','=','role_pages.role_id')
+                    ->join('pages','pages.id','=','role_pages.page_id')
+                    ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at')
+                    ->where('roles.id','=',$request->id)
+                    ->get();  
+            }else{
+                return DB::table('role_pages')
                     ->join('roles','roles.id','=','role_pages.role_id')
                     ->join('pages','pages.id','=','role_pages.page_id')
                     ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at')
                     ->get();     
+            }
+            
         
       }
       if(isset($request->req) && $request->req == 'delete' ){
