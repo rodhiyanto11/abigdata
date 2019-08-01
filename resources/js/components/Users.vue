@@ -88,7 +88,7 @@
                                     <has-error :form="form" field="email"></has-error>
                                 </div>
                                 <div class="form-group">
-                                        <label>Date</label>
+                                        <label>Date Expired</label>
                                         <datepicker  :bootstrap-styling="true"  v-model="form.expired_date" name="expired_date"
                                         :class="{ 'is-invalid': form.errors.has('expired_date') }"
                                          placeholder="expired_date" >
@@ -96,9 +96,11 @@
                                         <has-error :form="form" field="expired_date"></has-error>
                                 </div>
                                 <div class="form-group">
-                                        <label>Role</label>
-                                        <select name="role_id" id="role_id" v-model="form.role_id"  class="form-control" :class="{ 'is-invalid': form.errors.has('role_id') }">
-                                          <option v-for="role in roles.data" :key="role.id" :value="role.id">{{ role.name }}</option>
+                                        <label>is_Expired</label>
+                                        <select name="is_expired" id="is_expired" v-model="form.is_expired"  class="form-control" :class="{ 'is-invalid': form.errors.has('is_expired') }">
+                                          <!--<option v-for="role in roles.data" :key="role.id" :value="role.id">{{ role.name }}</option>-->
+                                          <option value="1">Ya </option>
+                                          <option value="2">Tidak </option>
                                         </select>
                                   </div>
                                 <div class="form-group">
@@ -143,6 +145,8 @@ import { setInterval } from 'timers';
                 form : new form({
                     id: '',
                     name :  '',
+                    status :  '',
+                    is_expired :  '',
                     username :  '',
                     email :  '',
                     password :  '',

@@ -24,6 +24,7 @@ class CreatePagesTable extends Migration
             $table->text('position')->nullable();
             $table->text('icons')->nullable();
             $table->text('pagelink')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }

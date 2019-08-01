@@ -49,7 +49,9 @@ class LoginController extends Controller
         $field = $this->field($request);
         //dd($field);
         $message = [
-            "{$this->username()}.exists" => 'The Account bla bla bla'
+            "{$this->username()}.exists" => 'Failed Login',
+            "password.required" => "Password required",
+            "g-recaptcha-response.required" => "Token is empty"
         ];
         $request->validate([
             $this->username() => "required|string|exists:users,{$field}",

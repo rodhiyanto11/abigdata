@@ -42,66 +42,39 @@
                 <form method="POST" class="ogin100-form " action="{{ route('login') }}">    
 					<span class="login100-form-title p-b-70">
                         Big Data <i style="font-size:15px;color:red;">Admedika</i>
+                            
 					</span>
 					<span class="login100-form-avatar">
 						<img src="{{asset('login-draw/images/avatar-01.jpg')}}" alt="AVATAR">
 					</span>
                         @csrf
-
+                        @if ($errors->has('email'))
+                            <i style="font-size:15px;color:red;">{{ $errors->first('email') }}</i>
+                        @endif
+                        @if ($errors->has('password'))
+                            <br/>
+                            <i style="font-size:15px;color:red;">{{ $errors->first('password') }}</i>
+                        @endif
+                        @if ($errors->has('g-recapctha-response'))
+                            <br/>
+                            <i style="font-size:15px;color:red;">{{ $errors->first('g-recapctha-response') }}</i>
+                        @endif
                         <div class="form-group row">
                              <div class="wrap-input100 m-t-85 m-b-35" >
                                 <input class="input100 @error('email') is-invalid @enderror" id="email" type="text" name ="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                                 <span class="focus-input100" data-placeholder="Username"></span>
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                              
                             </div>
                             <div class="wrap-input100  m-t-30 m-b-35" >
                                 <input class="input100 @error('password') is-invalid @enderror" id="password" type="password" name ="password" value="{{ old('password') }}" required autocomplete="password" autofocus>
                                 <span class="focus-input100" data-placeholder="Password"></span>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                               
                             </div>
                         </div>
-                        
-
-                        <!--<div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>-->
-
-                        <!--<div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>-->
+                      
                         <div class="row  m-t-10 m-b-35" >
                         <div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}">
-                            @if($errors->has('g-recapctha-response'))
-                                <span class='invalid-feedback' style="display:block">
-                                        <strong>{{$errors->first('g-recapctha-response')}}</strong>
-                                </span>
-                            @endif
+                         
                         </div>
                         </div>
                         <div class="container-login100-form-btn">

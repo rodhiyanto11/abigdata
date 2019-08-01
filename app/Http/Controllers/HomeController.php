@@ -35,6 +35,7 @@ class HomeController extends Controller
                             ->join('roles', 'roles.id', '=', 'users.role_id')
                             ->select('pages.*', 'pages.id', 'role_pages.page_id')
                             ->where('users.id','=',Auth::user()->id)
+                            ->where('pages.status','=','1')
                             //->where('roles.name','=','admin')
                             ->get();
             /*if(count($datapages['admin']) > 0){

@@ -31,6 +31,9 @@
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Delete" @click = "deleteRole(role.id)">
                             <i class="fas fa-trash red" ></i>
                         </a>
+                        <span style="cursor:pointer" data-toggle="tooltip" data-placement="right" title="Setup page" @click = "rolepage(role)">
+                            <i class="fas fa-cog teal" ></i>
+                        </span>
                       </td>
                     </tr>
                   </tbody>
@@ -103,6 +106,9 @@
             
         },
         methods : {
+          rolepage :function(role){
+            this.$router.push({name: 'rolepages' , params : { role_data : role}}) 
+          },
             loadrole : function(){
               //console.log(this.$parent.search);
                if(this.$parent.search.length == 0 ){
@@ -210,6 +216,7 @@
 
         },
         created (){
+          
             Fire.$on('searching',()=>{
 
               this.loadrole()

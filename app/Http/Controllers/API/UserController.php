@@ -65,7 +65,8 @@ class UserController extends Controller
             'username'  => 'required|string|max:191|unique:users',
             'email'     => 'required|string|email|max:191|unique:users',
             'password'  => 'required|string|min:8|confirmed',
-            'role_id'  =>  'required|int',
+            //'role_id'  =>  'required|int',
+            'is_expired'  =>  'required|int',
          
         ]);
         
@@ -73,7 +74,9 @@ class UserController extends Controller
             'name' => $request['name'],
             'username' => $request['username'],
             'email' => $request['email'],
-            'role_id' => $request['role_id'],
+            'status' => 1,
+            'is_expired' => $request['is_expired'], 
+            //'role_id' => $request['role_id'],
             'expired_date' => isset($request['expired_date']) && strlen($request['expired_date']) > 0 ? $request['expired_date'] : null ,
             'password' => Hash::make($request['password']),
         ]);
@@ -112,6 +115,7 @@ class UserController extends Controller
             'name'      => 'required|string|max:191',
             'username'  => 'required|string|max:191',
             'email'     => 'required|string|email|max:191',
+            'is_expired'     => 'required|int',
             //'role_id'    => 'required|int',
             'password'  =>  $validatepwd
         ]);
@@ -120,6 +124,7 @@ class UserController extends Controller
         $update->name = $request->name; 
         $update->username = $request->username; 
         $update->email = $request->email;
+        $update->is_expired = $request->is_expired;
         if(isset($request->role_id) && strlen($request->role_id )){
             $update->role_id = $request->role_id;
         }

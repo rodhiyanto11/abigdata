@@ -2,9 +2,12 @@
     <div class="container">
        <div class="card">
            <div class="card-header">
-                <h3 class="card-title">Role Page</h3>
+                <h3 class="card-title">Role Page {{ this.$route.params.role_data.name | ucWords}} </h3>
                 <div class="card-tools">
-                    <button class="btn btn-success" @click="createModal">
+                  <button class="btn btn-danger" toggle="back" @click="handleBackroute()">
+                    <i class="fas fa-window-close"></i>
+                  </button>
+                    <button class="btn btn-success" toggle="create new" @click="createModal">
                         <i class="fas fa-user-plus"></i>
                     </button>
                 </div> 
@@ -25,9 +28,6 @@
                       <td>{{ datarole.page_name | ucWords }}</td>
                       <td>{{ datarole.created_at | completedate}}</td>
                       <td> 
-                        <a href="#" data-toggle="tooltip" data-placement="left" title="Edit" @click = "editModal(datarole)" >
-                            <i class="fas fa-edit blue" ></i>
-                        </a> 
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Delete" @click = "deleterolepage(datarole.id)">
                             <i class="fas fa-trash red" ></i>
                         </a>
@@ -53,7 +53,7 @@
                                     <input type="hidden" name="header" v-model="form.header">
                                     <label>Role Name<span class="mandatory" >*</span></label>
                                      <select name="role_id" id="role_id" v-model="form.role_id"  class="form-control" :class="{ 'is-invalid': form.errors.has('role_id') }">
-                                          <option v-for="role in roles" :key="role.id" v-bind:value="role.id">{{ role.name | ucWords }}</option>
+                                          <option v-bind:value="rolepages_role_data.id">{{ rolepages_role_data.name | ucWords }}</option>
                                       </select>
                                     <has-error :form="form" field="name"></has-error>
                                 </div>
@@ -89,7 +89,8 @@
             dataroles : {},
             roles : {},
             pages : {},
-            
+            rolepages_role_data : {},
+            role_page_id : '',
             form : new form({
               header : "rolepages",
               id : '',
@@ -101,6 +102,9 @@
           }
         },
         methods : {
+          handleBackroute : function(){
+            this.$router.back('roles');
+          },
           loadpages : function(){
             axios.get('api/page?req=all')
             .then (({data}) => this.pages = data.data)
@@ -109,11 +113,22 @@
             axios.get('api/role?req=all')
             .then (({data}) => this.roles = data.data)
           },
-          loadpagerole : function (){
-            axios.get('api/role?req=pagerole')
-            .then (({data}) => this.dataroles = data)
+          loadpagerole : function (role_data){
+              console.log(role_data);
+            
+                if(role_data.length == 0 ){
+                  axios.get('api/role?req=pagerole')
+                  .then (({data}) => this.dataroles = data)
+                }else{
+              
+                  axios.get('api/role?req=pagerole&id='+role_data.id)
+                  .then (({data}) => this.dataroles = data)
+                  
+                }
+            
           },
           createModal : function(){
+            console.log(this.rolepages_role_data);
             this.editmode = false;
             this.form.reset()
             $("#exampleModal").modal('show');
@@ -161,14 +176,14 @@
                 .then((response) => {
                     this.$Progress.finish()
                     $("#exampleModal").modal('hide');
-                    Fire.$emit('AfterCreate');
+                    Fire.$emit('AfterCreate',);
                     toast.fire({
                       type: 'success',
                       title: 'Request Success'
                     })
                 }, (response) => {
                     this.$Progress.fail()
-                  //  $("#exampleModal") .modal('hide');
+                  
                     toast.fire({
                       type: 'error',
                       title: 'Request Error'
@@ -179,67 +194,26 @@
           update : function (){
             console.log(2);
           },
-          /*addRoute: function() {
-          /*axios.get('http://127.0.0.1:8000/api/user?req=menu&id=4')
-          .then(response => {
-           
-               response.data.data.forEach(type => {
-                   var com = './'+type.model+'s.vue';
-                  
-                    this.$router.addRoutes(
-                    [{
-                      path: '/'+type.view,
-                      component: require(''+com+'').default
-                    }
-                    ]);
-               });
-                
-                    
-                /*this.$router.addRoutes(
-                        [{
-                          path: '/pages',
-                          component: require('./Pages.vue').default
-                        }])  */     
-             
-            //})
-             //.catch(error => {
-              
-            //});*/
-           /* axios.get('http://127.0.0.1:8000/api/user?req=menu')
-          .then(response => {
-           
-               response.data.data.forEach(type => {
-                   var com = './'+type.model+'s.vue';
-                  console.log(com);
-                    this.$router.addRoutes(
-                    [{
-                      path: '/'+type.view,
-                      component: require(''+com+'').default
-                    }
-                    ]);
-               });
-                
-                    
-                /*this.$router.addRoutes(
-                        [{
-                          path: '/pages',
-                          component: require('./Pages.vue').default
-                        }])   */    
-             
-           // })
-           // .catch(error => {
-              
-            //});
-          //}*/
+          
         },
         created(){
+          if(this.$route.params.role_data){
+            //console.log(this.$route.params.roles_role_id);
           this.loadpages();
           this.loadrole();
-          this.loadpagerole();
+          this.loadpagerole(this.$route.params.role_data);
+          this.rolepages_role_data = this.$route.params.role_data;
+          this.role_page_id = this.$route.params.role_data.id;
           //this.addRoute();
+          //this.form.id = this.$route.params.roles_role_id;
           Fire.$on('AfterCreate',() =>{
-              this.loadpagerole();
+            console.log(this.rolepages_role_data.id);
+              this.loadpagerole(this.rolepages_role_data);
             })
+          }else{
+            this.handleBackroute()
+          }
+          
         }
     }
 </script>

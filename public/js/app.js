@@ -2105,6 +2105,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2118,7 +2126,8 @@ __webpack_require__.r(__webpack_exports__);
         view: '',
         routename: '',
         note: '',
-        create_at: ''
+        create_at: '',
+        status: ''
       })
     };
   },
@@ -2627,6 +2636,8 @@ __webpack_require__.r(__webpack_exports__);
       dataroles: {},
       roles: {},
       pages: {},
+      rolepages_role_data: {},
+      role_page_id: '',
       form: new form({
         header: "rolepages",
         id: '',
@@ -2638,6 +2649,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    handleBackroute: function handleBackroute() {
+      this.$router.back('roles');
+    },
     loadpages: function loadpages() {
       var _this = this;
 
@@ -2654,15 +2668,25 @@ __webpack_require__.r(__webpack_exports__);
         return _this2.roles = data.data;
       });
     },
-    loadpagerole: function loadpagerole() {
+    loadpagerole: function loadpagerole(role_data) {
       var _this3 = this;
 
-      axios.get('api/role?req=pagerole').then(function (_ref3) {
-        var data = _ref3.data;
-        return _this3.dataroles = data;
-      });
+      console.log(role_data);
+
+      if (role_data.length == 0) {
+        axios.get('api/role?req=pagerole').then(function (_ref3) {
+          var data = _ref3.data;
+          return _this3.dataroles = data;
+        });
+      } else {
+        axios.get('api/role?req=pagerole&id=' + role_data.id).then(function (_ref4) {
+          var data = _ref4.data;
+          return _this3.dataroles = data;
+        });
+      }
     },
     createModal: function createModal() {
+      console.log(this.rolepages_role_data);
       this.editmode = false;
       this.form.reset();
       $("#exampleModal").modal('show');
@@ -2722,8 +2746,7 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Request Success'
         });
       }, function (response) {
-        _this5.$Progress.fail(); //  $("#exampleModal") .modal('hide');
-
+        _this5.$Progress.fail();
 
         toast.fire({
           type: 'error',
@@ -2734,67 +2757,27 @@ __webpack_require__.r(__webpack_exports__);
     update: function update() {
       console.log(2);
     }
-    /*addRoute: function() {
-    /*axios.get('http://127.0.0.1:8000/api/user?req=menu&id=4')
-    .then(response => {
-     
-         response.data.data.forEach(type => {
-             var com = './'+type.model+'s.vue';
-            
-              this.$router.addRoutes(
-              [{
-                path: '/'+type.view,
-                component: require(''+com+'').default
-              }
-              ]);
-         });
-          
-              
-          /*this.$router.addRoutes(
-                  [{
-                    path: '/pages',
-                    component: require('./Pages.vue').default
-                  }])  */
-    //})
-    //.catch(error => {
-    //});*/
-
-    /* axios.get('http://127.0.0.1:8000/api/user?req=menu')
-    .then(response => {
-    
-        response.data.data.forEach(type => {
-            var com = './'+type.model+'s.vue';
-           console.log(com);
-             this.$router.addRoutes(
-             [{
-               path: '/'+type.view,
-               component: require(''+com+'').default
-             }
-             ]);
-        });
-         
-             
-         /*this.$router.addRoutes(
-                 [{
-                   path: '/pages',
-                   component: require('./Pages.vue').default
-                 }])   */
-    // })
-    // .catch(error => {
-    //});
-    //}*/
-
   },
   created: function created() {
     var _this6 = this;
 
-    this.loadpages();
-    this.loadrole();
-    this.loadpagerole(); //this.addRoute();
+    if (this.$route.params.role_data) {
+      //console.log(this.$route.params.roles_role_id);
+      this.loadpages();
+      this.loadrole();
+      this.loadpagerole(this.$route.params.role_data);
+      this.rolepages_role_data = this.$route.params.role_data;
+      this.role_page_id = this.$route.params.role_data.id; //this.addRoute();
+      //this.form.id = this.$route.params.roles_role_id;
 
-    Fire.$on('AfterCreate', function () {
-      _this6.loadpagerole();
-    });
+      Fire.$on('AfterCreate', function () {
+        console.log(_this6.rolepages_role_data.id);
+
+        _this6.loadpagerole(_this6.rolepages_role_data);
+      });
+    } else {
+      this.handleBackroute();
+    }
   }
 });
 
@@ -2898,6 +2881,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2912,6 +2898,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    rolepage: function rolepage(role) {
+      this.$router.push({
+        name: 'rolepages',
+        params: {
+          role_data: role
+        }
+      });
+    },
     loadrole: function loadrole() {
       var _this = this;
 
@@ -3227,6 +3221,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3237,6 +3233,8 @@ __webpack_require__.r(__webpack_exports__);
       form: new form({
         id: '',
         name: '',
+        status: '',
+        is_expired: '',
         username: '',
         email: '',
         password: '',
@@ -63786,6 +63784,66 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
+                        _vm._m(7),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.status,
+                                expression: "form.status"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.form.errors.has("status")
+                            },
+                            attrs: { name: "status", id: "status" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.form,
+                                  "status",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { value: "1" } }, [
+                              _vm._v("Menu + Route")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "2" } }, [
+                              _vm._v("Route")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "name" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
                         _c("label", [_vm._v("Note")]),
                         _vm._v(" "),
                         _c("textarea", {
@@ -63963,6 +64021,15 @@ var staticRenderFns = [
     return _c("label", [
       _vm._v("Route Name"),
       _c("span", { staticClass: "mandatory" }, [_vm._v("* (contoh : 'users')")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", [
+      _vm._v("Status"),
+      _c("span", { staticClass: "mandatory" }, [_vm._v("*")])
     ])
   }
 ]
@@ -64508,12 +64575,36 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-header" }, [
-        _c("h3", { staticClass: "card-title" }, [_vm._v("Role Page")]),
+        _c("h3", { staticClass: "card-title" }, [
+          _vm._v(
+            "Role Page " +
+              _vm._s(_vm._f("ucWords")(this.$route.params.role_data.name)) +
+              " "
+          )
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "card-tools" }, [
           _c(
             "button",
-            { staticClass: "btn btn-success", on: { click: _vm.createModal } },
+            {
+              staticClass: "btn btn-danger",
+              attrs: { toggle: "back" },
+              on: {
+                click: function($event) {
+                  return _vm.handleBackroute()
+                }
+              }
+            },
+            [_c("i", { staticClass: "fas fa-window-close" })]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-success",
+              attrs: { toggle: "create new" },
+              on: { click: _vm.createModal }
+            },
             [_c("i", { staticClass: "fas fa-user-plus" })]
           )
         ])
@@ -64546,24 +64637,6 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", [
-                    _c(
-                      "a",
-                      {
-                        attrs: {
-                          href: "#",
-                          "data-toggle": "tooltip",
-                          "data-placement": "left",
-                          title: "Edit"
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.editModal(datarole)
-                          }
-                        }
-                      },
-                      [_c("i", { staticClass: "fas fa-edit blue" })]
-                    ),
-                    _vm._v(" "),
                     _c(
                       "a",
                       {
@@ -64760,14 +64833,25 @@ var render = function() {
                                 }
                               }
                             },
-                            _vm._l(_vm.roles, function(role) {
-                              return _c(
+                            [
+                              _c(
                                 "option",
-                                { key: role.id, domProps: { value: role.id } },
-                                [_vm._v(_vm._s(_vm._f("ucWords")(role.name)))]
+                                {
+                                  domProps: {
+                                    value: _vm.rolepages_role_data.id
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm._f("ucWords")(
+                                        _vm.rolepages_role_data.name
+                                      )
+                                    )
+                                  )
+                                ]
                               )
-                            }),
-                            0
+                            ]
                           ),
                           _vm._v(" "),
                           _c("has-error", {
@@ -65044,6 +65128,24 @@ var render = function() {
                         }
                       },
                       [_c("i", { staticClass: "fas fa-trash red" })]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticStyle: { cursor: "pointer" },
+                        attrs: {
+                          "data-toggle": "tooltip",
+                          "data-placement": "right",
+                          title: "Setup page"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.rolepage(role)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fas fa-cog teal" })]
                     )
                   ])
                 ])
@@ -65705,7 +65807,7 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
-                        _c("label", [_vm._v("Date")]),
+                        _c("label", [_vm._v("Date Expired")]),
                         _vm._v(" "),
                         _c("datepicker", {
                           class: {
@@ -65733,7 +65835,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c("div", { staticClass: "form-group" }, [
-                      _c("label", [_vm._v("Role")]),
+                      _c("label", [_vm._v("is_Expired")]),
                       _vm._v(" "),
                       _c(
                         "select",
@@ -65742,15 +65844,15 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.role_id,
-                              expression: "form.role_id"
+                              value: _vm.form.is_expired,
+                              expression: "form.is_expired"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("role_id")
+                            "is-invalid": _vm.form.errors.has("is_expired")
                           },
-                          attrs: { name: "role_id", id: "role_id" },
+                          attrs: { name: "is_expired", id: "is_expired" },
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -65763,7 +65865,7 @@ var render = function() {
                                 })
                               _vm.$set(
                                 _vm.form,
-                                "role_id",
+                                "is_expired",
                                 $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
@@ -65771,14 +65873,15 @@ var render = function() {
                             }
                           }
                         },
-                        _vm._l(_vm.roles.data, function(role) {
-                          return _c(
-                            "option",
-                            { key: role.id, domProps: { value: role.id } },
-                            [_vm._v(_vm._s(role.name))]
-                          )
-                        }),
-                        0
+                        [
+                          _c("option", { attrs: { value: "1" } }, [
+                            _vm._v("Ya ")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "2" } }, [
+                            _vm._v("Tidak ")
+                          ])
+                        ]
                       )
                     ]),
                     _vm._v(" "),

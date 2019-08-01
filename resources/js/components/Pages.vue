@@ -104,6 +104,14 @@
                                 <has-error :form="form" field="routename"></has-error>
                             </div>
                             <div class="form-group">
+                                    <label>Status<span class="mandatory" >*</span></label>
+                                     <select name="status" id="status" v-model="form.status"  class="form-control" :class="{ 'is-invalid': form.errors.has('status') }">
+                                          <option value="1">Menu + Route</option>
+                                          <option value="2">Route</option>
+                                      </select>
+                                    <has-error :form="form" field="name"></has-error>
+                                </div>
+                            <div class="form-group">
                                     <label>Note</label>
                                     <textarea rows="4" cols="50"
                                         v-model="form.note" 
@@ -140,9 +148,10 @@
                     model       : '',
                     controller  : '',
                     view        : '',
-                    routename        : '',
+                    routename   : '',
                     note        : '',
-                    create_at   : ''
+                    create_at   : '',
+                    status      : ''
                 })
             }
             
