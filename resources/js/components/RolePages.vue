@@ -120,9 +120,14 @@
                   axios.get('api/role?req=pagerole')
                   .then (({data}) => this.dataroles = data)
                 }else{
-              
-                  axios.get('api/role?req=pagerole&id='+role_data.id)
-                  .then (({data}) => this.dataroles = data)
+                  if(this.$parent.search.length > 0){
+                    axios.get('api/role?req=pagerole&id='+role_data.id+'&search='+this.$parent.search)
+                    .then (({data}) => this.dataroles = data)
+                  }else{
+                    axios.get('api/role?req=pagerole&id='+role_data.id)
+                   .then (({data}) => this.dataroles = data)
+                  }
+                  
                   
                 }
             
@@ -210,6 +215,10 @@
             console.log(this.rolepages_role_data.id);
               this.loadpagerole(this.rolepages_role_data);
             })
+           Fire.$on('searching',()=>{
+              this.loadpagerole(this.rolepages_role_data);
+              //console.log(2); 
+            })   
           }else{
             this.handleBackroute()
           }

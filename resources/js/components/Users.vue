@@ -37,6 +37,9 @@
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Delete" @click = "deleteUser(user.id)">
                             <i class="fas fa-trash red" ></i>
                         </a>
+                        <span style="cursor:pointer" data-toggle="tooltip" data-placement="right" title="Setup Role" @click = "rolepage(user)">
+                            <i class="fas fa-cog teal" ></i>
+                        </span>
                       </td>
                     </tr>
                   </tbody>
@@ -155,6 +158,9 @@ import { setInterval } from 'timers';
            }
         },
         methods: {
+          rolepage :function(role){
+            this.$router.push({name: 'userroles' , params : { role_data : role}}) 
+          },
             loadUser : function(){
                 if(this.$parent.search.length == 0 ){
                   axios.get("api/user").then(  ({ data }) => (this.users = data) );

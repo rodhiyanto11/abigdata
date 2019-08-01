@@ -10,7 +10,7 @@ class UserRole extends Model
     // 
     use HasApiTokens,Notifiable;
     protected $table = 'user_roles';
-    protected $fillabel = [
+    protected $fillable = [
         'id','user_id','role_id'
     ];
    

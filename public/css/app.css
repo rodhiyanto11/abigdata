@@ -33281,3 +33281,9 @@ readers do not read off random characters that represent icons */
   transform: translateX(-30%);
 }
 
+div.ex1 {
+  background-color: lightblue;
+  width: "100%";
+  overflow-x: scroll;
+}
+

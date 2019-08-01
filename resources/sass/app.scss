@@ -27,4 +27,8 @@
     transform: translateX(-30%);
   }
   
- 
+  div.ex1 {
+    background-color: lightblue;
+    width: "100%";
+    overflow-x: scroll;
+  }

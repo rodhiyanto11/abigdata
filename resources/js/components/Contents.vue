@@ -23,7 +23,7 @@
                     
                 
                     <h1>{{ msg }}</h1>
-                     <div ref="tableau"></div>    
+                     <div  class="ex1" ref="tableau"></div>    
 
                 </div>
                 </center>

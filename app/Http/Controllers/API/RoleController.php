@@ -21,26 +21,33 @@ class RoleController extends Controller
     }
     public function index(Request $request)
     {
-
+       // dd(2);
       if(isset($request->req) &&  $request->req == 'all'){
-          //dd(1);
+         // dd(1);
           return ['data'=> Role::all()];
       }
-      if(isset($request->search) &&  strlen($request->search) > 0){
-        //dd(1);
-        return Role::latest()
-                    ->where('name', 'ilike', '%' . $request->search . '%')      
-                    ->paginate(100);
-    }
+      
       if(isset($request->req) && $request->req == 'pagerole' ){
-            //dd(2);
+           // dd(2);
             if(isset($request->id)){
-                return DB::table('role_pages')
+                if(isset($request->search)){
+                    //dd($request->search);
+                    return DB::table('role_pages')
+                    ->join('roles','roles.id','=','role_pages.role_id')
+                    ->join('pages','pages.id','=','role_pages.page_id')
+                    ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at')
+                    ->where('roles.id','=',$request->id)
+                    ->where('pages.name', 'ilike', '%' . $request->search . '%')
+                    ->get();      
+                }else{
+                    return DB::table('role_pages')
                     ->join('roles','roles.id','=','role_pages.role_id')
                     ->join('pages','pages.id','=','role_pages.page_id')
                     ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at')
                     ->where('roles.id','=',$request->id)
                     ->get();  
+                }
+                
             }else{
                 return DB::table('role_pages')
                     ->join('roles','roles.id','=','role_pages.role_id')
@@ -51,6 +58,12 @@ class RoleController extends Controller
             
         
       }
+      if(isset($request->search) &&  strlen($request->search) > 0){
+        //dd(3);
+        return Role::latest()
+                    ->where('name', 'ilike', '%' . $request->search . '%')      
+                    ->paginate(100);
+        }
       if(isset($request->req) && $request->req == 'delete' ){
           //dd(2);
         $delete = RolePage::findOrFail($request->id);
@@ -59,7 +72,7 @@ class RoleController extends Controller
             'data' => $delete
         ],Response::HTTP_CREATED);
       }
-        return Role::latest()->paginate(100);
+    return Role::latest()->paginate(100);
       
        
     }

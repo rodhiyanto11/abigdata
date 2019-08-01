@@ -123,7 +123,7 @@ class PageController extends Controller
        $update->model           = ucwords(strtolower($request->model));
        $update->controller      = $request->controller;
        $update->routename       = $request->routename;
-       $update->status       = $request->status;
+       $update->status          = $request->status;
        $update->note            = $request->note;
        $update->save();
 

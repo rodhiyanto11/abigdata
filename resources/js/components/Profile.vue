@@ -45,7 +45,7 @@
                                 </div>
                                 <!-- /.description-block -->
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 ui-field-contain">
                                 <div class="description-block">
                                 <h5 class="description-header">Choose Roles</h5>
                                      <select name="role_id" id="role_id" v-model="form.role_id"  class="form-control">
