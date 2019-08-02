@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Rules\Captcha;
+use App\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -36,9 +39,10 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        
         $this->middleware('guest')->except('logout');
     }
-    public function field(Request $request){
+    /*public function field(Request $request){
        // dd($request);
         $email = $this->username();
         return filter_var($request->get($email),FILTER_VALIDATE_EMAIL) ? $email : 'username';
@@ -56,10 +60,10 @@ class LoginController extends Controller
         $request->validate([
             $this->username() => "required|string|exists:users,{$field}",
             'password' => 'required|string',
-            'g-recaptcha-response' => 'required|string'
+            //'g-recaptcha-response' => 'required|string'
         ],$message);
     }
-    protected function credentials(Request $request)
+    /*protected function credentials(Request $request)
     {
         //echo "<pre>";
         //print_r($request->get('g-recaptcha-response'));
@@ -75,5 +79,31 @@ class LoginController extends Controller
         ];
        //dd($value);
         return $value; 
-    }
+    }*/
+    /*protected function sendFailedLoginResponse(Request $request)
+    {
+        //$errors = [$this->username() => trans('auth.failed')];
+
+        // Load user from database
+        $user = User::where($this->username(), $request->{$this->username()})->first();
+        //dd($user->status);
+        
+       // dd($debug);
+        //dd($user);die();
+        // Check if user was successfully loaded, that the password matches
+        // and active is not 1. If so, override the default error message.
+        if ($user && Hash::check( Hash::make($request->password),$user->password)) {
+            $errors = [$this->username() => trans('auth.notactivated')];
+        }
+        if( $user && $user->status == 0 ){
+            $errors = [$this->username() => trans('auth.failed')];
+        }
+        //dd($errors);
+        if ($request->expectsJson()) {
+            return response()->json($errors, 422);
+        }
+        return redirect()->back()
+            ->withInput($request->only($this->username(), 'remember'))
+            ->withErrors($errors);
+    }*/
 }

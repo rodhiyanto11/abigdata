@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
     <script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+    
     <!-- Google Font: Source Sans Pro -->
  </head>
 <body class="hold-transition sidebar-mini">
