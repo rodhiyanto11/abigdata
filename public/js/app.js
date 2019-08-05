@@ -2463,7 +2463,7 @@ __webpack_require__.r(__webpack_exports__);
     loadRoles: function loadRoles() {
       var _this = this;
 
-      axios.get("api/role?req=all").then(function (_ref2) {
+      axios.get("api/userrole?req=userrole&id=profile").then(function (_ref2) {
         var data = _ref2.data;
         return _this.roles = data;
       });
@@ -2513,16 +2513,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     }
-    /*updateProfile(e){
-        //console.log('uploading')
-        let file = e.targ   et.files[0];
-        let reader = new FileReader();
-        reader.onloadend = function() {
-            console.log('RESULT', reader.result)
-        }
-        reader.readAsDataURL(file);
-    }*/
-
   },
   components: {
     'datepicker': Datepicker
@@ -64354,7 +64344,7 @@ var render = function() {
               _c("div", { staticClass: "col-sm-3" }, [
                 _c("div", { staticClass: "description-block" }, [
                   _c("h5", { staticClass: "description-header" }, [
-                    _vm._v("Choose Roles")
+                    _vm._v("Roles")
                   ]),
                   _vm._v(" "),
                   _c(
@@ -64390,19 +64380,19 @@ var render = function() {
                         }
                       }
                     },
-                    _vm._l(_vm.roles.data, function(role) {
+                    _vm._l(_vm.roles, function(role) {
                       return _c(
                         "option",
                         {
-                          key: role.id,
-                          domProps: { value: role.id },
+                          key: role.role_id,
+                          domProps: { value: role.role_id },
                           on: {
                             click: function($event) {
-                              return _vm.changerole(role.id)
+                              return _vm.changerole(role.role_id)
                             }
                           }
                         },
-                        [_vm._v(_vm._s(role.name))]
+                        [_vm._v(_vm._s(role.role_name))]
                       )
                     }),
                     0

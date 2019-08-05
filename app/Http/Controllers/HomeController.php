@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\UserRole;
 class HomeController extends Controller
 {
     /**
@@ -26,9 +27,12 @@ class HomeController extends Controller
         //dd($getmenu);
         //next looping role baru di fetch jadi menu kecil2
         $datarole = DB::table('roles')->get()->toArray();
-        //dd($datarole);
+        //dd(Auth::user()->id);
         //foreach($datarole as $dataroles){
-            $datapages['admin'] = DB::table('users')
+            $first_role = UserRole::where('user_id',Auth::user()->id)->get()->toArray();
+            //dd($first_role);
+            if($first_role){
+                $datapages['admin'] = DB::table('users')
                             //->join('user_roles', 'users.id', '=', 'user_roles.user_id')
                             ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
                             ->join('pages', 'pages.id', '=', 'role_pages.page_id')
@@ -38,6 +42,12 @@ class HomeController extends Controller
                             ->where('pages.status','=','1')
                             //->where('roles.name','=','admin')
                             ->get();
+                           // dd($datapages);
+                            return view('home',$data = ['menus'=>$datapages]);            
+            }else{
+                return view('home');
+            }
+            
             /*if(count($datapages['admin']) > 0){
                // dd(1);
                 $datapages['users'] = DB::table('role_pages')
@@ -62,11 +72,11 @@ class HomeController extends Controller
             }    */            
                           
        // }
-        //dd($datapages);
+        
         
      //  dd($datapages); 
    
-        return view('home',$data = ['menus'=>$datapages]);
+        
       
         
     }

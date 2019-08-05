@@ -47,9 +47,9 @@
                             </div>
                             <div class="col-sm-3">
                                 <div class="description-block">
-                                <h5 class="description-header">Choose Roles</h5>
+                                <h5  class="description-header">Roles</h5>
                                      <select name="role_id" id="role_id" v-model="form.role_id"  class="form-control">
-                                            <option v-for="role in roles.data" :key="role.id" :value="role.id" @click="changerole(role.id)">{{ role.name }}</option>    
+                                            <option v-for="role in roles" :key="role.role_id" :value="role.role_id" @click="changerole(role.role_id)">{{ role.role_name }}</option>    
                                     </select>
                                 </div>
                                 <!-- /.description-block -->
@@ -181,7 +181,7 @@
                 
             },
             loadRoles : function(){
-                axios.get("api/role?req=all").then(  ({ data }) => (this.roles = data) );
+                axios.get("api/userrole?req=userrole&id=profile").then(  ({ data }) => (this.roles = data) );
             },
            loadUser : function(){
                 axios.get("api/user?getprofile=true").then(  ({ data }) => (this.form.fill(data.data)) );
@@ -223,15 +223,6 @@
             },
            
 
-            /*updateProfile(e){
-                //console.log('uploading')
-                let file = e.targ   et.files[0];
-                let reader = new FileReader();
-                reader.onloadend = function() {
-                    console.log('RESULT', reader.result)
-                }
-                reader.readAsDataURL(file);
-            }*/
         },
         components: {
             'datepicker' : Datepicker,

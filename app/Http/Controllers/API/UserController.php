@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\User;
+use App\UserRole;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -80,6 +81,8 @@ class UserController extends Controller
             'expired_date' => isset($request['expired_date']) && strlen($request['expired_date']) > 0 ? $request['expired_date'] : null ,
             'password' => Hash::make($request['password']),
         ]);
+
+        
         return response([
             'data' => $data
         ],Response::HTTP_CREATED);
@@ -158,26 +161,16 @@ class UserController extends Controller
         ],Response::HTTP_CREATED);
     }
     public function showmenu(){
-        /*if(Auth::user()->role_id == 1){
-            $datapages = DB::table('role_pages')
-           // ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
-            ->join('pages', 'pages.id', '=', 'role_pages.page_id')
-            ->select('pages.*')
-            //->where('users.id',Auth::user()->id)
-            //->where('pages.id','6')
-            ->get();
-        }else{*/
-            //dd(2);
-            $datapages = DB::table('users')
-            ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
-            ->join('pages', 'pages.id', '=', 'role_pages.page_id')
-            ->select('pages.*')
-            ->where('users.id',auth('api')->user()->id)
-           
-            ->get();
-        //}
         
-        //dd($datapages); 
+        $first_role = UserRole::where('user_id',auth('api')->user()->id)->first();
+       
+        $datapages = DB::table('users')
+        ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
+        ->join('pages', 'pages.id', '=', 'role_pages.page_id')
+        ->select('pages.*')
+        ->where('users.id',auth('api')->user()->id)
+        ->get();
+       
 
         return response([
             'data' => $datapages
