@@ -42,7 +42,7 @@ class LoginController extends Controller
         
         $this->middleware('guest')->except('logout');
     }
-    /*public function field(Request $request){
+    public function field(Request $request){
        // dd($request);
         $email = $this->username();
         return filter_var($request->get($email),FILTER_VALIDATE_EMAIL) ? $email : 'username';
@@ -60,50 +60,45 @@ class LoginController extends Controller
         $request->validate([
             $this->username() => "required|string|exists:users,{$field}",
             'password' => 'required|string',
-            //'g-recaptcha-response' => 'required|string'
+           // 'g-recaptcha-response' => 'required|string'
         ],$message);
     }
-    /*protected function credentials(Request $request)
+    protected function credentials(Request $request)
     {
-        //echo "<pre>";
-        //print_r($request->get('g-recaptcha-response'));
-        //echo "</pre>";die();
-        //return $request->only($this->username(), 'password');
-        $field = $this->field($request);
-        //dd($field);
+       
+       $field = $this->field($request);
+       $user = User::where($field,$request->get($this->username()))->get();
+       $is_expired   = $user[0]->is_expired;
+       $expired_date = $user[0]->expired_date;
+       $result = false;
+       if($is_expired == 1){
+           
+        if($expired_date > date('Y-m-d H:i:s')){
+           // dd(2);
+            $result  = true;
+        }else{
+            //dd(1);
+            $result = false;
+        }
+       }else{
+           $result = true;
+       }
+       if($result == true){
         $value = [
             $field => $request->get($this->username()),
             'password' => $request->get('password'),
-            
-
-        ];
-       //dd($value);
+            'status' => 1
+            ];
+       }else{
+        $value = [
+            $field => '',
+            'password' => '',
+            'status' => 1
+            ];
+       }
+       
+       // dd($value);
         return $value; 
-    }*/
-    /*protected function sendFailedLoginResponse(Request $request)
-    {
-        //$errors = [$this->username() => trans('auth.failed')];
-
-        // Load user from database
-        $user = User::where($this->username(), $request->{$this->username()})->first();
-        //dd($user->status);
-        
-       // dd($debug);
-        //dd($user);die();
-        // Check if user was successfully loaded, that the password matches
-        // and active is not 1. If so, override the default error message.
-        if ($user && Hash::check( Hash::make($request->password),$user->password)) {
-            $errors = [$this->username() => trans('auth.notactivated')];
-        }
-        if( $user && $user->status == 0 ){
-            $errors = [$this->username() => trans('auth.failed')];
-        }
-        //dd($errors);
-        if ($request->expectsJson()) {
-            return response()->json($errors, 422);
-        }
-        return redirect()->back()
-            ->withInput($request->only($this->username(), 'remember'))
-            ->withErrors($errors);
-    }*/
+    }
+    
 }
