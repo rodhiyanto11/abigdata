@@ -169,7 +169,13 @@
     </div>
     <div class="content">
             <div class="container-fluid">
-            <transition name="page" mode="out-in">
+           <!-- <transition 
+            name="page" 
+            mode="out-in"
+            >-->
+            <transition 
+            name="bounce"
+            >
                 <router-view></router-view>
              </transition>   
                 <vue-progress-bar></vue-progress-bar>

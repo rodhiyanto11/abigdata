@@ -6,7 +6,11 @@
 </style>
 
 <template>
-    <div class="container">
+    <div class="vld-parent">
+        <loading :active.sync="isLoading" 
+        :is-full-page="fullPage">
+        </loading>
+      <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <!-- please insert your's code in here-->
@@ -147,15 +151,19 @@
             </div>
         </div>
     </div>
+    </div>
+  
 </template>
 
 <script>
+import { setTimeout } from 'timers';
     export default {
         
         data: function(){
             return{
+                isLoading : true,
+                fullPage: true,
                 roles : {},
-                
                 form : new form({
                     id : '',
                     name :  '',
@@ -172,8 +180,15 @@
             console.log('Component mounted.')
         },
         methods : {
+            deadLoading : function(){
+                setTimeout(
+                    () => {
+                        this.isLoading = false
+                    } , 1000
+                );
+            },
             changerole: function(roleid){
-                console.log(roleid);
+                this.isLoading = true;
                 axios.get("api/user?req=update&id="+roleid).then(  ({ data }) => (
                     //console.log(data)
                     window.location.href = '/home'
@@ -181,12 +196,17 @@
                 
             },
             loadRoles : function(){
+                this.isLoading = true;
                 axios.get("api/userrole?req=userrole&id=profile").then(  ({ data }) => (this.roles = data) );
+                this.deadLoading();
             },
            loadUser : function(){
+               this.isLoading = true;
                 axios.get("api/user?getprofile=true").then(  ({ data }) => (this.form.fill(data.data)) );
+                this.deadLoading();
             },
             updateUser : function(){
+                this.isLoading = true;
                  swal.fire({
                     title: 'Apakah anda yakin untuk mengupdate data anda?',
                     text: "",
@@ -202,6 +222,7 @@
                     .then((response) => {
                         //Fire.$emit('AfterCreate');
                         this.$Progress.finish()
+                        this.deadLoading();
                         toast.fire({
                         type: 'success',
                         title: 'Request sucess, Please re-login'
@@ -211,6 +232,7 @@
                         }, 3000);
                         //setInt document.getElementById('logout-form').submit();
                     },(response)=>{
+                        this.deadLoading();
                         this.$Progress.fail()
                         toast.fire({
                         type: 'error',
@@ -226,7 +248,7 @@
         },
         components: {
             'datepicker' : Datepicker,
-          
+            'loading' : Loading
             },
         created () {
             this.loadRoles();

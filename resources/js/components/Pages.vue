@@ -1,5 +1,8 @@
 <template>
-    <div class="container">
+ <div class="vld-parent">
+        <loading :active.sync="isLoading" 
+              :is-full-page="fullPage"></loading>
+        <div class="container">
        <div class='card'>
             <div class="card-header">
                 <h3 class="card-title">Pages</h3>
@@ -133,13 +136,18 @@
                   </div>
                 </div>
         </div>
-    </div>
+    </div>      
+ </div>             
+    
 </template>
 
 <script>
+import { setTimeout } from 'timers';
     export default {
         data : function(){
             return {
+              isLoading : true,
+              fullPage : true,
                 editmode :false,
                 pages : {},
                 form : new form({
@@ -156,30 +164,44 @@
             }
             
         },
+        components : {
+          loading : Loading
+        },
         methods : {
+            deadLoading : function(){
+              setTimeout(() => {
+                this.isLoading = false
+              },1000);
+              
+            },
             loadpage : function(){
+                this.isLoading = true;
               //console.log(this.$parent.search.length);
                if(this.$parent.search.length == 0){
-                // console.log(1);
                  axios.get("api/page").then(  ({ data }) => (this.pages = data) );
+                 this.deadLoading();
                }else{
-                 //console.log(2);
                  axios.get("api/page?search="+this.$parent.search).then(  ({ data }) => (this.pages = data) );
-               }
-                
+                 this.deadLoading();
+               } 
             },
             createModal (){
+              this.isLoading = true;
                this.editmode = false;
                this.form.reset();
                $('#exampleModal').modal('show');
+               
              },
              editModal (user){
+               this.isLoading = true;
                this.editmode = true;
                this.form.reset();
                $('#exampleModal').modal('show');
-               this.form.fill(user)
+               this.form.fill(user);
+               
              },
              createRole: function () {
+               this.isLoading  = true;
                 this.$Progress.start();
                 this.form.post('api/page')
                 .then((response) => {
@@ -198,8 +220,10 @@
                       title: 'Request Error'
                     })
                 })
+                
              },
              updateRole(){
+               this.isLoading = true;
                 this.$Progress.start();
                 this.form.put('api/page/'+this.form.id)
                 .then((response) => {
@@ -223,8 +247,10 @@
                       title: 'Request Error'
                     })
                 })
+                
              },
              deleteRole(id){
+               this.isLoading = true;
                swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -254,17 +280,23 @@
                   
                 }
               })
+              
              } ,
              getResults(page = 1) {
+               this.isLoading = true;
                console.log(page)
                 axios.get('api/page?page=' + page)
                   .then(response => {
                     this.pages = response.data;
                   });
+                
               }
         },
         
         created (){
+            if(this.isLoading == true){
+              console.log('oke')
+            }
             Fire.$on('searching',()=>{
               this.loadpage()
               //console.log(2); 
@@ -273,6 +305,7 @@
             Fire.$on('AfterCreate',() =>{
               this.loadpage();
             })
+            //
         }
        
     }

@@ -1,5 +1,10 @@
 <template>
-    <div class="container">
+  <div class="vld-parent">
+    <loading 
+      :active.sync="isLoading" 
+      :is-full-page="fullPage">
+    </loading>
+     <div class="container">
        <div class="card">
            <div class="card-header">
                 <h3 class="card-title">Role Page {{ this.$route.params.role_data.name | ucWords}} </h3>
@@ -64,8 +69,6 @@
                                       </select>
                                     <has-error :form="form" field="name"></has-error>
                                 </div>
-                                
-                                
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -76,15 +79,19 @@
                       </div>
                     </div>
                   </div>
-    
        </div>    
     </div>
+   </div>       
+
 </template>
 
 <script>
+import { setTimeout } from 'timers';
     export default {
         data : function(){
           return {
+            isLoading : true,
+            fullPage: true,
             editmode : false,
             dataroles : {},
             roles : {},
@@ -101,21 +108,32 @@
             })
           }
         },
+        components : {
+          loading : Loading
+        },
         methods : {
+          deadLoading : function(){
+            setTimeout(() => {
+              this.isLoading = false;
+            },1000);
+          },
           handleBackroute : function(){
             this.$router.back('roles');
           },
           loadpages : function(){
+            this.isLoading = true;
             axios.get('api/page?req=all')
             .then (({data}) => this.pages = data.data)
+            this.deadLoading();
           },
           loadrole : function (){
+            this.isLoading = true;
             axios.get('api/role?req=all')
             .then (({data}) => this.roles = data.data)
+            this.deadLoading();
           },
           loadpagerole : function (role_data){
-              console.log(role_data);
-            
+                this.isLoading = true;
                 if(role_data.length == 0 ){
                   axios.get('api/role?req=pagerole')
                   .then (({data}) => this.dataroles = data)
@@ -130,21 +148,27 @@
                   
                   
                 }
+                this.deadLoading();
             
           },
           createModal : function(){
+            this.isLoading = true;
             console.log(this.rolepages_role_data);
             this.editmode = false;
             this.form.reset()
             $("#exampleModal").modal('show');
+            this.deadLoading();
           },
           editModal : function(dataroles){
+            this.isLoading = true
               this.editmode = true;
                this.form.reset();
                $('#exampleModal').modal('show');
                this.form.fill(dataroles)
+            this.deadLoading();   
           },
           deleterolepage: function(id){
+            this.isLoading = true;
             swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -174,8 +198,10 @@
                   
                 }
               })
+              this.deadLoading();
           },
           create : function(){
+            this.isLoading();
              this.$Progress.start();
                 this.form.post('api/role')
                 .then((response) => {
@@ -194,14 +220,12 @@
                       title: 'Request Error'
                     })
                 })
+                this.deadLoading();
 
           },
-          update : function (){
-            console.log(2);
-          },
-          
         },
         created(){
+          this.isLoading = true;
           if(this.$route.params.role_data){
             //console.log(this.$route.params.roles_role_id);
           this.loadpages();
@@ -222,7 +246,7 @@
           }else{
             this.handleBackroute()
           }
-          
+          this.deadLoading();
         }
     }
 </script>

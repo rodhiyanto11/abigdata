@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 
 class UserLogController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +18,14 @@ class UserLogController extends Controller
     public function index(Request $request)
     {
         //
-        dd(\Location::get('65.49.224.90'));
+        $dd = \Location::get('65.49.224.90');
+        echo "<pre>";
+        print_r($dd);
+        echo "<pre>";die();
+        //echo $dd->countryName;die();
+        //$a = JSON.stringify($dd );
+        //dd($a);
+        
         //dd($request->ip());
     }
 

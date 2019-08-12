@@ -33270,20 +33270,54 @@ readers do not read off random characters that represent icons */
   font-size: 10px;
 }
 
-.page-enter-active,
-.page-leave-active {
-  transition: opacity 1s, transform 1s;
+/*.page-enter-active, .page-leave-active {
+    transition: opacity 1s, transform 1s;
+  }
+  .page-enter, .page-leave-to {
+    opacity: 0;
+    transform: translateX(-30%);
+  }
+
+  div.ex1 {
+    background-color: lightblue;
+    width: "100%";
+    overflow-x: scroll;
+  }*/
+
+.bounce-enter-active {
+  -webkit-animation: bounce-in 0.15s;
+          animation: bounce-in 0.15s;
 }
 
-.page-enter,
-.page-leave-to {
-  opacity: 0;
-  transform: translateX(-30%);
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
 }
 
-div.ex1 {
-  background-color: lightblue;
-  width: "100%";
-  overflow-x: scroll;
+@-webkit-keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 

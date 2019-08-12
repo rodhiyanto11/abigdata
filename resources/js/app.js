@@ -15,6 +15,9 @@ import VueProgressBar from 'vue-progressbar';
 import swal from 'sweetalert2';
 //import VueTableau from 'vue-tableau';
 import Axios from 'axios';
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 
 
@@ -25,6 +28,7 @@ window.form = Form;
 //window.VueTableau = VueTableau;
 //import VueTableau from 'vue-tableau';
 window.Datepicker = Datepicker;
+window.Loading = Loading;
 window.swal = swal;
 const Toast = swal.mixin({
   toast: true,
@@ -106,7 +110,10 @@ Vue.component(
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-//Axios.defaults.baseURL = 'http://192.168.43.70:2122';
+Axios.defaults.baseURL = 'http://192.168.43.70:2122';
+//Axios.defaults.baseURL = 'http://114.4.83.8:2122';
+
+//114.4.83.8
 const app = new Vue({
     el: '#app',
     router,  
