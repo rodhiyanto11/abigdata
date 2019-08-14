@@ -174,7 +174,7 @@
             mode="out-in"
             >-->
             <transition 
-            name="bounce"
+            name="page" mode="out-in"
             >
                 <router-view></router-view>
              </transition>   

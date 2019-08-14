@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Fluent;
 
 class UserLogController extends Controller
 {
@@ -17,16 +18,17 @@ class UserLogController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        $dd = \Location::get('65.49.224.90');
-        echo "<pre>";
-        print_r($dd);
-        echo "<pre>";die();
-        //echo $dd->countryName;die();
-        //$a = JSON.stringify($dd );
-        //dd($a);
         
-        //dd($request->ip());
+        $dd = \Location::get(trim(shell_exec("dig +short myip.opendns.com @resolver1.opendns.com")));
+        $mm = new Fluent($dd);
+        echo "<pre>";
+        print_r($mm);
+        echo "<pre>";
+        echo "<pre>";
+        print_r($mm['countryCode']);
+        echo "<pre>";
+        dd($request->ip());
+        
     }
 
     /**
