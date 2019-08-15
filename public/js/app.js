@@ -1763,6 +1763,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var timers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! timers */ "./node_modules/timers-browserify/main.js");
+/* harmony import */ var timers__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(timers__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1791,6 +1793,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1803,28 +1806,32 @@ __webpack_require__.r(__webpack_exports__);
     loading: Loading
   },
   methods: {
-    FininsLoading: function FininsLoading() {
-      this.isLoading = false;
+    deadLoading: function deadLoading() {
+      var _this = this;
+
+      Object(timers__WEBPACK_IMPORTED_MODULE_0__["setInterval"])(function () {
+        _this.isLoading = false;
+      }, 200);
     },
     onCancel: function onCancel() {
       console.log('Loading finnissssssh');
     },
     addRoute: function addRoute() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get('api/user?req=menu').then(function (response) {
         for (var i = 0; i < response.data.data.length; i++) {
           // console.log(i);
-          var type = response.data.data[i]; //console.log(type)
+          var type = response.data.data[i]; // console.log(type)
 
-          _this.$router.addRoutes([{
+          _this2.$router.addRoutes([{
             path: '/' + response.data.data[i].routename,
             name: response.data.data[i].routename,
             component: __webpack_require__("./resources/js/components sync recursive ^\\.\\/.*\\.vue$")("./" + response.data.data[i].view + ".vue")["default"]
           }]);
         }
 
-        _this.isLoading = false;
+        _this2.isLoading = false;
       })["catch"](function (error) {});
     }
   },
@@ -1835,6 +1842,7 @@ __webpack_require__.r(__webpack_exports__);
        },7000)*/
     //this.doAjax();
     this.addRoute();
+    this.deadLoading();
   },
   mounted: function mounted() {
     console.log('Component mounted.');
@@ -2492,9 +2500,10 @@ __webpack_require__.r(__webpack_exports__);
         _this.isLoading = false;
       }, 1000);
     },
-    changerole: function changerole(roleid) {
+    changerole: function changerole(event) {
+      console.log(event.target.value);
       this.isLoading = true;
-      axios.get("api/user?req=update&id=" + roleid).then(function (_ref) {
+      axios.get("api/user?req=update&id=" + event.target.value).then(function (_ref) {
         var data = _ref.data;
         return (//console.log(data)
           window.location.href = '/home'
@@ -3171,9 +3180,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/UserRoles.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Userroles.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/UserRoles.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Userroles.vue?vue&type=script&lang=js& ***!
   \********************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -63584,7 +63593,7 @@ var staticRenderFns = [
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
               _vm._v(
-                "\n                                I'm an example component.\n                            "
+                "\r\n                                I'm an example component.\r\n                            "
               )
             ])
           ])
@@ -64584,23 +64593,28 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: { name: "role_id", id: "role_id" },
                           on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.form,
-                                "role_id",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
+                            change: [
+                              function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.form,
+                                  "role_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              },
+                              function($event) {
+                                return _vm.changerole($event)
+                              }
+                            ]
                           }
                         },
                         _vm._l(_vm.roles, function(role) {
@@ -64608,12 +64622,7 @@ var render = function() {
                             "option",
                             {
                               key: role.role_id,
-                              domProps: { value: role.role_id },
-                              on: {
-                                click: function($event) {
-                                  return _vm.changerole(role.role_id)
-                                }
-                              }
+                              domProps: { value: role.role_id }
                             },
                             [_vm._v(_vm._s(role.role_name))]
                           )
@@ -65968,9 +65977,9 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/UserRoles.vue?vue&type=template&id=90444a52&":
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Userroles.vue?vue&type=template&id=406bbaf7&":
 /*!************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/UserRoles.vue?vue&type=template&id=90444a52& ***!
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Userroles.vue?vue&type=template&id=406bbaf7& ***!
   \************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -85656,9 +85665,9 @@ Vue.component('passport-personal-access-tokens', __webpack_require__(/*! ./compo
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+//Axios.defaults.baseURL = 'http://192.168.43.70:2122';
 
-axios__WEBPACK_IMPORTED_MODULE_6___default.a.defaults.baseURL = 'http://192.168.43.70:2122'; //Axios.defaults.baseURL = 'http://114.4.83.8:2122';
-//Axios.defaults.baseURL = 'http://192.168.212.229:2122';
+axios__WEBPACK_IMPORTED_MODULE_6___default.a.defaults.baseURL = 'http://192.168.212.133:2122'; //Axios.defaults.baseURL = 'http://192.168.212.229:2122';
 //114.4.83.8
 
 var app = new Vue({
@@ -85754,7 +85763,7 @@ var map = {
 	"./Profile.vue": "./resources/js/components/Profile.vue",
 	"./RolePages.vue": "./resources/js/components/RolePages.vue",
 	"./Roles.vue": "./resources/js/components/Roles.vue",
-	"./UserRoles.vue": "./resources/js/components/UserRoles.vue",
+	"./Userroles.vue": "./resources/js/components/Userroles.vue",
 	"./Users.vue": "./resources/js/components/Users.vue",
 	"./create.vue": "./resources/js/components/create.vue",
 	"./passport/AuthorizedClients.vue": "./resources/js/components/passport/AuthorizedClients.vue",
@@ -86423,17 +86432,17 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/UserRoles.vue":
+/***/ "./resources/js/components/Userroles.vue":
 /*!***********************************************!*\
-  !*** ./resources/js/components/UserRoles.vue ***!
+  !*** ./resources/js/components/Userroles.vue ***!
   \***********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _UserRoles_vue_vue_type_template_id_90444a52___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UserRoles.vue?vue&type=template&id=90444a52& */ "./resources/js/components/UserRoles.vue?vue&type=template&id=90444a52&");
-/* harmony import */ var _UserRoles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UserRoles.vue?vue&type=script&lang=js& */ "./resources/js/components/UserRoles.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Userroles_vue_vue_type_template_id_406bbaf7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Userroles.vue?vue&type=template&id=406bbaf7& */ "./resources/js/components/Userroles.vue?vue&type=template&id=406bbaf7&");
+/* harmony import */ var _Userroles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Userroles.vue?vue&type=script&lang=js& */ "./resources/js/components/Userroles.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -86443,9 +86452,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _UserRoles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _UserRoles_vue_vue_type_template_id_90444a52___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _UserRoles_vue_vue_type_template_id_90444a52___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Userroles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Userroles_vue_vue_type_template_id_406bbaf7___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Userroles_vue_vue_type_template_id_406bbaf7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -86455,38 +86464,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/UserRoles.vue"
+component.options.__file = "resources/js/components/Userroles.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/UserRoles.vue?vue&type=script&lang=js&":
+/***/ "./resources/js/components/Userroles.vue?vue&type=script&lang=js&":
 /*!************************************************************************!*\
-  !*** ./resources/js/components/UserRoles.vue?vue&type=script&lang=js& ***!
+  !*** ./resources/js/components/Userroles.vue?vue&type=script&lang=js& ***!
   \************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserRoles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./UserRoles.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/UserRoles.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserRoles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Userroles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Userroles.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Userroles.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Userroles_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/UserRoles.vue?vue&type=template&id=90444a52&":
+/***/ "./resources/js/components/Userroles.vue?vue&type=template&id=406bbaf7&":
 /*!******************************************************************************!*\
-  !*** ./resources/js/components/UserRoles.vue?vue&type=template&id=90444a52& ***!
+  !*** ./resources/js/components/Userroles.vue?vue&type=template&id=406bbaf7& ***!
   \******************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserRoles_vue_vue_type_template_id_90444a52___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./UserRoles.vue?vue&type=template&id=90444a52& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/UserRoles.vue?vue&type=template&id=90444a52&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserRoles_vue_vue_type_template_id_90444a52___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Userroles_vue_vue_type_template_id_406bbaf7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Userroles.vue?vue&type=template&id=406bbaf7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Userroles.vue?vue&type=template&id=406bbaf7&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Userroles_vue_vue_type_template_id_406bbaf7___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserRoles_vue_vue_type_template_id_90444a52___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Userroles_vue_vue_type_template_id_406bbaf7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -86909,8 +86918,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Applications/AMPPS/www/abigdata/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Applications/AMPPS/www/abigdata/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\abigdata\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\abigdata\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

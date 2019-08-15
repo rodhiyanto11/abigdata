@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { setInterval } from 'timers';
     export default {
        data : function(){
           return {
@@ -39,9 +40,13 @@
             loading : Loading
         },
         methods : {
-           FininsLoading(){
-               this.isLoading = false;
-           }
+            deadLoading : function (){
+              setInterval(
+                () => {
+                  this.isLoading = false;
+                },200
+              );
+            }
            ,
             onCancel() {
               console.log('Loading finnissssssh')
@@ -53,7 +58,7 @@
                for(var i  = 0; i < response.data.data.length ; i++){
                 // console.log(i);
                    var type = response.data.data[i];
-                   //console.log(type)
+                  // console.log(type)
                    this.$router.addRoutes(
                     [{
                       path: '/'+response.data.data[i].routename,
@@ -76,6 +81,7 @@
                 },7000)*/
             //this.doAjax();
             this.addRoute();
+            this.deadLoading();
         },
         mounted() {
             console.log('Component mounted.')

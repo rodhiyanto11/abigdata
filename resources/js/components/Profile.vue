@@ -52,8 +52,8 @@
                             <div class="col-sm-3">
                                 <div class="description-block">
                                 <h5  class="description-header">Roles</h5>
-                                     <select name="role_id" id="role_id" v-model="form.role_id"  class="form-control">
-                                            <option v-for="role in roles" :key="role.role_id" :value="role.role_id" @click="changerole(role.role_id)">{{ role.role_name }}</option>    
+                                     <select name="role_id" id="role_id" v-model="form.role_id"  @change="changerole($event)" class="form-control">
+                                            <option v-for="role in roles" :key="role.role_id" :value="role.role_id">{{ role.role_name }}</option>    
                                     </select>
                                 </div>
                                 <!-- /.description-block -->
@@ -187,9 +187,10 @@ import { setTimeout } from 'timers';
                     } , 1000
                 );
             },
-            changerole: function(roleid){
+            changerole: function(event){
+                console.log(event.target.value);
                 this.isLoading = true;
-                axios.get("api/user?req=update&id="+roleid).then(  ({ data }) => (
+                axios.get("api/user?req=update&id="+event.target.value).then(  ({ data }) => (
                     //console.log(data)
                     window.location.href = '/home'
                 ) );

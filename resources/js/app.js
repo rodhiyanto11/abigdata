@@ -111,8 +111,8 @@ Vue.component(
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Axios.defaults.baseURL = 'http://192.168.43.70:2122';
-//Axios.defaults.baseURL = 'http://114.4.83.8:2122';
+//Axios.defaults.baseURL = 'http://192.168.43.70:2122';
+Axios.defaults.baseURL = 'http://192.168.212.133:2122';
 //Axios.defaults.baseURL = 'http://192.168.212.229:2122';
 
 //114.4.83.8
