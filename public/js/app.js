@@ -2196,13 +2196,13 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     createModal: function createModal() {
-      this.isLoading = true;
+      //  this.isLoading = true;
       this.editmode = false;
       this.form.reset();
       $('#exampleModal').modal('show');
     },
     editModal: function editModal(user) {
-      // this.isLoading = true;
+      //  this.isLoading = true;
       this.editmode = true;
       this.form.reset();
       $('#exampleModal').modal('show');
