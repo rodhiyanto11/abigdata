@@ -36,7 +36,10 @@
             Token :  function(){
                 
                  axios.get('https://analytics.admedika.co.id/debug/token.php', {
-                
+                 header : {
+                     "Access-Control-Request-Method": "GET",
+                     "Content-type" : "application/json",
+                 },
                  params : {"reqtoken" : "rodhi"}
              
                 }).then(response=> {
@@ -51,9 +54,7 @@
         },
         created: function () {
            
-            this.Token(()=>{
-                console.log(1)
-            });
+           
              Fire.$on('AfterCreate',() =>{
                 dispose();
                 this.initgetViz(this.token);

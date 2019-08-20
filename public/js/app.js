@@ -1751,6 +1751,10 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('https://analytics.admedika.co.id/debug/token.php', {
+        header: {
+          "Access-Control-Request-Method": "GET",
+          "Content-type": "application/json"
+        },
         params: {
           "reqtoken": "rodhi"
         }
@@ -1765,9 +1769,6 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this2 = this;
 
-    this.Token(function () {
-      console.log(1);
-    });
     Fire.$on('AfterCreate', function () {
       dispose();
 
@@ -1846,7 +1847,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('api/user?req=menu').then(function (response) {
         for (var i = 0; i < response.data.data.length; i++) {
           // console.log(i);
-          var type = response.data.data[i]; // console.log(type)
+          var type = response.data.data[i];
+          console.log(type);
 
           _this2.$router.addRoutes([{
             path: '/' + response.data.data[i].routename,
