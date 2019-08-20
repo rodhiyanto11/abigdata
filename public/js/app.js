@@ -1732,23 +1732,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      msg: 'Tableau Public',
-      url: "http://public.tableau.com/views/RegionalSampleWorkbook/Storms",
-      options: {
-        hideTabs: true
-      }
+      msg: 'Nama content apa?',
+      url: "https://dwh.admedika.co.id:7070/trusted/2kqJSJB6RMOdJJKrwXTJ_g==:fvVf9fHBsatHuOgt8cmVEV-T/views/VASCorporateYKPANTAM-asoff/01_GENERAL_OVERVIEW",
+      sheetexc: []
     };
   },
   methods: {
-    initViz: function initViz() {
-      var viz = new tableau.Viz(this.$refs.tableau, this.url, this.options);
+    initgetViz: function initgetViz(token) {
+      this.sheetexc.push("Branch by Total Active Member");
+      initViz("https://dwh.admedika.co.id:7070/trusted/" + token + "/views/VASCorporateYKPANTAM-asoff/01_GENERAL_OVERVIEW", this.sheetexc);
+    },
+    Token: function Token() {
+      var _this = this;
+
+      axios.get('https://analytics.admedika.co.id/debug/token.php', {
+        params: {
+          "reqtoken": "rodhi"
+        }
+      }).then(function (response) {
+        var data = "";
+        data = response.data.data;
+        _this.token = data;
+        Fire.$emit('AfterCreate');
+      });
     }
   },
-  mounted: function mounted() {
-    this.initViz();
+  created: function created() {
+    var _this2 = this;
+
+    this.Token(function () {
+      console.log(1);
+    });
+    Fire.$on('AfterCreate', function () {
+      dispose();
+
+      _this2.initgetViz(_this2.token);
+    });
   }
 });
 
@@ -2178,7 +2202,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#exampleModal').modal('show');
     },
     editModal: function editModal(user) {
-      this.isLoading = true;
+      // this.isLoading = true;
       this.editmode = true;
       this.form.reset();
       $('#exampleModal').modal('show');
@@ -63530,7 +63554,27 @@ var render = function() {
           _c("div", { attrs: { id: "app" } }, [
             _c("h1", [_vm._v(_vm._s(_vm.msg))]),
             _vm._v(" "),
-            _c("div", { ref: "tableau", staticClass: "ex1" })
+            _c("div", {
+              ref: "tableau",
+              staticClass: "ex1",
+              attrs: { id: "refs" }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "select-style" }, [
+              _c("select", { attrs: { id: "SheetList" } })
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "button", attrs: { onclick: "getVizData()" } },
+              [_vm._v("Export data to CSV")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "button", attrs: { onclick: "exportToPDF();" } },
+              [_vm._v("Export to PDF")]
+            )
           ])
         ])
       ],
@@ -85666,8 +85710,8 @@ Vue.component('passport-personal-access-tokens', __webpack_require__(/*! ./compo
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 //Axios.defaults.baseURL = 'http://192.168.43.70:2122';
-
-axios__WEBPACK_IMPORTED_MODULE_6___default.a.defaults.baseURL = 'http://192.168.212.133:2122'; //Axios.defaults.baseURL = 'http://192.168.212.229:2122';
+//Axios.defaults.baseURL = 'http://192.168.212.133:2122';
+//Axios.defaults.baseURL = 'http://192.168.212.229:2122';
 //114.4.83.8
 
 var app = new Vue({

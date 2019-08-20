@@ -7,8 +7,10 @@
                     
                 
                     <h1>{{ msg }}</h1>
-                     <div  class="ex1" ref="tableau"></div>    
-
+                     <div id="refs"  class="ex1" ref="tableau"></div>    
+                    <div class="select-style"><select id="SheetList"></select></div>
+                    <button class="button" onclick="getVizData()">Export data to CSV</button>
+                    <button class="button" onclick="exportToPDF();">Export to PDF</button>
                 </div>
                 </center>
     </div>
@@ -20,20 +22,43 @@
     export default {
         data(){
             return{
-                msg: 'Tableau Public',
-                url: "http://public.tableau.com/views/RegionalSampleWorkbook/Storms",
-                options: {
-                    hideTabs: true
-                }
+                msg: 'Nama content apa?',
+                url: "https://dwh.admedika.co.id:7070/trusted/2kqJSJB6RMOdJJKrwXTJ_g==:fvVf9fHBsatHuOgt8cmVEV-T/views/VASCorporateYKPANTAM-asoff/01_GENERAL_OVERVIEW",
+                sheetexc: []    
             }
         },
         methods: {
-            initViz: function () {
-                let viz = new tableau.Viz(this.$refs.tableau, this.url, this.options);
-            }
+            
+            initgetViz: function (token) {
+                this.sheetexc.push("Branch by Total Active Member");
+                initViz("https://dwh.admedika.co.id:7070/trusted/"+token+"/views/VASCorporateYKPANTAM-asoff/01_GENERAL_OVERVIEW", this.sheetexc);
+            },
+            Token :  function(){
+                
+                 axios.get('https://analytics.admedika.co.id/debug/token.php', {
+                
+                 params : {"reqtoken" : "rodhi"}
+             
+                }).then(response=> {
+             
+                let data = "";
+                data = response.data.data;
+                this.token = data;
+                  Fire.$emit('AfterCreate');
+                });
+          
+            },
         },
-        mounted: function () {
-            this.initViz()
+        created: function () {
+           
+            this.Token(()=>{
+                console.log(1)
+            });
+             Fire.$on('AfterCreate',() =>{
+                dispose();
+                this.initgetViz(this.token);
+            })
+           
         }
     }
 </script>

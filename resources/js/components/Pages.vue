@@ -193,8 +193,8 @@ import { setTimeout } from 'timers';
                
              },
              editModal (user){
-               this.isLoading = true;
-               this.editmode = true;
+              // this.isLoading = true;
+              this.editmode = true;
                this.form.reset();
                $('#exampleModal').modal('show');
                this.form.fill(user);
