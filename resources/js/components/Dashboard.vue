@@ -58,7 +58,7 @@ import { setInterval } from 'timers';
                for(var i  = 0; i < response.data.data.length ; i++){
                
                    var type = response.data.data[i];
-                  console.log(type)
+                 // console.log(type)
                    this.$router.addRoutes(
                     [
                       {

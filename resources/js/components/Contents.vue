@@ -1,5 +1,5 @@
 <template>
-    <div class="container" >
+    
         <div class="card">
             <center>
                  <div  id="app">
@@ -10,7 +10,7 @@
                      
                  </div>
              </center>
-         </div>
+         
     </div>
     
 </template>

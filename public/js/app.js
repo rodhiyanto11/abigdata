@@ -1866,8 +1866,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/api/user?req=menu').then(function (response) {
         for (var i = 0; i < response.data.data.length; i++) {
-          var type = response.data.data[i];
-          console.log(type);
+          var type = response.data.data[i]; // console.log(type)
 
           _this2.$router.addRoutes([{
             path: '/' + response.data.data[i].routename + "/:t_path/:t_url",
@@ -63577,50 +63576,48 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c(
-      "div",
-      { staticClass: "card" },
-      [
-        _c("center", [
-          _c("div", { attrs: { id: "app" } }, [
-            _c("div", {
-              ref: "tableau",
-              staticClass: "ex1",
-              attrs: { id: "refs" }
-            }),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "select-style", staticStyle: { display: "none" } },
-              [_c("select", { attrs: { id: "SheetList" } })]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "button",
-                staticStyle: { display: "none" },
-                attrs: { onclick: "getVizData()" }
-              },
-              [_vm._v("Export data to CSV")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "button",
-                staticStyle: { display: "none" },
-                attrs: { onclick: "exportToPDF();" }
-              },
-              [_vm._v("Export to PDF")]
-            )
-          ])
+  return _c(
+    "div",
+    { staticClass: "card" },
+    [
+      _c("center", [
+        _c("div", { attrs: { id: "app" } }, [
+          _c("div", {
+            ref: "tableau",
+            staticClass: "ex1",
+            attrs: { id: "refs" }
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "select-style", staticStyle: { display: "none" } },
+            [_c("select", { attrs: { id: "SheetList" } })]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "button",
+              staticStyle: { display: "none" },
+              attrs: { onclick: "getVizData()" }
+            },
+            [_vm._v("Export data to CSV")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "button",
+              staticStyle: { display: "none" },
+              attrs: { onclick: "exportToPDF();" }
+            },
+            [_vm._v("Export to PDF")]
+          )
         ])
-      ],
-      1
-    )
-  ])
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -244,7 +244,7 @@ $(function () {
       var containerDiv;
 function initViz(params, sheetexc) {
  
-  console.log('updated tableau....')
+  console.log('tableau is updated....')
   dispose();
             var containerDiv = document.getElementById("refs"),
                 url = params,
