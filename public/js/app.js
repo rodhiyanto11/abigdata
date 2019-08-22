@@ -1714,6 +1714,7 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Tableau__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tableau */ "./resources/js/components/Tableau.vue");
 //
 //
 //
@@ -1732,23 +1733,87 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      msg: 'Tableau Public',
-      url: "http://public.tableau.com/views/RegionalSampleWorkbook/Storms",
-      options: {
-        hideTabs: true
+      msg: 'Nama content apa?',
+      url: "",
+      location: "",
+      full: "",
+      sheetexc: [],
+      propsToPass: {
+        name: 'John',
+        last_name: 'Doe',
+        age: '29'
       }
     };
   },
   methods: {
-    initViz: function initViz() {
-      var viz = new tableau.Viz(this.$refs.tableau, this.url, this.options);
+    initgetViz: function initgetViz(url) {
+      this.sheetexc.push("Branch by Total Active Member");
+      initViz(url, this.sheetexc);
+    },
+    Token: function Token() {
+      var _this = this;
+
+      axios.get('https://analytics.admedika.co.id/debug/token.php', {
+        header: {
+          "Access-Control-Request-Method": "GET",
+          "Content-type": "application/json"
+        },
+        params: {
+          "reqtoken": "rodhi"
+        }
+      }).then(function (response) {
+        var data = "";
+        data = response.data.data;
+        _this.token = data;
+        Fire.$emit('AfterCreate');
+      });
     }
   },
-  mounted: function mounted() {
-    this.initViz();
+  components: {
+    props: ['rodhi'],
+    'tableau': _Tableau__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  //rendering new component
+  watch: {
+    '$route': function $route(to, from) {
+      var _this2 = this;
+
+      this.Token();
+      Fire.$on('AfterCreate', function () {
+        _this2.$Progress.start();
+
+        _this2.url = _this2.$route.params.t_url;
+        _this2.location = _this2.$route.params.t_path;
+        var url = _this2.url + _this2.token + _this2.location;
+        _this2.full = _this2.initgetViz(url);
+
+        _this2.$Progress.finish();
+      });
+    } //end rendering new component
+
+  },
+  //first render new component
+  created: function created() {
+    var _this3 = this;
+
+    this.Token();
+    Fire.$on('AfterCreate', function () {
+      _this3.url = _this3.$route.params.t_url;
+      _this3.location = _this3.$route.params.t_path;
+      var url = _this3.url + _this3.token + _this3.location;
+      _this3.full = _this3.initgetViz(url);
+    });
   }
 });
 
@@ -1826,9 +1891,10 @@ __webpack_require__.r(__webpack_exports__);
           console.log(type);
 
           _this2.$router.addRoutes([{
-            path: '/' + response.data.data[i].routename,
+            path: '/' + response.data.data[i].routename + "/:t_path/:t_url",
             name: response.data.data[i].routename,
-            component: __webpack_require__("./resources/js/components sync recursive ^\\.\\/.*\\.vue$")("./" + response.data.data[i].view + ".vue")["default"]
+            component: __webpack_require__("./resources/js/components sync recursive ^\\.\\/.*\\.vue$")("./" + response.data.data[i].view + ".vue")["default"] //props: {entity_type_id: response.data.data[i].routename}
+
           }]);
         }
 
@@ -2824,7 +2890,7 @@ __webpack_require__.r(__webpack_exports__);
     create: function create() {
       var _this6 = this;
 
-      this.isLoading();
+      this.isLoading = true;
       this.$Progress.start();
       this.form.post('api/role').then(function (response) {
         _this6.$Progress.finish();
@@ -3607,6 +3673,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     rolepage: function rolepage(role) {
+      console.log(role);
       this.$router.push({
         name: 'userroles',
         params: {
@@ -63531,9 +63598,43 @@ var render = function() {
           _c("div", { attrs: { id: "app" } }, [
             _c("h1", [_vm._v(_vm._s(_vm.msg))]),
             _vm._v(" "),
-            _c("div", { ref: "tableau", staticClass: "ex1" })
+            _c("div", {
+              ref: "tableau",
+              staticClass: "ex1",
+              attrs: { id: "refs" }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "select-style" }, [
+              _c("select", { attrs: { id: "SheetList" } })
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "button", attrs: { onclick: "getVizData()" } },
+              [_vm._v("Export data to CSV")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "button", attrs: { onclick: "exportToPDF();" } },
+              [_vm._v("Export to PDF")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                on: {
+                  click: function($event) {
+                    return _vm.pindah()
+                  }
+                }
+              },
+              [_vm._v("pindah")]
+            )
           ])
-        ])
+        ]),
+        _vm._v(" "),
+        _c("tableau")
       ],
       1
     )
@@ -65972,6 +66073,30 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632& ***!
+  \**********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("input", { attrs: { type: "text" } })
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -85667,8 +85792,8 @@ Vue.component('passport-personal-access-tokens', __webpack_require__(/*! ./compo
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 //Axios.defaults.baseURL = 'http://192.168.43.70:2122';
-
-axios__WEBPACK_IMPORTED_MODULE_6___default.a.defaults.baseURL = 'http://192.168.212.133:2122'; //Axios.defaults.baseURL = 'http://192.168.212.229:2122';
+//Axios.defaults.baseURL = 'http://192.168.212.133:2122';
+//Axios.defaults.baseURL = 'http://192.168.212.229:2122';
 //114.4.83.8
 
 var app = new Vue({
@@ -85764,6 +85889,7 @@ var map = {
 	"./Profile.vue": "./resources/js/components/Profile.vue",
 	"./RolePages.vue": "./resources/js/components/RolePages.vue",
 	"./Roles.vue": "./resources/js/components/Roles.vue",
+	"./Tableau.vue": "./resources/js/components/Tableau.vue",
 	"./Userroles.vue": "./resources/js/components/Userroles.vue",
 	"./Users.vue": "./resources/js/components/Users.vue",
 	"./create.vue": "./resources/js/components/create.vue",
@@ -86428,6 +86554,59 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Roles_vue_vue_type_template_id_312d3e3c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Roles_vue_vue_type_template_id_312d3e3c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Tableau.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/components/Tableau.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tableau.vue?vue&type=template&id=01d0b632& */ "./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  script,
+  _Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Tableau.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632& ***!
+  \****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Tableau.vue?vue&type=template&id=01d0b632& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
