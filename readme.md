@@ -2,9 +2,6 @@
 
 
 
-<!DOCTYPE HTML>
-<html prefix="og: http://ogp.me/ns#" lang="en-gb" dir="ltr"  data-config='{"twitter":0,"plusone":0,"facebook":0,"style":"alizarin"}'>
-<head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1440,6 +1437,3 @@ Official Social Channels
 </li><li><a href="/index.php/en/medias/faq">FAQ</a></li><li><a href="/index.php/en/medias/online-survey">Online Survey</a></li><li><a href="#">CAREER</a>
 </li><li><a href="/index.php/en/medias/work-with-us">Work with Us</a></li></ul></li><li><a href="/index.php/en/contact">Contact</a></li></ul></div>
 	</div>
-	
-	</body>
-</html>
