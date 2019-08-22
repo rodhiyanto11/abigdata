@@ -126,18 +126,39 @@
               @foreach($menus['admin'] as $menu)
               
               <li class="nav-item">
-              <router-link to="/{{$menu->view}}" class="nav-link">
+                 <router-link to="/{{$menu->view}}" class="nav-link">
                     <i class="nav-icon {{ $menu->icons }} {{ $color[$color_random[$i]] }}"></i>
                     <p>
                       {{  ucwords($menu->name) }}
                     </p>
                 </router-link>
+                
                </li> 
                <?php $i++; ?>
               @endforeach
              
             </ul>
           </li>
+          <li class="nav-item">
+              <router-link :to="{path:'/Contents',name:'contents',params : { t_path : '/views/VASCorporateYKPANTAM-asoff/01_GENERAL_OVERVIEW',t_url : 'https://dwh.admedika.co.id:7070/trusted/'} }" class="nav-link"
+              replace
+              >
+                <i class="nav-icon fas fa-user-alt"></i>
+                <p>
+                  Tableau 1
+                </p>
+              </router-link>
+           </li> 
+           <li class="nav-item">
+              <router-link :to="{path:'/Contents',name:'contents',params : { t_path : '/views/DahsboardExecutiveMarketingKF2/OverviewExecutiveMarkerting',t_url : 'https://dwh.admedika.co.id:7070/trusted/'} }" class="nav-link"
+              replace
+              >
+                <i class="nav-icon fas fa-user-alt"></i>
+                <p>
+                  Tableau 2
+                </p>
+              </router-link>
+           </li> 
            @endif
           
           <li class="nav-item">
@@ -176,7 +197,7 @@
             <transition 
             name="page" mode="out-in"
             >
-                <router-view></router-view>
+                <router-view ></router-view>
              </transition>   
                 <vue-progress-bar></vue-progress-bar>
               <!-- /.row -->
@@ -212,12 +233,13 @@ $(function () {
  
   
 })
-var viz;
+      var viz;
       var workbook;
       var containerDiv;
 function initViz(params, sheetexc) {
  
-  //console.log(2)
+  console.log('updated tableau....')
+  dispose();
             var containerDiv = document.getElementById("refs"),
                 url = params,
                 options = {

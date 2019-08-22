@@ -201,7 +201,7 @@ import { setTimeout } from 'timers';
               this.deadLoading();
           },
           create : function(){
-            this.isLoading();
+            this.isLoading = true;
              this.$Progress.start();
                 this.form.post('api/role')
                 .then((response) => {

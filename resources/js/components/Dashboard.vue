@@ -60,12 +60,15 @@ import { setInterval } from 'timers';
                    var type = response.data.data[i];
                   console.log(type)
                    this.$router.addRoutes(
-                    [{
-                      path: '/'+response.data.data[i].routename,
+                    [
+                      {
+                      path: '/'+response.data.data[i].routename+"/:t_path/:t_url",
                       name : response.data.data[i].routename,
-                      component: require('/'+response.data.data[i].view+'.vue').default
-                    }
-                    ]);
+                      
+                      component: require('/'+response.data.data[i].view+'.vue').default,
+                      //props: {entity_type_id: response.data.data[i].routename}
+                    }]
+                    );
                }  
                this.isLoading = false
             })

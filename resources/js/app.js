@@ -127,6 +127,6 @@ const app = new Vue({
       searchit(){
          //console.log('..searching.')
          Fire.$emit('searching')
-      } 
+      } ,
     }
 });

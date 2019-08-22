@@ -159,6 +159,7 @@ import { setInterval } from 'timers';
         },
         methods: {
           rolepage :function(role){
+            console.log(role);
             this.$router.push({name: 'userroles' , params : { role_data : role}}) 
           },
             loadUser : function(){
