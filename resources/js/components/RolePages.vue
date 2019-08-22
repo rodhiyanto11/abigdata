@@ -122,27 +122,27 @@ import { setTimeout } from 'timers';
           },
           loadpages : function(){
             this.isLoading = true;
-            axios.get('api/page?req=all')
+            axios.get('/api/page?req=all')
             .then (({data}) => this.pages = data.data)
             this.deadLoading();
           },
           loadrole : function (){
             this.isLoading = true;
-            axios.get('api/role?req=all')
+            axios.get('/api/role?req=all')
             .then (({data}) => this.roles = data.data)
             this.deadLoading();
           },
           loadpagerole : function (role_data){
                 this.isLoading = true;
                 if(role_data.length == 0 ){
-                  axios.get('api/role?req=pagerole')
+                  axios.get('/api/role?req=pagerole')
                   .then (({data}) => this.dataroles = data)
                 }else{
                   if(this.$parent.search.length > 0){
-                    axios.get('api/role?req=pagerole&id='+role_data.id+'&search='+this.$parent.search)
+                    axios.get('/api/role?req=pagerole&id='+role_data.id+'&search='+this.$parent.search)
                     .then (({data}) => this.dataroles = data)
                   }else{
-                    axios.get('api/role?req=pagerole&id='+role_data.id)
+                    axios.get('/api/role?req=pagerole&id='+role_data.id)
                    .then (({data}) => this.dataroles = data)
                   }
                   
@@ -180,7 +180,7 @@ import { setTimeout } from 'timers';
               }).then((result) => {
                 if (result.value) {
                   this.$Progress.start();
-                  this.form.get('api/role?req=delete&id='+id)
+                  this.form.get('/api/role?req=delete&id='+id)
                   .then((response) => {
                     Fire.$emit('AfterCreate');
                     this.$Progress.finish()
@@ -203,7 +203,7 @@ import { setTimeout } from 'timers';
           create : function(){
             this.isLoading = true;
              this.$Progress.start();
-                this.form.post('api/role')
+                this.form.post('/api/role')
                 .then((response) => {
                     this.$Progress.finish()
                     $("#exampleModal").modal('hide');

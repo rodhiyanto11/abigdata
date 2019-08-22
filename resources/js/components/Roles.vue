@@ -128,11 +128,11 @@ import { setTimeout } from 'timers';
               
                if(this.$parent.search.length == 0 ){
                  this.isLoading = true;
-                  axios.get("api/role").then(  ({ data }) => (this.roles = data) );
+                  axios.get("/api/role").then(  ({ data }) => (this.roles = data) );
                   this.deadLoading();
                 }else{
                   this.isLoading = true;
-                  axios.get("api/role?search="+this.$parent.search).then(  ({ data }) => (this.roles = data) );
+                  axios.get("/api/role?search="+this.$parent.search).then(  ({ data }) => (this.roles = data) );
                   this.deadLoading();
                 }
                 
@@ -156,7 +156,7 @@ import { setTimeout } from 'timers';
              createRole: function () {
                this.isLoading = true;
                 this.$Progress.start();
-                this.form.post('api/role')
+                this.form.post('/api/role')
                 .then((response) => {
                     this.$Progress.finish()
                     $("#exampleModal").modal('hide');
@@ -179,7 +179,7 @@ import { setTimeout } from 'timers';
              updateRole(){
                this.isLoading = true;
                 this.$Progress.start();
-                this.form.put('api/role/'+this.form.id)
+                this.form.put('/api/role/'+this.form.id)
                 .then((response) => {
                   this.$Progress.finish();
                   $("#exampleModal").modal('hide');
@@ -220,7 +220,7 @@ import { setTimeout } from 'timers';
                 this.deadLoading();
                 if (result.value) {
                   this.$Progress.start();
-                  this.form.delete('api/role/'+id)
+                  this.form.delete('/api/role/'+id)
                   .then((response) => {
                     Fire.$emit('AfterCreate');
                     this.$Progress.finish()
@@ -241,7 +241,7 @@ import { setTimeout } from 'timers';
              } ,
              getResults(page = 1) {
                this.isLoading = true;
-                axios.get('api/role?page=' + page)
+                axios.get('/api/role?page=' + page)
                   .then(response => {
                     this.roles = response.data;
                     this.deadLoading();

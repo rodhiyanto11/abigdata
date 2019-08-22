@@ -52,11 +52,11 @@ import { setInterval } from 'timers';
               console.log('Loading finnissssssh')
             },
             addRoute: function() {
-          axios.get('api/user?req=menu')
+          axios.get('/api/user?req=menu')
           .then(response => {
              
                for(var i  = 0; i < response.data.data.length ; i++){
-                // console.log(i);
+               
                    var type = response.data.data[i];
                   console.log(type)
                    this.$router.addRoutes(
@@ -78,11 +78,7 @@ import { setInterval } from 'timers';
           }
         },  
         created (){
-             /*setTimeout(() => {
-                  this.isLoading = false
-                  console.log(this.isLoading)
-                },7000)*/
-            //this.doAjax();
+            
             this.addRoute();
             this.deadLoading();
         },

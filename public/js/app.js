@@ -1714,7 +1714,6 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Tableau__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tableau */ "./resources/js/components/Tableau.vue");
 //
 //
 //
@@ -1732,15 +1731,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1748,12 +1738,7 @@ __webpack_require__.r(__webpack_exports__);
       url: "",
       location: "",
       full: "",
-      sheetexc: [],
-      propsToPass: {
-        name: 'John',
-        last_name: 'Doe',
-        age: '29'
-      }
+      sheetexc: []
     };
   },
   methods: {
@@ -1780,11 +1765,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  components: {
-    props: ['rodhi'],
-    'tableau': _Tableau__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  //rendering new component
   watch: {
     '$route': function $route(to, from) {
       var _this2 = this;
@@ -1793,7 +1773,7 @@ __webpack_require__.r(__webpack_exports__);
       Fire.$on('AfterCreate', function () {
         _this2.$Progress.start();
 
-        _this2.url = _this2.$route.params.t_url;
+        _this2.url = 'https://dwh.admedika.co.id:7070/trusted/';
         _this2.location = _this2.$route.params.t_path;
         var url = _this2.url + _this2.token + _this2.location;
         _this2.full = _this2.initgetViz(url);
@@ -1809,7 +1789,7 @@ __webpack_require__.r(__webpack_exports__);
 
     this.Token();
     Fire.$on('AfterCreate', function () {
-      _this3.url = _this3.$route.params.t_url;
+      _this3.url = 'https://dwh.admedika.co.id:7070/trusted/';
       _this3.location = _this3.$route.params.t_path;
       var url = _this3.url + _this3.token + _this3.location;
       _this3.full = _this3.initgetViz(url);
@@ -1884,9 +1864,8 @@ __webpack_require__.r(__webpack_exports__);
     addRoute: function addRoute() {
       var _this2 = this;
 
-      axios.get('api/user?req=menu').then(function (response) {
+      axios.get('/api/user?req=menu').then(function (response) {
         for (var i = 0; i < response.data.data.length; i++) {
-          // console.log(i);
           var type = response.data.data[i];
           console.log(type);
 
@@ -1903,11 +1882,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    /*setTimeout(() => {
-         this.isLoading = false
-         console.log(this.isLoading)
-       },7000)*/
-    //this.doAjax();
     this.addRoute();
     this.deadLoading();
   },
@@ -2187,6 +2161,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2225,13 +2200,13 @@ __webpack_require__.r(__webpack_exports__);
       this.isLoading = true; //console.log(this.$parent.search.length);
 
       if (this.$parent.search.length == 0) {
-        axios.get("api/page").then(function (_ref) {
+        axios.get("/api/page").then(function (_ref) {
           var data = _ref.data;
           return _this2.pages = data;
         });
         this.deadLoading();
       } else {
-        axios.get("api/page?search=" + this.$parent.search).then(function (_ref2) {
+        axios.get("/api/page?search=" + this.$parent.search).then(function (_ref2) {
           var data = _ref2.data;
           return _this2.pages = data;
         });
@@ -2256,7 +2231,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.isLoading = true;
       this.$Progress.start();
-      this.form.post('api/page').then(function (response) {
+      this.form.post('/api/page').then(function (response) {
         _this3.$Progress.finish();
 
         $("#exampleModal").modal('hide');
@@ -2280,7 +2255,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.isLoading = true;
       this.$Progress.start();
-      this.form.put('api/page/' + this.form.id).then(function (response) {
+      this.form.put('/api/page/' + this.form.id).then(function (response) {
         _this4.$Progress.finish();
 
         $("#exampleModal").modal('hide');
@@ -2319,7 +2294,7 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this5.$Progress.start();
 
-          _this5.form["delete"]('api/page/' + id).then(function (response) {
+          _this5.form["delete"]('/api/page/' + id).then(function (response) {
             Fire.$emit('AfterCreate');
 
             _this5.$Progress.finish();
@@ -2345,7 +2320,7 @@ __webpack_require__.r(__webpack_exports__);
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.isLoading = true;
       console.log(page);
-      axios.get('api/page?page=' + page).then(function (response) {
+      axios.get('/api/page?page=' + page).then(function (response) {
         _this6.pages = response.data;
       });
     }
@@ -2570,7 +2545,7 @@ __webpack_require__.r(__webpack_exports__);
     changerole: function changerole(event) {
       console.log(event.target.value);
       this.isLoading = true;
-      axios.get("api/user?req=update&id=" + event.target.value).then(function (_ref) {
+      axios.get("/api/user?req=update&id=" + event.target.value).then(function (_ref) {
         var data = _ref.data;
         return (//console.log(data)
           window.location.href = '/home'
@@ -2581,7 +2556,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.isLoading = true;
-      axios.get("api/userrole?req=userrole&id=profile").then(function (_ref2) {
+      axios.get("/api/userrole?req=userrole&id=profile").then(function (_ref2) {
         var data = _ref2.data;
         return _this2.roles = data;
       });
@@ -2591,7 +2566,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.isLoading = true;
-      axios.get("api/user?getprofile=true").then(function (_ref3) {
+      axios.get("/api/user?getprofile=true").then(function (_ref3) {
         var data = _ref3.data;
         return _this3.form.fill(data.data);
       });
@@ -2613,7 +2588,7 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this4.$Progress.start();
 
-          _this4.form.put('api/user/' + _this4.form.id).then(function (response) {
+          _this4.form.put('/api/user/' + _this4.form.id).then(function (response) {
             //Fire.$emit('AfterCreate');
             _this4.$Progress.finish();
 
@@ -2792,7 +2767,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.isLoading = true;
-      axios.get('api/page?req=all').then(function (_ref) {
+      axios.get('/api/page?req=all').then(function (_ref) {
         var data = _ref.data;
         return _this2.pages = data.data;
       });
@@ -2802,7 +2777,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.isLoading = true;
-      axios.get('api/role?req=all').then(function (_ref2) {
+      axios.get('/api/role?req=all').then(function (_ref2) {
         var data = _ref2.data;
         return _this3.roles = data.data;
       });
@@ -2814,18 +2789,18 @@ __webpack_require__.r(__webpack_exports__);
       this.isLoading = true;
 
       if (role_data.length == 0) {
-        axios.get('api/role?req=pagerole').then(function (_ref3) {
+        axios.get('/api/role?req=pagerole').then(function (_ref3) {
           var data = _ref3.data;
           return _this4.dataroles = data;
         });
       } else {
         if (this.$parent.search.length > 0) {
-          axios.get('api/role?req=pagerole&id=' + role_data.id + '&search=' + this.$parent.search).then(function (_ref4) {
+          axios.get('/api/role?req=pagerole&id=' + role_data.id + '&search=' + this.$parent.search).then(function (_ref4) {
             var data = _ref4.data;
             return _this4.dataroles = data;
           });
         } else {
-          axios.get('api/role?req=pagerole&id=' + role_data.id).then(function (_ref5) {
+          axios.get('/api/role?req=pagerole&id=' + role_data.id).then(function (_ref5) {
             var data = _ref5.data;
             return _this4.dataroles = data;
           });
@@ -2866,7 +2841,7 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this5.$Progress.start();
 
-          _this5.form.get('api/role?req=delete&id=' + id).then(function (response) {
+          _this5.form.get('/api/role?req=delete&id=' + id).then(function (response) {
             Fire.$emit('AfterCreate');
 
             _this5.$Progress.finish();
@@ -2892,7 +2867,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.isLoading = true;
       this.$Progress.start();
-      this.form.post('api/role').then(function (response) {
+      this.form.post('/api/role').then(function (response) {
         _this6.$Progress.finish();
 
         $("#exampleModal").modal('hide');
@@ -3093,14 +3068,14 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.$parent.search.length == 0) {
         this.isLoading = true;
-        axios.get("api/role").then(function (_ref) {
+        axios.get("/api/role").then(function (_ref) {
           var data = _ref.data;
           return _this2.roles = data;
         });
         this.deadLoading();
       } else {
         this.isLoading = true;
-        axios.get("api/role?search=" + this.$parent.search).then(function (_ref2) {
+        axios.get("/api/role?search=" + this.$parent.search).then(function (_ref2) {
           var data = _ref2.data;
           return _this2.roles = data;
         });
@@ -3127,7 +3102,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.isLoading = true;
       this.$Progress.start();
-      this.form.post('api/role').then(function (response) {
+      this.form.post('/api/role').then(function (response) {
         _this3.$Progress.finish();
 
         $("#exampleModal").modal('hide');
@@ -3155,7 +3130,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.isLoading = true;
       this.$Progress.start();
-      this.form.put('api/role/' + this.form.id).then(function (response) {
+      this.form.put('/api/role/' + this.form.id).then(function (response) {
         _this4.$Progress.finish();
 
         $("#exampleModal").modal('hide');
@@ -3200,7 +3175,7 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this5.$Progress.start();
 
-          _this5.form["delete"]('api/role/' + id).then(function (response) {
+          _this5.form["delete"]('/api/role/' + id).then(function (response) {
             Fire.$emit('AfterCreate');
 
             _this5.$Progress.finish();
@@ -3225,7 +3200,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.isLoading = true;
-      axios.get('api/role?page=' + page).then(function (response) {
+      axios.get('/api/role?page=' + page).then(function (response) {
         _this6.roles = response.data;
 
         _this6.deadLoading();
@@ -3364,7 +3339,7 @@ __webpack_require__.r(__webpack_exports__);
     loadpages: function loadpages() {
       var _this = this;
 
-      axios.get('api/page?req=all').then(function (_ref) {
+      axios.get('/api/page?req=all').then(function (_ref) {
         var data = _ref.data;
         return _this.pages = data.data;
       });
@@ -3372,7 +3347,7 @@ __webpack_require__.r(__webpack_exports__);
     loadrole: function loadrole() {
       var _this2 = this;
 
-      axios.get('api/role?req=all').then(function (_ref2) {
+      axios.get('/api/role?req=all').then(function (_ref2) {
         var data = _ref2.data;
         return _this2.roles = data.data;
       });
@@ -3383,18 +3358,18 @@ __webpack_require__.r(__webpack_exports__);
       console.log(role_data);
 
       if (role_data.length == 0) {
-        axios.get('api/role?req=pagerole').then(function (_ref3) {
+        axios.get('/api/role?req=pagerole').then(function (_ref3) {
           var data = _ref3.data;
           return _this3.dataroles = data;
         });
       } else {
         if (this.$parent.search.length > 0) {
-          axios.get('api/userrole?req=userrole&id=' + role_data.id + '&key=' + this.$parent.search).then(function (_ref4) {
+          axios.get('/api/userrole?req=userrole&id=' + role_data.id + '&key=' + this.$parent.search).then(function (_ref4) {
             var data = _ref4.data;
             return _this3.dataroles = data;
           });
         } else {
-          axios.get('api/userrole?req=userrole&id=' + role_data.id).then(function (_ref5) {
+          axios.get('/api/userrole?req=userrole&id=' + role_data.id).then(function (_ref5) {
             var data = _ref5.data;
             return _this3.dataroles = data;
           });
@@ -3428,7 +3403,7 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this4.$Progress.start();
 
-          _this4.form["delete"]('api/userrole/' + id).then(function (response) {
+          _this4.form["delete"]('/api/userrole/' + id).then(function (response) {
             Fire.$emit('AfterCreate');
 
             _this4.$Progress.finish();
@@ -3452,7 +3427,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this5 = this;
 
       this.$Progress.start();
-      this.form.post('api/userrole').then(function (response) {
+      this.form.post('/api/userrole').then(function (response) {
         _this5.$Progress.finish();
 
         $("#exampleModal").modal('hide');
@@ -3685,12 +3660,12 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       if (this.$parent.search.length == 0) {
-        axios.get("api/user").then(function (_ref) {
+        axios.get("/api/user").then(function (_ref) {
           var data = _ref.data;
           return _this.users = data;
         });
       } else {
-        axios.get("api/user?search=" + this.$parent.search).then(function (_ref2) {
+        axios.get("/api/user?search=" + this.$parent.search).then(function (_ref2) {
           var data = _ref2.data;
           return _this.users = data;
         });
@@ -3699,7 +3674,7 @@ __webpack_require__.r(__webpack_exports__);
     loadRoles: function loadRoles() {
       var _this2 = this;
 
-      axios.get("api/role?req=all").then(function (_ref3) {
+      axios.get("/api/role?req=all").then(function (_ref3) {
         var data = _ref3.data;
         return _this2.roles = data;
       });
@@ -3708,7 +3683,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.$Progress.start();
-      this.form.post('api/user').then(function (response) {
+      this.form.post('/api/user').then(function (response) {
         _this3.$Progress.finish();
 
         $("#exampleModal").modal('hide');
@@ -3731,7 +3706,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       this.$Progress.start();
-      this.form.put('api/user/' + this.form.id).then(function (response) {
+      this.form.put('/api/user/' + this.form.id).then(function (response) {
         _this4.$Progress.finish();
 
         $("#exampleModal").modal('hide');
@@ -3769,7 +3744,7 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this5.$Progress.start();
 
-          _this5.form["delete"]('api/user/' + id).then(function (response) {
+          _this5.form["delete"]('/api/user/' + id).then(function (response) {
             Fire.$emit('AfterCreate');
 
             _this5.$Progress.finish();
@@ -3805,7 +3780,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       console.log(page);
-      axios.get('api/user?page=' + page).then(function (response) {
+      axios.get('/api/user?page=' + page).then(function (response) {
         _this6.users = response.data;
       });
     }
@@ -63596,45 +63571,39 @@ var render = function() {
       [
         _c("center", [
           _c("div", { attrs: { id: "app" } }, [
-            _c("h1", [_vm._v(_vm._s(_vm.msg))]),
-            _vm._v(" "),
             _c("div", {
               ref: "tableau",
               staticClass: "ex1",
               attrs: { id: "refs" }
             }),
             _vm._v(" "),
-            _c("div", { staticClass: "select-style" }, [
-              _c("select", { attrs: { id: "SheetList" } })
-            ]),
-            _vm._v(" "),
             _c(
-              "button",
-              { staticClass: "button", attrs: { onclick: "getVizData()" } },
-              [_vm._v("Export data to CSV")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "button", attrs: { onclick: "exportToPDF();" } },
-              [_vm._v("Export to PDF")]
+              "div",
+              { staticClass: "select-style", staticStyle: { display: "none" } },
+              [_c("select", { attrs: { id: "SheetList" } })]
             ),
             _vm._v(" "),
             _c(
               "button",
               {
-                on: {
-                  click: function($event) {
-                    return _vm.pindah()
-                  }
-                }
+                staticClass: "button",
+                staticStyle: { display: "none" },
+                attrs: { onclick: "getVizData()" }
               },
-              [_vm._v("pindah")]
+              [_vm._v("Export data to CSV")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "button",
+                staticStyle: { display: "none" },
+                attrs: { onclick: "exportToPDF();" }
+              },
+              [_vm._v("Export to PDF")]
             )
           ])
-        ]),
-        _vm._v(" "),
-        _c("tableau")
+        ])
       ],
       1
     )
@@ -64374,6 +64343,10 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("option", { attrs: { value: "2" } }, [
                                   _vm._v("Route")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "3" } }, [
+                                  _vm._v("Tableau")
                                 ])
                               ]
                             ),
@@ -66073,30 +66046,6 @@ var staticRenderFns = [
     ])
   }
 ]
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632&":
-/*!**********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632& ***!
-  \**********************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("input", { attrs: { type: "text" } })
-}
-var staticRenderFns = []
 render._withStripped = true
 
 
@@ -85889,7 +85838,6 @@ var map = {
 	"./Profile.vue": "./resources/js/components/Profile.vue",
 	"./RolePages.vue": "./resources/js/components/RolePages.vue",
 	"./Roles.vue": "./resources/js/components/Roles.vue",
-	"./Tableau.vue": "./resources/js/components/Tableau.vue",
 	"./Userroles.vue": "./resources/js/components/Userroles.vue",
 	"./Users.vue": "./resources/js/components/Users.vue",
 	"./create.vue": "./resources/js/components/create.vue",
@@ -86554,59 +86502,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Roles_vue_vue_type_template_id_312d3e3c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Roles_vue_vue_type_template_id_312d3e3c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/components/Tableau.vue":
-/*!*********************************************!*\
-  !*** ./resources/js/components/Tableau.vue ***!
-  \*********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tableau.vue?vue&type=template&id=01d0b632& */ "./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-var script = {}
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
-  script,
-  _Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/Tableau.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632&":
-/*!****************************************************************************!*\
-  !*** ./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632& ***!
-  \****************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Tableau.vue?vue&type=template&id=01d0b632& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Tableau.vue?vue&type=template&id=01d0b632&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tableau_vue_vue_type_template_id_01d0b632___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
