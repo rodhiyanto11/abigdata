@@ -12,7 +12,7 @@
                     </button>
                 </div>
             </div>
-            <div class="card-body table-responsive p-0" style="height: 300px;">
+            <div class="card-body table-responsive p-0" style="">
                 <table class="table table-head-fixed">
                   <thead> 
                     <tr>
@@ -20,7 +20,9 @@
                       <th>Model</th>
                       <th>Controller</th>
                       <th>View</th>
+                      <th>Page link</th>
                       <th>Route Name</th>
+                      <th>Status</th>
                       <th>Note</th>
                       <th>Create Date</th>
                       <th>Modify</th>
@@ -32,7 +34,9 @@
                       <td>{{ page.model | ucWords }}</td>
                       <td>{{ page.controller | ucWords }}</td>
                       <td>{{ page.view | ucWords }}</td>
+                      <td>{{ page.pagelink  }}</td>
                       <td>{{ page.routename | ucWords }}</td>
+                      <td>{{ page.status  == 1 ?  'Menu + Route' : ( page.status  == 2 ? 'Route'  : 'Tableau' ) }}</td>
                       <td>{{ page.note }}</td>
                       <td>{{ page.created_at | completedate}}</td>
                       <td>
@@ -98,6 +102,14 @@
                                 >
                                 <has-error :form="form" field="view"></has-error>
                             </div>
+                             <div class="form-group">
+                                <label>Page Link(dashboard tableau)<span class="mandatory" >(contoh : 'views/VASCorporateYKPANTAM-asoff/04_BRANCH_DIAGNOSTIC_DETAILS')</span></label>
+                                <input v-model="form.pagelink" type="text" name="pagelink"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('pagelink') }"
+                                placeholder="pagelink"
+                                >
+                                <has-error :form="form" field="pagelink"></has-error>
+                            </div>
                             <div class="form-group">
                                 <label>Route Name<span class="mandatory" >* (contoh : 'users')</span></label>
                                 <input v-model="form.routename" type="text" name="routename"
@@ -111,6 +123,7 @@
                                      <select name="status" id="status" v-model="form.status"  class="form-control" :class="{ 'is-invalid': form.errors.has('status') }">
                                           <option value="1">Menu + Route</option>
                                           <option value="2">Route</option>
+                                          <option value="3">Tableau</option>
                                       </select>
                                     <has-error :form="form" field="name"></has-error>
                                 </div>
@@ -159,7 +172,8 @@ import { setTimeout } from 'timers';
                     routename   : '',
                     note        : '',
                     create_at   : '',
-                    status      : ''
+                    status      : '',
+                    pagelink      : '',
                 })
             }
             
@@ -178,10 +192,10 @@ import { setTimeout } from 'timers';
                 this.isLoading = true;
               //console.log(this.$parent.search.length);
                if(this.$parent.search.length == 0){
-                 axios.get("api/page").then(  ({ data }) => (this.pages = data) );
+                 axios.get("/api/page").then(  ({ data }) => (this.pages = data) );
                  this.deadLoading();
                }else{
-                 axios.get("api/page?search="+this.$parent.search).then(  ({ data }) => (this.pages = data) );
+                 axios.get("/api/page?search="+this.$parent.search).then(  ({ data }) => (this.pages = data) );
                  this.deadLoading();
                } 
             },
@@ -203,7 +217,7 @@ import { setTimeout } from 'timers';
              createRole: function () {
                this.isLoading  = true;
                 this.$Progress.start();
-                this.form.post('api/page')
+                this.form.post('/api/page')
                 .then((response) => {
                     this.$Progress.finish()
                     $("#exampleModal").modal('hide');
@@ -225,7 +239,7 @@ import { setTimeout } from 'timers';
              updateRole(){
                this.isLoading = true;
                 this.$Progress.start();
-                this.form.put('api/page/'+this.form.id)
+                this.form.put('/api/page/'+this.form.id)
                 .then((response) => {
                   this.$Progress.finish();
                   $("#exampleModal").modal('hide');
@@ -262,7 +276,7 @@ import { setTimeout } from 'timers';
               }).then((result) => {
                 if (result.value) {
                   this.$Progress.start();
-                  this.form.delete('api/page/'+id)
+                  this.form.delete('/api/page/'+id)
                   .then((response) => {
                     Fire.$emit('AfterCreate');
                     this.$Progress.finish()
@@ -285,7 +299,7 @@ import { setTimeout } from 'timers';
              getResults(page = 1) {
                this.isLoading = true;
                console.log(page)
-                axios.get('api/page?page=' + page)
+                axios.get('/api/page?page=' + page)
                   .then(response => {
                     this.pages = response.data;
                   });

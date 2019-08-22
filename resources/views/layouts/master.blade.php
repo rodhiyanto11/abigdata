@@ -63,7 +63,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+  <a href="{{url('/home')}}" class="brand-link">
     <img src="{{ asset('img/logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-1"
            style="opacity: .8">
       <span class="brand-text font-weight-light">Big Data</span><span><i style="font-size:10px"> Admedika</i></span>
@@ -126,7 +126,13 @@
               @foreach($menus['admin'] as $menu)
               
               <li class="nav-item">
-                 <router-link to="/{{$menu->view}}" class="nav-link">
+                @if($menu->status == 1)
+                 <router-link to="/{{$menu->view}}/false/false" class="nav-link">
+                @elseif($menu->status == 3)  
+                 <router-link :to="{path:'/{{$menu->view}}',name:'{{$menu->routename}}',params : { t_path : '{{$menu->pagelink}}',t_url : 'dashboard'} }" class="nav-link"
+                 replace
+                 >
+                @endif  
                     <i class="nav-icon {{ $menu->icons }} {{ $color[$color_random[$i]] }}"></i>
                     <p>
                       {{  ucwords($menu->name) }}
@@ -139,7 +145,7 @@
              
             </ul>
           </li>
-          <li class="nav-item">
+          <!--<li class="nav-item">
               <router-link :to="{path:'/Contents',name:'contents',params : { t_path : '/views/VASCorporateYKPANTAM-asoff/01_GENERAL_OVERVIEW',t_url : 'https://dwh.admedika.co.id:7070/trusted/'} }" class="nav-link"
               replace
               >
@@ -158,7 +164,7 @@
                   Tableau 2
                 </p>
               </router-link>
-           </li> 
+           </li> -->
            @endif
           
           <li class="nav-item">
@@ -238,7 +244,7 @@ $(function () {
       var containerDiv;
 function initViz(params, sheetexc) {
  
-  console.log('updated tableau....')
+  console.log('tableau is updated....')
   dispose();
             var containerDiv = document.getElementById("refs"),
                 url = params,

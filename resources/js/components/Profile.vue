@@ -190,7 +190,7 @@ import { setTimeout } from 'timers';
             changerole: function(event){
                 console.log(event.target.value);
                 this.isLoading = true;
-                axios.get("api/user?req=update&id="+event.target.value).then(  ({ data }) => (
+                axios.get("/api/user?req=update&id="+event.target.value).then(  ({ data }) => (
                     //console.log(data)
                     window.location.href = '/home'
                 ) );
@@ -198,12 +198,12 @@ import { setTimeout } from 'timers';
             },
             loadRoles : function(){
                 this.isLoading = true;
-                axios.get("api/userrole?req=userrole&id=profile").then(  ({ data }) => (this.roles = data) );
+                axios.get("/api/userrole?req=userrole&id=profile").then(  ({ data }) => (this.roles = data) );
                 this.deadLoading();
             },
            loadUser : function(){
                this.isLoading = true;
-                axios.get("api/user?getprofile=true").then(  ({ data }) => (this.form.fill(data.data)) );
+                axios.get("/api/user?getprofile=true").then(  ({ data }) => (this.form.fill(data.data)) );
                 this.deadLoading();
             },
             updateUser : function(){
@@ -219,7 +219,7 @@ import { setTimeout } from 'timers';
                 }).then((result) => {
                     if (result.value) {
                     this.$Progress.start();
-                    this.form.put('api/user/'+this.form.id)
+                    this.form.put('/api/user/'+this.form.id)
                     .then((response) => {
                         //Fire.$emit('AfterCreate');
                         this.$Progress.finish()

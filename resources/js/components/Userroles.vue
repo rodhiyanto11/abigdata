@@ -105,25 +105,25 @@
             this.$router.back('roles');
           },
           loadpages : function(){
-            axios.get('api/page?req=all')
+            axios.get('/api/page?req=all')
             .then (({data}) => this.pages = data.data)
           },
           loadrole : function (){
-            axios.get('api/role?req=all')
+            axios.get('/api/role?req=all')
             .then (({data}) => this.roles = data.data)
           },
           loadpagerole : function (role_data){
               console.log(role_data);
             
                 if(role_data.length == 0 ){
-                  axios.get('api/role?req=pagerole')
+                  axios.get('/api/role?req=pagerole')
                   .then (({data}) => this.dataroles = data)
                 }else{
                   if(this.$parent.search.length > 0){
-                    axios.get('api/userrole?req=userrole&id='+role_data.id+'&key='+this.$parent.search)
+                    axios.get('/api/userrole?req=userrole&id='+role_data.id+'&key='+this.$parent.search)
                     .then (({data}) => this.dataroles = data)
                   }else{
-                    axios.get('api/userrole?req=userrole&id='+role_data.id)
+                    axios.get('/api/userrole?req=userrole&id='+role_data.id)
                     .then (({data}) => this.dataroles = data)
                   }
                   
@@ -155,7 +155,7 @@
               }).then((result) => {
                 if (result.value) {
                   this.$Progress.start();
-                  this.form.delete('api/userrole/'+id)
+                  this.form.delete('/api/userrole/'+id)
                   .then((response) => {
                     Fire.$emit('AfterCreate');
                     this.$Progress.finish()
@@ -176,7 +176,7 @@
           },
           create : function(){
              this.$Progress.start();
-                this.form.post('api/userrole')
+                this.form.post('/api/userrole')
                 .then((response) => {
                     this.$Progress.finish()
                     $("#exampleModal").modal('hide');
