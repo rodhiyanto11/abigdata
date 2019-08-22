@@ -186,14 +186,14 @@ import { setTimeout } from 'timers';
                } 
             },
             createModal (){
-              this.isLoading = true;
+            //  this.isLoading = true;
                this.editmode = false;
                this.form.reset();
                $('#exampleModal').modal('show');
                
              },
              editModal (user){
-               this.isLoading = true;
+             //  this.isLoading = true;
                this.editmode = true;
                this.form.reset();
                $('#exampleModal').modal('show');
