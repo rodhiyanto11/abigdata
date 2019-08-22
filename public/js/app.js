@@ -65573,7 +65573,11 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        _vm._s(_vm._f("ucWords")(page.name))
+                                        _vm._s(
+                                          _vm._f("ucWords")(
+                                            page.name + page.note
+                                          )
+                                        )
                                       )
                                     ]
                                   )

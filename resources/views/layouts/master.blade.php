@@ -133,7 +133,7 @@
                  replace
                  >
                 @endif  
-                    <i class="nav-icon {{ $menu->icons }} {{ $color[$color_random[$i]] }}"></i>
+                    <i class="nav-icon fas fa-bars {{ $color[$color_random[$i]] }}"></i>
                     <p>
                       {{  ucwords($menu->name) }}
                     </p>

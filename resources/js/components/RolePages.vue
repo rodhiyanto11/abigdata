@@ -65,7 +65,7 @@
                                 <div class="form-group">
                                     <label>Page Name<span class="mandatory" >*</span></label>
                                      <select name="page_id" id="page_id" v-model="form.page_id"  class="form-control" :class="{ 'is-invalid': form.errors.has('page_id') }">
-                                          <option v-for="page in pages" :key="page.id" v-bind:value="page.id">{{ page.name | ucWords }}</option>
+                                          <option v-for="page in pages" :key="page.id" v-bind:value="page.id">{{ page.name + page.note | ucWords }}</option>
                                       </select>
                                     <has-error :form="form" field="name"></has-error>
                                 </div>
