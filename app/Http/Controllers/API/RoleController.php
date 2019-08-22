@@ -35,7 +35,7 @@ class RoleController extends Controller
                     return DB::table('role_pages')
                     ->join('roles','roles.id','=','role_pages.role_id')
                     ->join('pages','pages.id','=','role_pages.page_id')
-                    ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at')
+                    ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at','pages.note as pagenote')
                     ->where('roles.id','=',$request->id)
                     ->where('pages.name', 'ilike', '%' . $request->search . '%')
                     ->get();      
@@ -43,7 +43,7 @@ class RoleController extends Controller
                     return DB::table('role_pages')
                     ->join('roles','roles.id','=','role_pages.role_id')
                     ->join('pages','pages.id','=','role_pages.page_id')
-                    ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at')
+                    ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at','pages.note as pagenote')
                     ->where('roles.id','=',$request->id)
                     ->get();  
                 }

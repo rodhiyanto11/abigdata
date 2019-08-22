@@ -30,7 +30,7 @@
                   <tbody>
                     <tr v-for="datarole in dataroles" :key="datarole.id">
                       <td>{{ datarole.role_name | ucWords }}</td>
-                      <td>{{ datarole.page_name | ucWords }}</td>
+                      <td>{{ datarole.page_name +' '+ datarole.role_name  }}</td>
                       <td>{{ datarole.created_at | completedate}}</td>
                       <td> 
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Delete" @click = "deleterolepage(datarole.id)">

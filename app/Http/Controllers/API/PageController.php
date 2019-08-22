@@ -77,6 +77,7 @@ class PageController extends Controller
             'status' => $request['status'],
             'view' => $request['view'],
             'note' => $request['note'],
+            'pagelink' => $request['pagelink'],
         ]);
         return response([
             'data' => $data
@@ -125,6 +126,7 @@ class PageController extends Controller
        $update->routename       = $request->routename;
        $update->status          = $request->status;
        $update->note            = $request->note;
+       $update->pagelink        = $request->pagelink;
        $update->save();
 
        return response([

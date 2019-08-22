@@ -2162,6 +2162,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2179,7 +2191,8 @@ __webpack_require__.r(__webpack_exports__);
         routename: '',
         note: '',
         create_at: '',
-        status: ''
+        status: '',
+        pagelink: ''
       })
     };
   },
@@ -63884,84 +63897,91 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "card-body table-responsive p-0",
-              staticStyle: { height: "300px" }
-            },
-            [
-              _c("table", { staticClass: "table table-head-fixed" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.pages.data, function(page) {
-                    return _c("tr", { key: page.id }, [
-                      _c("td", [_vm._v(_vm._s(_vm._f("ucWords")(page.name)))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(_vm._f("ucWords")(page.model)))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v(_vm._s(_vm._f("ucWords")(page.controller)))
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(_vm._f("ucWords")(page.view)))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v(_vm._s(_vm._f("ucWords")(page.routename)))
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(page.note))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v(_vm._s(_vm._f("completedate")(page.created_at)))
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "a",
-                          {
-                            attrs: {
-                              href: "#",
-                              "data-toggle": "tooltip",
-                              "data-placement": "left",
-                              title: "Edit"
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.editModal(page)
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "fas fa-edit blue" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            attrs: {
-                              href: "#",
-                              "data-toggle": "tooltip",
-                              "data-placement": "right",
-                              title: "Delete"
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.deleteRole(page.id)
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "fas fa-trash red" })]
+          _c("div", { staticClass: "card-body table-responsive p-0" }, [
+            _c("table", { staticClass: "table table-head-fixed" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.pages.data, function(page) {
+                  return _c("tr", { key: page.id }, [
+                    _c("td", [_vm._v(_vm._s(_vm._f("ucWords")(page.name)))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm._f("ucWords")(page.model)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(_vm._f("ucWords")(page.controller)))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm._f("ucWords")(page.view)))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(page.pagelink))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(_vm._f("ucWords")(page.routename)))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(
+                          page.status == 1
+                            ? "Menu + Route"
+                            : page.status == 2
+                            ? "Route"
+                            : "Tableau"
                         )
-                      ])
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(page.note))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(_vm._f("completedate")(page.created_at)))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: "#",
+                            "data-toggle": "tooltip",
+                            "data-placement": "left",
+                            title: "Edit"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.editModal(page)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-edit blue" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: "#",
+                            "data-toggle": "tooltip",
+                            "data-placement": "right",
+                            title: "Delete"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteRole(page.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-trash red" })]
+                      )
                     ])
-                  }),
-                  0
-                )
-              ])
-            ]
-          ),
+                  ])
+                }),
+                0
+              )
+            ])
+          ]),
           _vm._v(" "),
           _c(
             "div",
@@ -64258,6 +64278,52 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
+                                  value: _vm.form.pagelink,
+                                  expression: "form.pagelink"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.form.errors.has("pagelink")
+                              },
+                              attrs: {
+                                type: "text",
+                                name: "pagelink",
+                                placeholder: "pagelink"
+                              },
+                              domProps: { value: _vm.form.pagelink },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "pagelink",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: { form: _vm.form, field: "pagelink" }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _vm._m(7),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
                                   value: _vm.form.routename,
                                   expression: "form.routename"
                                 }
@@ -64297,7 +64363,7 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
-                            _vm._m(7),
+                            _vm._m(8),
                             _vm._v(" "),
                             _c(
                               "select",
@@ -64478,7 +64544,11 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("View")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Page link")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Route Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")]),
         _vm._v(" "),
         _c("th", [_vm._v("Note")]),
         _vm._v(" "),
@@ -64541,6 +64611,19 @@ var staticRenderFns = [
     return _c("label", [
       _vm._v("View"),
       _c("span", { staticClass: "mandatory" }, [_vm._v("* (contoh : 'Users')")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", [
+      _vm._v("Page Link(dashboard tableau)"),
+      _c("span", { staticClass: "mandatory" }, [
+        _vm._v(
+          "(contoh : 'views/VASCorporateYKPANTAM-asoff/04_BRANCH_DIAGNOSTIC_DETAILS')"
+        )
+      ])
     ])
   },
   function() {
@@ -65197,7 +65280,9 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("td", [
-                        _vm._v(_vm._s(_vm._f("ucWords")(datarole.page_name)))
+                        _vm._v(
+                          _vm._s(datarole.page_name + " " + datarole.role_name)
+                        )
                       ]),
                       _vm._v(" "),
                       _c("td", [
