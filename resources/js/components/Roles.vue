@@ -100,6 +100,7 @@ import { setTimeout } from 'timers';
     export default {
         data : function(){
             return {
+              
                 isLoading : true,
                 fullPage: true,
                 editmode :false,
@@ -250,6 +251,7 @@ import { setTimeout } from 'timers';
 
         },
         created (){
+          this.$parent.searchmode =  true;
           this.isLoading = true,
             Fire.$on('searching',()=>{
               this.loadrole()

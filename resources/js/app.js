@@ -122,6 +122,7 @@ const app = new Vue({
     
     data : {
       search : '',
+      searchmode : true,
     },
     methods : { 
       searchit(){

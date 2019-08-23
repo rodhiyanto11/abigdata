@@ -17,6 +17,7 @@
     export default {
         data(){
             return{
+                
                 msg: 'Nama content apa?',
                 url: "",
                 location : "",
@@ -88,6 +89,7 @@
                 var url = this.url+this.token+this.location;
                 this.full =  this.initgetViz(url);
             })*/
+            this.$parent.searchmode =  false;
             this.generatingTableau();
         }
     }

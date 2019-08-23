@@ -308,6 +308,7 @@ import { setTimeout } from 'timers';
         },
         
         created (){
+          this.$parent.searchmode =  true;
             if(this.isLoading == true){
               console.log('oke')
             }

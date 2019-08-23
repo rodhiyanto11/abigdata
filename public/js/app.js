@@ -1802,6 +1802,7 @@ __webpack_require__.r(__webpack_exports__);
          var url = this.url+this.token+this.location;
          this.full =  this.initgetViz(url);
      })*/
+    this.$parent.searchmode = false;
     this.generatingTableau();
   }
 });
@@ -1891,6 +1892,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    this.$parent.searchmode = false;
     this.addRoute();
     this.deadLoading();
   },
@@ -1925,6 +1927,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
+    this.$parent.searchmode = false;
     console.log('Component mounted.');
   }
 });
@@ -2350,6 +2353,8 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this7 = this;
 
+    this.$parent.searchmode = true;
+
     if (this.isLoading == true) {
       console.log('oke');
     }
@@ -2554,6 +2559,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    this.$parent.searchmode = false;
     console.log('Component mounted.');
   },
   methods: {
@@ -3232,6 +3238,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this7 = this;
 
+    this.$parent.searchmode = true;
     this.isLoading = true, Fire.$on('searching', function () {
       _this7.loadrole();
     });
@@ -3813,6 +3820,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this7 = this;
 
+    this.$parent.searchmode = true;
     Fire.$on('searching', function () {
       _this7.loadUser();
     });
@@ -85845,7 +85853,8 @@ var app = new Vue({
   el: '#app',
   router: router,
   data: {
-    search: ''
+    search: '',
+    searchmode: true
   },
   methods: {
     searchit: function searchit() {

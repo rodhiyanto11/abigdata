@@ -161,6 +161,7 @@ import { setTimeout } from 'timers';
         
         data: function(){
             return{
+                
                 isLoading : true,
                 fullPage: true,
                 roles : {},
@@ -177,6 +178,7 @@ import { setTimeout } from 'timers';
             }
         },
         mounted() {
+            this.$parent.searchmode =  false;
             console.log('Component mounted.')
         },
         methods : {

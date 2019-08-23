@@ -78,7 +78,7 @@ import { setInterval } from 'timers';
           }
         },  
         created (){
-            
+            this.$parent.searchmode =  false;
             this.addRoute();
             this.deadLoading();
         },

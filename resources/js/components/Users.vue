@@ -141,6 +141,7 @@ import { setInterval } from 'timers';
     export default {
         data: function () {
             return{
+              
                 editmode : false,
                 users : {},
                 roles : {},
@@ -273,6 +274,7 @@ import { setInterval } from 'timers';
           
             },
         created() {
+          this.$parent.searchmode =  true;
           Fire.$on('searching',()=>{
             this.loadUser();
           })
