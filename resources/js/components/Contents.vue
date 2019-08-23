@@ -1,20 +1,18 @@
-<template>
-    
+<template style="width: 1320px;">
         <div class="card">
             <center>
                  <div  id="app">
                       <div id="refs"  class="ex1" ref="tableau"></div>    
-                     <div class="select-style" style="display: none;"><select id="SheetList"></select></div>
+                        <div class="select-style" style="display: none;">
+                            <select id="SheetList">
+                            </select>
+                        </div>
                      <button class="button" style="display: none;" onclick="getVizData()">Export data to CSV</button>
                      <button class="button" style="display: none;" onclick="exportToPDF();">Export to PDF</button>
-                     
                  </div>
              </center>
-         
     </div>
-    
 </template>
-
 <script>
     export default {
         data(){
@@ -24,7 +22,6 @@
                 location : "",
                 full : "",
                 sheetexc: []  ,
-           
             }
         },
         methods: {
@@ -33,27 +30,40 @@
                 initViz(url, this.sheetexc);
             },
             Token :  function(){
-                
                  axios.get('https://analytics.admedika.co.id/debug/token.php', {
                  header : {
                      "Access-Control-Request-Method": "GET",
                      "Content-type" : "application/json",
                  },
                  params : {"reqtoken" : "rodhi"}
-             
                 }).then(response=> {
-             
                 let data = "";
                 data = response.data.data;
                 this.token = data;
                   Fire.$emit('AfterCreate');
                 });
-          
             },
+            generatingTableau : function(){
+                this.$Progress.start();
+                console.log(this.$route.params.t_url);
+                this.Token();
+                Fire.$on('AfterCreate',() =>{
+                    this.url = 'https://dwh.admedika.co.id:7070/trusted/';
+                    this.location = this.$route.params.t_path;
+                    var url = this.url+this.token+this.location;
+                    this.full =  this.initgetViz(url,function(){
+                        this.$Progress.finish(function(){
+                            
+                        });
+                          
+                    });
+                    
+                })
+            }
         },
-       
          watch: {
             '$route' (to, from) {
+                /*console.log(this.$route.params.t_url);
                     this.Token();
                     Fire.$on('AfterCreate',() =>{
                         this.$Progress.start();
@@ -62,19 +72,23 @@
                         var url = this.url+this.token+this.location;
                     this.full =  this.initgetViz(url);
                     this.$Progress.finish();
-                    })
+                    })*/
+                    this.generatingTableau(function(){
+                        
+                    });
              }
-             //end rendering new component
-  },
-        //first render new component
+             
+        },
         created: function () {
-           this.Token();
+           /* console.log(this.$route.params.t_url);
+            this.Token();
              Fire.$on('AfterCreate',() =>{
                 this.url = 'https://dwh.admedika.co.id:7070/trusted/';
                 this.location = this.$route.params.t_path;
                 var url = this.url+this.token+this.location;
                 this.full =  this.initgetViz(url);
-            })
+            })*/
+            this.generatingTableau();
         }
     }
 </script>

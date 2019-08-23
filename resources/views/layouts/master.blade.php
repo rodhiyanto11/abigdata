@@ -129,7 +129,7 @@
                 @if($menu->status == 1)
                  <router-link to="/{{$menu->view}}/false/false" class="nav-link">
                 @elseif($menu->status == 3)  
-                 <router-link :to="{path:'/{{$menu->view}}',name:'{{$menu->routename}}',params : { t_path : '{{$menu->pagelink}}',t_url : 'dashboard'} }" class="nav-link"
+                 <router-link :to="{path:'/{{$menu->view}}',name:'{{$menu->routename}}',params : { t_path : '{{$menu->pagelink}}',t_url : {filter : {select : {data : ['abc','abc','abd']}}}} }" class="nav-link"
                  replace
                  >
                 @endif  

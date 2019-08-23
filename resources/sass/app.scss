@@ -41,7 +41,8 @@
   }
   
   div.ex1 {
-    background-color: lightblue;
+    //background: url('https://img2.pngdownload.id/20180716/qfb/kisspng-logo-dr-b-r-ambedkar-computer-saksharta-mission-5b4d097c8d4b29.9011437915317753565788.jpg');
+    background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
     width: "100%";
     overflow-x: scroll;
   }
