@@ -1875,7 +1875,8 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/api/user?req=menu').then(function (response) {
         for (var i = 0; i < response.data.data.length; i++) {
-          var type = response.data.data[i]; // console.log(type)
+          var type = response.data.data[i];
+          console.log(type);
 
           _this2.$router.addRoutes([{
             path: '/' + response.data.data[i].routename + "/:t_path/:t_url",
@@ -3104,14 +3105,14 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     createModal: function createModal() {
-      this.isLoading = true;
+      // this.isLoading = true;
       this.editmode = false;
       this.form.reset();
       $('#exampleModal').modal('show');
       this.deadLoading();
     },
     editModal: function editModal(user) {
-      this.isLoading = true;
+      //this.isLoading = true;
       this.editmode = true;
       this.form.reset();
       $('#exampleModal').modal('show');
