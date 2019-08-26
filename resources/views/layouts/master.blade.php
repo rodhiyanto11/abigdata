@@ -19,7 +19,7 @@
     
     <!-- Google Font: Source Sans Pro -->
  </head>
-<body class="hold-transition sidebar-mini sidebar-collapse" style="min-height: 100%;">
+<body class="hold-transition sidebar-mini sidebar-collapse fixed">
 
 <div class="wrapper" id="app">
 
@@ -204,7 +204,7 @@
       
     </div>
     <div class="content">
-            <div class="container-fluid">
+            <div class="container-fluid" >
            <!-- <transition 
             name="page" 
             mode="out-in"
@@ -222,7 +222,10 @@
    
   </div>
   <!-- /.content-wrapper -->
-
+  <div>
+    <br><br><br>
+    <br><br><br>
+  </div>
   <!-- Main Footer -->
   <footer class="main-footer">
     <!-- To the right -->

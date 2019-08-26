@@ -9882,10 +9882,7 @@ body,
 }
 
 .main-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+  padding: 15px;
   color: #ffffff;
   border-top: 1px solid #dee2e6;
   background: #fa0000;

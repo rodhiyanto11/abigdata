@@ -1,7 +1,6 @@
 <template>
  <div class="vld-parent">
-        <loading :active.sync="isLoading" 
-              :is-full-page="fullPage"></loading>
+      
         <div class="container">
        <div class='card'>
             <div class="card-header">
@@ -159,7 +158,7 @@ import { setTimeout } from 'timers';
     export default {
         data : function(){
             return {
-              isLoading : true,
+             
               fullPage : true,
                 editmode :false,
                 pages : {},
@@ -183,13 +182,11 @@ import { setTimeout } from 'timers';
         },
         methods : {
             deadLoading : function(){
-              setTimeout(() => {
-                this.isLoading = false
-              },1000);
+             
               
             },
             loadpage : function(){
-                this.isLoading = true;
+               
               //console.log(this.$parent.search.length);
                if(this.$parent.search.length == 0){
                  axios.get("/api/page").then(  ({ data }) => (this.pages = data) );
@@ -200,14 +197,14 @@ import { setTimeout } from 'timers';
                } 
             },
             createModal (){
-            //  this.isLoading = true;
+            // 
                this.editmode = false;
                this.form.reset();
                $('#exampleModal').modal('show');
                
              },
              editModal (user){
-             //  this.isLoading = true;
+             // 
                this.editmode = true;
                this.form.reset();
                $('#exampleModal').modal('show');
@@ -237,7 +234,7 @@ import { setTimeout } from 'timers';
                 
              },
              updateRole(){
-               this.isLoading = true;
+              
                 this.$Progress.start();
                 this.form.put('/api/page/'+this.form.id)
                 .then((response) => {
@@ -264,7 +261,7 @@ import { setTimeout } from 'timers';
                 
              },
              deleteRole(id){
-               this.isLoading = true;
+              
                swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -297,7 +294,7 @@ import { setTimeout } from 'timers';
               
              } ,
              getResults(page = 1) {
-               this.isLoading = true;
+              
                console.log(page)
                 axios.get('/api/page?page=' + page)
                   .then(response => {
