@@ -19,20 +19,33 @@
     
     <!-- Google Font: Source Sans Pro -->
  </head>
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini sidebar-collapse" style="min-height: 100%;">
 
 <div class="wrapper" id="app">
 
-
-  <nav class="main-header navbar navbar-expand navbar-admedika navbar-light">
-   
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-admedika navbar-light" v-show="searchmode" >
+    <!-- Left navbar links -->
+    <!--<ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="index3.html" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="#" class="nav-link">Contact</a>
+      </li>
+    </ul>-->
+ <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars white"></i></a>
+       <!--<a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars red"></i></a>-->
+       <a class="nav-link" data-widget="pushmenu" href="#"></a>
         </li>
        
     </ul>
-   
+    <!-- SEARCH FORM -->
     <transition 
     name="page" mode="out-in"
     >
@@ -178,7 +191,12 @@
     </div>
     <!-- /.sidebar -->
   </aside>
-
+  <a href="#" class="float">
+      <i class="fa fa-bars my-float nav-link" data-widget="pushmenu" style="position: relative;
+      top: 15%;
+      transform: translateY(-50%);">
+      </i>
+      </a>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -213,7 +231,7 @@
     </div>
     <!-- Default to the left -->
     <strong style="display:none;">Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> 
-    <strong>Copyright &copy; 2019 <a href="https://admedika.co.id/index.php/en/">Big Data</a>.</strong> <span style="color:red;">Admedika</span>
+    <center><strong>Copyright &copy; 2019 <a href="https://admedika.co.id/index.php/en/">Big Data</a>.</strong> <span style="color:red;">Admedika</span></center>
   </footer>
 </div>
 <!-- ./wrapper -->
@@ -334,13 +352,19 @@ function initViz(params, sheetexc) {
         }
         function dispose() {
 
-if (viz == null) {
-    console.log("No Viz has been rendered, so I can't dispose anything");
-    return;
-} else {
-    viz.dispose();
-}
+            if (viz == null) {
+                console.log("No Viz has been rendered, so I can't dispose anything");
+                return;
+            } else {
+                viz.dispose();
+            }
         }
+        function vizResize() {
+            var width = document.getElementById("resizeWidth").value;
+            var height = document.getElementById("resizeHeight").value;
+
+              viz.setFrameSize(parseInt('100%', 10), parseInt('100%', 10));
+            }
         function getJson(url,data){
        // console.log(data);
             return JSON.parse(jQuery.ajax({

@@ -1,6 +1,6 @@
-<template style="width: 1320px;">
-        <div class="card">
-            <center>
+<template>
+        
+            
                  <div  id="app">
                       <div id="refs"  class="ex1" ref="tableau"></div>    
                         <div class="select-style" style="display: none;">
@@ -9,9 +9,16 @@
                         </div>
                      <button class="button" style="display: none;" onclick="getVizData()">Export data to CSV</button>
                      <button class="button" style="display: none;" onclick="exportToPDF();">Export to PDF</button>
+                     <div id="controls" style="padding:20px;">
+                            <form id="resizeForm">
+                                <input type="text" id="resizeWidth" placeholder="Width">
+                                <input type="text" id="resizeHeight" placeholder="Height">
+                                <button type="button" onClick="vizResize();">Resize</button>
+                            </form>
+                        </div>
                  </div>
-             </center>
-    </div>
+           
+  
 </template>
 <script>
     export default {
