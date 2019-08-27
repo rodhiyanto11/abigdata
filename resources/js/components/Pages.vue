@@ -1,7 +1,7 @@
 <template>
  <div class="vld-parent">
       
-        <div class="container">
+        
        <div class='card'>
             <div class="card-header">
                 <h3 class="card-title">Pages</h3>
@@ -51,7 +51,7 @@
                 </table>
             </div>
             <div class="card-footer">
-               <pagination :data="pages" @pagination-change-page="getResults">
+               <pagination :data="pages" v-on:pagination-change-page="getResults" :limit="1">
                   <span slot="prev-nav">&lt; Previous</span>
                   <span slot="next-nav">Next &gt;</span>
                 </pagination>
@@ -149,7 +149,7 @@
                 </div>
         </div>
     </div>      
- </div>             
+            
     
 </template>
 
@@ -181,19 +181,16 @@ import { setTimeout } from 'timers';
           loading : Loading
         },
         methods : {
-            deadLoading : function(){
-             
-              
-            },
+           
             loadpage : function(){
                
               //console.log(this.$parent.search.length);
                if(this.$parent.search.length == 0){
                  axios.get("/api/page").then(  ({ data }) => (this.pages = data) );
-                 this.deadLoading();
+               
                }else{
                  axios.get("/api/page?search="+this.$parent.search).then(  ({ data }) => (this.pages = data) );
-                 this.deadLoading();
+               
                } 
             },
             createModal (){

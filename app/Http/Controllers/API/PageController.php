@@ -43,9 +43,9 @@ class PageController extends Controller
             //dd(2);
             return Page::latest()
                         ->where('name', 'ilike', '%' . $request->search . '%')
-                        ->paginate(10);
+                        ->paginate(3);
         }
-        return Page::latest()->paginate(10);
+        return Page::latest()->paginate(3);
         
     }
 

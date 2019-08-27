@@ -1,10 +1,7 @@
 <template>
   <div class="vld-parent">
-    <loading 
-      :active.sync="isLoading" 
-      :is-full-page="fullPage">
-    </loading>
-     <div class="container">
+    
+     
        <div class="card">
            <div class="card-header">
                 <h3 class="card-title">Role Page {{ this.$route.params.role_data.name | ucWords}} </h3>
@@ -80,7 +77,7 @@
                     </div>
                   </div>
        </div>    
-    </div>
+ 
    </div>       
 
 </template>
