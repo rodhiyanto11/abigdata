@@ -9883,9 +9883,11 @@ body,
 
 .main-footer {
   padding: 15px;
-  color: #555;
+  color: #ffffff;
   border-top: 1px solid #dee2e6;
-  background: #ffffff;
+  background: #fa0000;
+
+  
 }
 
 .content-header {
@@ -11446,7 +11448,7 @@ body,
   .sidebar-mini.sidebar-collapse .content-wrapper,
   .sidebar-mini.sidebar-collapse .main-footer,
   .sidebar-mini.sidebar-collapse .main-header {
-    margin-left: 4.6rem !important;
+    margin-left: 0rem !important;
   }
   .sidebar-mini.sidebar-collapse .nav-sidebar .nav-header {
     display: none;
@@ -11463,7 +11465,7 @@ body,
   }
   .sidebar-mini.sidebar-collapse .main-sidebar, .sidebar-mini.sidebar-collapse .main-sidebar:before {
     margin-left: 0;
-    width: 4.6rem;
+    width: 1px;
   }
   .sidebar-mini.sidebar-collapse .main-sidebar .user-panel .image {
     float: none;
@@ -13967,7 +13969,7 @@ html.maximized-card {
 
 .navbar-admedika {
   background-color: #fa0000;
-  color : #ffffff;
+  /*color : #ffffff;*/
 }
 
 .navbar-yellow {
