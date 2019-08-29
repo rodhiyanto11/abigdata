@@ -1,8 +1,6 @@
 <template>
     <div class="vld-parent">
-        <loading :active.sync="isLoading" 
-              :is-full-page="fullPage"></loading>
-        <div class="container">
+       
         <div class='card'>
             <div class="card-header">
                 <h3 class="card-title">Roles</h3>
@@ -43,7 +41,7 @@
                 </table>
             </div>
             <div class="card-footer">
-                    <pagination :data="roles" @pagination-change-page="getResults">
+                    <pagination :data="pages" v-on:pagination-change-page="getResults" :limit="1">
                        <span slot="prev-nav">&lt; Previous</span>
                        <span slot="next-nav">Next &gt;</span>
                      </pagination>
@@ -90,7 +88,7 @@
                   </div>
                 </div>
         </div>
-    </div>
+    
     </div>              
     
 </template>
@@ -100,7 +98,8 @@ import { setTimeout } from 'timers';
     export default {
         data : function(){
             return {
-                isLoading : true,
+              
+               
                 fullPage: true,
                 editmode :false,
                 roles           : {},
@@ -113,36 +112,32 @@ import { setTimeout } from 'timers';
             }
             
         },
-        components : {
-          loading : Loading
-        },
+        
         methods : {
           
-          deadLoading : function(){
-            setTimeout(() => {this.isLoading = false},1000)
-          },
+          
           rolepage :function(role){
             this.$router.push({name: 'rolepages' , params : { role_data : role}}) 
           },
             loadrole : function(){
               
                if(this.$parent.search.length == 0 ){
-                 this.isLoading = true;
+                
                   axios.get("/api/role").then(  ({ data }) => (this.roles = data) );
-                  this.deadLoading();
+                  
                 }else{
-                  this.isLoading = true;
+                 
                   axios.get("/api/role?search="+this.$parent.search).then(  ({ data }) => (this.roles = data) );
-                  this.deadLoading();
+                  
                 }
                 
             },
             createModal (){
-             // this.isLoading = true;
+             //
                this.editmode = false;
                this.form.reset();
                $('#exampleModal').modal('show');
-               this.deadLoading();
+               
              },
              editModal (user){
                //this.isLoading = true;
@@ -150,11 +145,11 @@ import { setTimeout } from 'timers';
                this.form.reset();
                $('#exampleModal').modal('show');
                this.form.fill(user)
-               this.deadLoading();
+               
              },
              
              createRole: function () {
-               this.isLoading = true;
+              
                 this.$Progress.start();
                 this.form.post('/api/role')
                 .then((response) => {
@@ -165,7 +160,7 @@ import { setTimeout } from 'timers';
                       type: 'success',
                       title: 'Request Success'
                     })
-                    this.deadLoading();
+                    
                 }, (response) => {
                     this.$Progress.fail()
                   //  $("#exampleModal").modal('hide');
@@ -173,11 +168,11 @@ import { setTimeout } from 'timers';
                       type: 'error',
                       title: 'Request Error'
                     })
-                    this.deadLoading();
+                    
                 })
              },
              updateRole(){
-               this.isLoading = true;
+              
                 this.$Progress.start();
                 this.form.put('/api/role/'+this.form.id)
                 .then((response) => {
@@ -189,7 +184,7 @@ import { setTimeout } from 'timers';
                       type: 'success',
                       title: 'Request Success'
                     })
-                    this.deadLoading();
+                    
                 },(response) =>{
                    this.$Progress.fail()
                    
@@ -197,7 +192,7 @@ import { setTimeout } from 'timers';
                       type: 'error',
                       title: 'Request Error'
                     })
-                    this.deadLoading();
+                    
                 })
                 .catch( () => {
                   toast.fire({
@@ -207,7 +202,7 @@ import { setTimeout } from 'timers';
                 })
              },
              deleteRole(id){
-               this.isLoading = true;
+              
                swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -217,7 +212,7 @@ import { setTimeout } from 'timers';
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
               }).then((result) => {
-                this.deadLoading();
+                
                 if (result.value) {
                   this.$Progress.start();
                   this.form.delete('/api/role/'+id)
@@ -240,17 +235,18 @@ import { setTimeout } from 'timers';
               })
              } ,
              getResults(page = 1) {
-               this.isLoading = true;
+              
                 axios.get('/api/role?page=' + page)
                   .then(response => {
                     this.roles = response.data;
-                    this.deadLoading();
+                    
                   });
               }
 
         },
         created (){
-          this.isLoading = true,
+          this.$parent.searchmode =  true;
+         
             Fire.$on('searching',()=>{
               this.loadrole()
             })

@@ -14,6 +14,7 @@
 <script>
     export default {
         mounted() {
+            this.$parent.searchmode =  false;
             console.log('Component mounted.')
         }
     }

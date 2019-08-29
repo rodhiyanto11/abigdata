@@ -1,8 +1,7 @@
 <template>
  <div class="vld-parent">
-        <loading :active.sync="isLoading" 
-              :is-full-page="fullPage"></loading>
-        <div class="container">
+      
+        
        <div class='card'>
             <div class="card-header">
                 <h3 class="card-title">Pages</h3>
@@ -52,7 +51,7 @@
                 </table>
             </div>
             <div class="card-footer">
-               <pagination :data="pages" @pagination-change-page="getResults">
+               <pagination :data="pages" v-on:pagination-change-page="getResults" :limit="1">
                   <span slot="prev-nav">&lt; Previous</span>
                   <span slot="next-nav">Next &gt;</span>
                 </pagination>
@@ -150,7 +149,7 @@
                 </div>
         </div>
     </div>      
- </div>             
+            
     
 </template>
 
@@ -159,7 +158,7 @@ import { setTimeout } from 'timers';
     export default {
         data : function(){
             return {
-              isLoading : true,
+             
               fullPage : true,
                 editmode :false,
                 pages : {},
@@ -182,32 +181,27 @@ import { setTimeout } from 'timers';
           loading : Loading
         },
         methods : {
-            deadLoading : function(){
-              setTimeout(() => {
-                this.isLoading = false
-              },1000);
-              
-            },
+           
             loadpage : function(){
-                this.isLoading = true;
+               
               //console.log(this.$parent.search.length);
                if(this.$parent.search.length == 0){
                  axios.get("/api/page").then(  ({ data }) => (this.pages = data) );
-                 this.deadLoading();
+               
                }else{
                  axios.get("/api/page?search="+this.$parent.search).then(  ({ data }) => (this.pages = data) );
-                 this.deadLoading();
+               
                } 
             },
             createModal (){
-            //  this.isLoading = true;
+            // 
                this.editmode = false;
                this.form.reset();
                $('#exampleModal').modal('show');
                
              },
              editModal (user){
-             //  this.isLoading = true;
+             // 
                this.editmode = true;
                this.form.reset();
                $('#exampleModal').modal('show');
@@ -237,7 +231,7 @@ import { setTimeout } from 'timers';
                 
              },
              updateRole(){
-               this.isLoading = true;
+              
                 this.$Progress.start();
                 this.form.put('/api/page/'+this.form.id)
                 .then((response) => {
@@ -264,7 +258,7 @@ import { setTimeout } from 'timers';
                 
              },
              deleteRole(id){
-               this.isLoading = true;
+              
                swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -297,7 +291,7 @@ import { setTimeout } from 'timers';
               
              } ,
              getResults(page = 1) {
-               this.isLoading = true;
+              
                console.log(page)
                 axios.get('/api/page?page=' + page)
                   .then(response => {
@@ -308,6 +302,7 @@ import { setTimeout } from 'timers';
         },
         
         created (){
+          this.$parent.searchmode =  true;
             if(this.isLoading == true){
               console.log('oke')
             }

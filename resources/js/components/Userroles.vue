@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+     <div class="vld-parent">
        <div class="card">
            <div class="card-header">
                 <h3 class="card-title">User Role :  {{ this.$route.params.role_data.name | ucWords}} </h3>

@@ -40,7 +40,7 @@ window.Fire = new Vue();
 window.toast = Toast;
 Vue.use(VueRouter);
 Vue.use(VueProgressBar, {
-    color: '#bffaf3',
+    color: '#2E8B57',
   failedColor: '#874b4b',
   thickness: '20px',
   transition: {
@@ -122,6 +122,7 @@ const app = new Vue({
     
     data : {
       search : '',
+      searchmode : true,
     },
     methods : { 
       searchit(){

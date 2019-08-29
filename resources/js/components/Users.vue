@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+  <div class="vld-parent">
         <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Users</h3>
@@ -47,7 +47,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <pagination :data="users" @pagination-change-page="getResults">
+                <pagination :data="pages" v-on:pagination-change-page="getResults" :limit="1">
                   <span slot="prev-nav">&lt; Previous</span>
                   <span slot="next-nav">Next &gt;</span>
                 </pagination>
@@ -133,7 +133,7 @@
                       </div>
                     </div>
                   </div>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -141,6 +141,7 @@ import { setInterval } from 'timers';
     export default {
         data: function () {
             return{
+              
                 editmode : false,
                 users : {},
                 roles : {},
@@ -273,6 +274,7 @@ import { setInterval } from 'timers';
           
             },
         created() {
+          this.$parent.searchmode =  true;
           Fire.$on('searching',()=>{
             this.loadUser();
           })

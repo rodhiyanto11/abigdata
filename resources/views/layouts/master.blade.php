@@ -19,12 +19,12 @@
     
     <!-- Google Font: Source Sans Pro -->
  </head>
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini sidebar-collapse fixed">
 
 <div class="wrapper" id="app">
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-admedika navbar-light">
+  <nav class="main-header navbar navbar-expand navbar-admedika navbar-light" v-show="searchmode" >
     <!-- Left navbar links -->
     <!--<ul class="navbar-nav">
       <li class="nav-item">
@@ -40,20 +40,24 @@
  <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars white"></i></a>
+       <!--<a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars red"></i></a>-->
+       <a class="nav-link" data-widget="pushmenu" href="#"></a>
         </li>
        
     </ul>
     <!-- SEARCH FORM -->
-    
-      <div class="input-group input-group-sm ">
-        <input class="form-control form-control-navbar" @keyup.enter="searchit" v-model="search" type="search" placeholder="Search" aria-label="Search">
+    <transition 
+    name="page" mode="out-in"
+    >
+      <div class="input-group input-group-sm " v-show="searchmode">
+        <input class="form-control form-control-navbar"  @keyup.enter="searchit" v-model="search" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
           <button class="btn btn-navbar" @onclick="searchit" type="submit">
             <i class="fas fa-search"></i>
           </button>
         </div>
       </div>
+    </transition>
     
 
     
@@ -129,11 +133,11 @@
                 @if($menu->status == 1)
                  <router-link to="/{{$menu->view}}/false/false" class="nav-link">
                 @elseif($menu->status == 3)  
-                 <router-link :to="{path:'/{{$menu->view}}',name:'{{$menu->routename}}',params : { t_path : '{{$menu->pagelink}}',t_url : 'dashboard'} }" class="nav-link"
+                 <router-link :to="{path:'/{{$menu->view}}',name:'{{$menu->routename}}',params : { t_path : '{{$menu->pagelink}}',t_url : {filter : {select : {data : ['abc','abc','abd']}}}} }" class="nav-link"
                  replace
                  >
                 @endif  
-                    <i class="nav-icon {{ $menu->icons }} {{ $color[$color_random[$i]] }}"></i>
+                    <i class="nav-icon fas fa-bars {{ $color[$color_random[$i]] }}"></i>
                     <p>
                       {{  ucwords($menu->name) }}
                     </p>
@@ -187,7 +191,12 @@
     </div>
     <!-- /.sidebar -->
   </aside>
-
+  <a href="#" class="float">
+      <i class="fa fa-bars my-float nav-link" data-widget="pushmenu" style="position: relative;
+      top: 15%;
+      transform: translateY(-50%);">
+      </i>
+      </a>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -195,7 +204,7 @@
       
     </div>
     <div class="content">
-            <div class="container-fluid">
+            <div class="container-fluid" >
            <!-- <transition 
             name="page" 
             mode="out-in"
@@ -213,7 +222,10 @@
    
   </div>
   <!-- /.content-wrapper -->
-
+  <div>
+    <br><br><br>
+    <br><br><br>
+  </div>
   <!-- Main Footer -->
   <footer class="main-footer">
     <!-- To the right -->
@@ -222,7 +234,7 @@
     </div>
     <!-- Default to the left -->
     <strong style="display:none;">Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> 
-    <strong>Copyright &copy; 2019 <a href="https://admedika.co.id/index.php/en/">Big Data</a>.</strong> <span style="color:red;">Admedika</span>
+    <center><strong>Copyright &copy; 2019 <a href="https://admedika.co.id/index.php/en/">Big Data</a>.</strong> <span style="color:red;">Admedika</span></center>
   </footer>
 </div>
 <!-- ./wrapper -->
@@ -343,13 +355,19 @@ function initViz(params, sheetexc) {
         }
         function dispose() {
 
-if (viz == null) {
-    console.log("No Viz has been rendered, so I can't dispose anything");
-    return;
-} else {
-    viz.dispose();
-}
+            if (viz == null) {
+                console.log("No Viz has been rendered, so I can't dispose anything");
+                return;
+            } else {
+                viz.dispose();
+            }
         }
+        function vizResize() {
+            var width = document.getElementById("resizeWidth").value;
+            var height = document.getElementById("resizeHeight").value;
+
+              viz.setFrameSize(parseInt('100%', 10), parseInt('100%', 10));
+            }
         function getJson(url,data){
        // console.log(data);
             return JSON.parse(jQuery.ajax({
