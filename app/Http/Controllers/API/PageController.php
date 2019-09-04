@@ -43,9 +43,9 @@ class PageController extends Controller
             //dd(2);
             return Page::latest()
                         ->where('name', 'ilike', '%' . $request->search . '%')
-                        ->paginate(3);
+                        ->paginate(10);
         }
-        return Page::latest()->paginate(3);
+        return Page::latest()->paginate(10);
         
     }
 
@@ -66,6 +66,7 @@ class PageController extends Controller
             'routename'=> 'required|string|max:191',
             'status'    => 'required|integer',
             'view'      => 'string|max:191',
+            'icons'      => 'string|max:191',
             
         ]);
        
@@ -78,6 +79,8 @@ class PageController extends Controller
             'view' => $request['view'],
             'note' => $request['note'],
             'pagelink' => $request['pagelink'],
+            'parent_id' => $request['parent_id'],
+            'icons' => $request['icons'],
         ]);
         return response([
             'data' => $data
@@ -115,6 +118,7 @@ class PageController extends Controller
            'routename'=> 'required|string|max:191',
            'status'    => 'required|integer',
            'view'      => 'string|max:191',
+           'icons'      => 'string|max:191',
           
        ]);
        
@@ -127,6 +131,8 @@ class PageController extends Controller
        $update->status          = $request->status;
        $update->note            = $request->note;
        $update->pagelink        = $request->pagelink;
+       $update->parent_id       = $request->parent_id;
+       $update->icons            = $request->icons;
        $update->save();
 
        return response([

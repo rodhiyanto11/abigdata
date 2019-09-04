@@ -169,6 +169,7 @@ class UserController extends Controller
         ->join('pages', 'pages.id', '=', 'role_pages.page_id')
         ->select('pages.*')
         ->where('users.id',auth('api')->user()->id)
+        ->where('pages.status','<>',5)
         ->get();
        
 

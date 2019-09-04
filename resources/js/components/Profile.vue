@@ -184,7 +184,7 @@ import { setTimeout } from 'timers';
             changerole: function(event){
                 console.log(event.target.value);
                 
-                axios.get("/api/user?req=update&id="+event.target.value).then(  ({ data }) => (
+                axios.get("/api/users?req=update&id="+event.target.value).then(  ({ data }) => (
                     //console.log(data)
                     window.location.href = '/home'
                 ) );
@@ -192,12 +192,12 @@ import { setTimeout } from 'timers';
             },
             loadRoles : function(){
                 
-                axios.get("/api/userrole?req=userrole&id=profile").then(  ({ data }) => (this.roles = data) );
+                axios.get("/api/userroles?req=userrole&id=profile").then(  ({ data }) => (this.roles = data) );
                 
             },
            loadUser : function(){
                
-                axios.get("/api/user?getprofile=true").then(  ({ data }) => (this.form.fill(data.data)) );
+                axios.get("/api/users?getprofile=true").then(  ({ data }) => (this.form.fill(data.data)) );
                 
             },
             updateUser : function(){

@@ -10,10 +10,10 @@
 @import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
 @import '~@fortawesome/fontawesome-free/scss/solid.scss';
 @import '~@fortawesome/fontawesome-free/scss/brands.scss';
-.router-link-exact-active{
+/*.router-link-exact-active{
     background-color:#fa0000;
     color:white !important;
-}
+}*/
 .mandatory{
     color:red !important;
     font-size: 10px;
@@ -59,7 +59,7 @@
     color:#FFF;
     border-radius:50px;
     text-align:center;
-    box-shadow: 2px 2px 3px #999;
+    box-shadow: 5px 5px 5px black;
   }
   .my-float:hover{
     color : black;

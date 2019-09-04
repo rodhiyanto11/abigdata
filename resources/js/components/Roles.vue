@@ -41,7 +41,7 @@
                 </table>
             </div>
             <div class="card-footer">
-                    <pagination :data="pages" v-on:pagination-change-page="getResults" :limit="1">
+                    <pagination :data="roles" v-on:pagination-change-page="getResults" :limit="1">
                        <span slot="prev-nav">&lt; Previous</span>
                        <span slot="next-nav">Next &gt;</span>
                      </pagination>
@@ -123,11 +123,11 @@ import { setTimeout } from 'timers';
               
                if(this.$parent.search.length == 0 ){
                 
-                  axios.get("/api/role").then(  ({ data }) => (this.roles = data) );
+                  axios.get("/api/roles").then(  ({ data }) => (this.roles = data) );
                   
                 }else{
                  
-                  axios.get("/api/role?search="+this.$parent.search).then(  ({ data }) => (this.roles = data) );
+                  axios.get("/api/roles?search="+this.$parent.search).then(  ({ data }) => (this.roles = data) );
                   
                 }
                 
@@ -174,7 +174,7 @@ import { setTimeout } from 'timers';
              updateRole(){
               
                 this.$Progress.start();
-                this.form.put('/api/role/'+this.form.id)
+                this.form.put('/api/roles/'+this.form.id)
                 .then((response) => {
                   this.$Progress.finish();
                   $("#exampleModal").modal('hide');
@@ -215,7 +215,7 @@ import { setTimeout } from 'timers';
                 
                 if (result.value) {
                   this.$Progress.start();
-                  this.form.delete('/api/role/'+id)
+                  this.form.delete('/api/roles/'+id)
                   .then((response) => {
                     Fire.$emit('AfterCreate');
                     this.$Progress.finish()
@@ -236,9 +236,9 @@ import { setTimeout } from 'timers';
              } ,
              getResults(page = 1) {
               
-                axios.get('/api/role?page=' + page)
+                axios.get('/api/roles?page=' + page)
                   .then(response => {
-                    this.roles = response.data;
+                    this.pages = response.data;
                     
                   });
               }

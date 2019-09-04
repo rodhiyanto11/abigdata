@@ -47,7 +47,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <pagination :data="pages" v-on:pagination-change-page="getResults" :limit="1">
+                <pagination :data="users" v-on:pagination-change-page="getResults" :limit="1">
                   <span slot="prev-nav">&lt; Previous</span>
                   <span slot="next-nav">Next &gt;</span>
                 </pagination>
@@ -165,18 +165,18 @@ import { setInterval } from 'timers';
           },
             loadUser : function(){
                 if(this.$parent.search.length == 0 ){
-                  axios.get("/api/user").then(  ({ data }) => (this.users = data) );
+                  axios.get("/api/users").then(  ({ data }) => (this.users = data) );
                 }else{
-                  axios.get("/api/user?search="+this.$parent.search).then(  ({ data }) => (this.users = data) );
+                  axios.get("/api/users?search="+this.$parent.search).then(  ({ data }) => (this.users = data) );
                 }
                 
             },
             loadRoles : function(){
-                axios.get("/api/role?req=all").then(  ({ data }) => (this.roles = data) );
+                axios.get("/api/roles?req=all").then(  ({ data }) => (this.roles = data) );
             },
             createUser: function () {
                 this.$Progress.start();
-                this.form.post('/api/user')
+                this.form.post('/api/users')
                 .then((response) => {
                     this.$Progress.finish()
                     $("#exampleModal").modal('hide');
@@ -196,7 +196,7 @@ import { setInterval } from 'timers';
              },
              updateUser(){
                 this.$Progress.start();
-                this.form.put('/api/user/'+this.form.id)
+                this.form.put('/api/users/'+this.form.id)
                 .then((response) => {
                   this.$Progress.finish();
                   $("#exampleModal").modal('hide');
@@ -231,7 +231,7 @@ import { setInterval } from 'timers';
               }).then((result) => {
                 if (result.value) {
                   this.$Progress.start();
-                  this.form.delete('/api/user/'+id)
+                  this.form.delete('/api/users/'+id)
                   .then((response) => {
                     Fire.$emit('AfterCreate');
                     this.$Progress.finish()
@@ -263,7 +263,7 @@ import { setInterval } from 'timers';
              },
              getResults(page = 1) {
                console.log(page)
-                axios.get('/api/user?page=' + page)
+                axios.get('/api/users?page=' + page)
                   .then(response => {
                     this.users = response.data;
                   });

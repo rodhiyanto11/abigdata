@@ -71,7 +71,7 @@ import { setInterval } from 'timers';
               console.log('Loading finnissssssh')
             },
             addRoute: function() {
-          axios.get('/api/user?req=menu')
+          axios.get('/api/users?req=menu')
           .then(response => {
              
                for(var i  = 0; i < response.data.data.length ; i++){

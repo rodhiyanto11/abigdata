@@ -35,9 +35,9 @@
                       <td>{{ page.view | ucWords }}</td>
                       <td>{{ page.pagelink  }}</td>
                       <td>{{ page.routename | ucWords }}</td>
-                      <td>{{ page.status  == 1 ?  'Menu + Route' : ( page.status  == 2 ? 'Route'  : 'Tableau' ) }}</td>
+                      <td>{{ page.status  == 1 ?  'Menu + Route' : ( page.status  == 2 ? 'Route'  : (page.status  == 3 ? 'Tableau' : ( page.status == 4 ? 'Menu' : '(Menu/Tableau)+Parent Page' )) ) }}</td>
                       <td>{{ page.note }}</td>
-                      <td>{{ page.created_at | completedate}}</td>
+                      <td>{{ page.created_at | simpledate}}</td>
                       <td>
                         <a href="#" data-toggle="tooltip" data-placement="left" title="Edit" @click = "editModal(page)" >
                             <i class="fas fa-edit blue" ></i>
@@ -123,9 +123,27 @@
                                           <option value="1">Menu + Route</option>
                                           <option value="2">Route</option>
                                           <option value="3">Tableau</option>
+                                          <option value="4">Menu</option>
+                                          <option value="5">Menu/Tableau)+Parent Page</option>
                                       </select>
                                     <has-error :form="form" field="name"></has-error>
                                 </div>
+                            <div class="form-group">
+                                    <label>Parent Page<span class="mandatory" >*</span></label>
+                                     <select name="parent_id" id="status" v-model="form.parent_id"  class="form-control" :class="{ 'is-invalid': form.errors.has('status') }">
+                                          <option value="0">Head Menu</option>
+                                          <option v-for="datapage in pagesall" :key="datapage.id" v-bind:value="datapage.id">{{ datapage.name | ucWords }}</option>
+                                      </select>
+                                    <has-error :form="form" field="name"></has-error>
+                                </div>
+                           <div class="form-group">
+                                <label>icons Name ref: <a href="https://fontawesome.com/iconss?d=gallery&m=free">Font Awesome</a> </label>
+                                <input v-model="form.icons" type="text" name="icons"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('icons') }"
+                                placeholder="icons"
+                                >
+                                <has-error :form="form" field="icons"></has-error>
+                            </div> 
                             <div class="form-group">
                                     <label>Note</label>
                                     <textarea rows="4" cols="50"
@@ -135,7 +153,8 @@
                                     >      
                                     </textarea>
                                     <has-error :form="form" field="note"></has-error>
-                                </div>
+                            </div>
+                           
                         </div>
                         
                         <div class="modal-footer">
@@ -161,7 +180,9 @@ import { setTimeout } from 'timers';
              
               fullPage : true,
                 editmode :false,
+               
                 pages : {},
+                pagesall : {},
                 form : new form({
                     id          : '',
                     name        : '',
@@ -172,7 +193,9 @@ import { setTimeout } from 'timers';
                     note        : '',
                     create_at   : '',
                     status      : '',
-                    pagelink      : '',
+                    pagelink    : '',
+                    parent_id   : '',
+                    icons        : ''
                 })
             }
             
@@ -185,14 +208,19 @@ import { setTimeout } from 'timers';
             loadpage : function(){
                
               //console.log(this.$parent.search.length);
+              axios.get("/api/pages?req=all")
+              .then( ( {data} ) => (this.pagesall = data.data) )
+
+              
                if(this.$parent.search.length == 0){
-                 axios.get("/api/page").then(  ({ data }) => (this.pages = data) );
+                 axios.get("/api/pages").then(  ({ data }) => (this.pages = data) );
                
                }else{
-                 axios.get("/api/page?search="+this.$parent.search).then(  ({ data }) => (this.pages = data) );
+                 axios.get("/api/pages?search="+this.$parent.search).then(  ({ data }) => (this.pages = data) );
                
                } 
             },
+            
             createModal (){
             // 
                this.editmode = false;
@@ -211,7 +239,7 @@ import { setTimeout } from 'timers';
              createRole: function () {
                this.isLoading  = true;
                 this.$Progress.start();
-                this.form.post('/api/page')
+                this.form.post('/api/pages')
                 .then((response) => {
                     this.$Progress.finish()
                     $("#exampleModal").modal('hide');
@@ -233,7 +261,7 @@ import { setTimeout } from 'timers';
              updateRole(){
               
                 this.$Progress.start();
-                this.form.put('/api/page/'+this.form.id)
+                this.form.put('/api/pages/'+this.form.id)
                 .then((response) => {
                   this.$Progress.finish();
                   $("#exampleModal").modal('hide');
@@ -270,7 +298,7 @@ import { setTimeout } from 'timers';
               }).then((result) => {
                 if (result.value) {
                   this.$Progress.start();
-                  this.form.delete('/api/page/'+id)
+                  this.form.delete('/api/pages/'+id)
                   .then((response) => {
                     Fire.$emit('AfterCreate');
                     this.$Progress.finish()
@@ -293,7 +321,7 @@ import { setTimeout } from 'timers';
              getResults(page = 1) {
               
                console.log(page)
-                axios.get('/api/page?page=' + page)
+                axios.get('/api/pages?page=' + page)
                   .then(response => {
                     this.pages = response.data;
                   });

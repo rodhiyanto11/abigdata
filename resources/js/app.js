@@ -79,6 +79,9 @@ let routes = [
   Vue.filter('completedate',function(date){
       return moment(date).format('MMMM Do YYYY, h:mm:ss a');
   })
+  Vue.filter('simpledate',function(date){
+    return moment(date).format('MMMM Do YYYY');
+})
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
