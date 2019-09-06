@@ -23,6 +23,7 @@
                       <th>Route Name</th>
                       <th>Status</th>
                       <th>Note</th>
+                      <th>Icons</th>
                       <th>Create Date</th>
                       <th>Modify</th>
                     </tr>
@@ -37,6 +38,7 @@
                       <td>{{ page.routename | ucWords }}</td>
                       <td>{{ page.status  == 1 ?  'Menu + Route' : ( page.status  == 2 ? 'Route'  : (page.status  == 3 ? 'Tableau' : ( page.status == 4 ? 'Menu' : '(Menu/Tableau)+Parent Page' )) ) }}</td>
                       <td>{{ page.note }}</td>
+                      <td><i :class="page.icons"></i></td>
                       <td>{{ page.created_at | simpledate}}</td>
                       <td>
                         <a href="#" data-toggle="tooltip" data-placement="left" title="Edit" @click = "editModal(page)" >
@@ -137,7 +139,7 @@
                                     <has-error :form="form" field="name"></has-error>
                                 </div>
                            <div class="form-group">
-                                <label>icons Name ref: <a href="https://fontawesome.com/iconss?d=gallery&m=free">Font Awesome</a> </label>
+                                <label>icons Name ref: <a href="https://fontawesome.com/icons?d=gallery&m=free">Font Awesome</a> </label>
                                 <input v-model="form.icons" type="text" name="icons"
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('icons') }"
                                 placeholder="icons"

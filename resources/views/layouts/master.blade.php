@@ -15,6 +15,7 @@
   <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
+    <link rel="icon" href="{{ asset('img/logo.png') }}">
     <script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
     
     <!-- Google Font: Source Sans Pro -->
@@ -68,24 +69,24 @@
         <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true">
         <div class="user-panel mt-10 pb-3 mb-3 d-flex" data-toggle="tooltip" data-placement="left" title="Hello {{ ucwords(Auth::user()->name) }}">
           <div class="image">
-            <img src="{{ asset('img/user-profile.png') }}" class="img-circle elevation-2" alt="User Image" >
+          <img src="{{ asset('img/profile/') }}{{'/'.Auth::user()->photo}}" class="img-circle elevation-2" alt="User Image" >
           </div>
         </div>  
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
          
-          <div class="dropdown-divider"></div>
+          
           <router-link to="/profile" class="dropdown-item">
-            <i class="fas fa-user-astronaut mr-2"></i>my profile
+            <i class="fas fa-user-astronaut mr-2 float-right"></i>My profile
           </router-link>
-          <div class="dropdown-divider"></div>
+          
           {{-- <a href="#" class="dropdown-item">
             <i class="fas fa-power-off mr-2"></i> logout
           </a> --}}
           <a href="{{ route('logout') }}" class="dropdown-item"
                 onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();">
-                  <i class="fas fa-power-off mr-2"></i>{{ __('logout') }}
+                  <i class="fas fa-power-off mr-2 float-right"></i>{{ __('Logout') }}
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
@@ -102,10 +103,11 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-  <a href="{{url('/home')}}" class="brand-link">
+  
+    <router-link to="/home" class="brand-link">
     <img src="{{ asset('img/logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-1">
       <span class="brand-text font-weight-light">Big Data</span><span><i style="font-size:10px"> Admedika</i></span>
-    </a>
+    </router-link
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -159,7 +161,7 @@
                       @if(isset($pages[$i]['submenu'][$j]['submenu']))
                       <li class="nav-item has-treeview">
                           <a href="#" class="nav-link">
-                          <i class="nav-icon {{ $pages[$i]['icons'] }}"></i>
+                          <i class="nav-icon {{ $pages[$i]['submenu'][$j]['icons'] }}"></i>
                             <p>
                               {{ $pages[$i]['submenu'][$j]['name'] }}
                               <i class="right fas fa-angle-left"></i>
@@ -181,7 +183,7 @@
                               <li class="nav-item">
                                   <router-link :to="{{ $pages[$i]['submenu'][$j]['submenu'][$k]['pagelink'] }}" class="nav-link">
                                     
-                                      <i class="nav-icon {{ $pages[$i]['submenu'][$j]['submenu'][$k]['pagelink'] }}" ></i>
+                                      <i class="nav-icon {{ $pages[$i]['submenu'][$j]['submenu'][$k]['icons'] }}" ></i>
                                       <p>
                                           {{ $pages[$i]['submenu'][$j]['submenu'][$k]['name'] }}
                                       </p>
@@ -197,7 +199,7 @@
                             
                           <i class="nav-icon {{ $pages[$i]['submenu'][$j]['icons'] }}" ></i>
                               <p>
-                                  {{ $pages[$i]['submenu'][$j]['name'] }}
+                                {{ $pages[$i]['submenu'][$j]['name']}}
                               </p>
                             </router-link>
                           </li>
@@ -211,7 +213,7 @@
                         
                           <i class="nav-icon {{ $pages[$i]['icons'] }}" ></i>
                           <p>
-                              {{ $pages[$i]['name'] }}
+                              {{ $pages[$i]['name'] }} 
                           </p>
                         </router-link>
                       </li>
@@ -253,7 +255,7 @@
     <div class="content">
           
             <div class="container-fluid" >
-            <?php //echo "<pre>"; print_r($menus['menu']) ; echo "</pre>";?>
+            
            <!-- <transition 
             name="page" 
             mode="out-in"
@@ -297,6 +299,10 @@
 <script src="{{ asset('js/jquery-ui.js')  }}"></script>
 
 <script>
+  $(".custom-file-input").on("change", function() {
+  var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
  

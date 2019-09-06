@@ -10,7 +10,7 @@ use App\UserRole;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use Image;
 class UserController extends Controller
 {
     /**
@@ -110,24 +110,44 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        
+        //dd($request->photo);
+        $user = auth('api')->user();
         $validatepwd = strlen($request->password) > 0 ? 'required|string|min:8|confirmed' : '';
 
-        $this->validate($request,
-        [
-            'name'      => 'required|string|max:191',
-            'username'  => 'required|string|max:191',
-            'email'     => 'required|string|email|max:191',
-            'is_expired'     => 'required|int',
-            //'role_id'    => 'required|int',
-            'password'  =>  $validatepwd
-        ]);
+        // $this->validate($request,
+        // [
+        //     'name'      => 'required|string|max:191',
+        //     'username'  => 'required|string|max:191',
+        //     'email'     => 'required|string|email|max:191',
+        //     'is_expired'     => 'required|int',
+        //     //'role_id'    => 'required|int',
+        //     'password'  =>  $validatepwd
+        // ]);
+
         
         $update = User::findOrFail($request->id);
         $update->name = $request->name; 
         $update->username = $request->username; 
         $update->email = $request->email;
         $update->is_expired = $request->is_expired;
+
+        $currentPhoto = $user->photo;
+        if($request->photo != $currentPhoto && $request->photo){
+            $name = time().'.' .explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
+            \Image::make($request->photo)->resize(300, 300)->save(public_path('img/profile/').$name);
+
+            $request->merge(['photo' => $name]);
+
+            $userPhoto = public_path('img/profile/').$currentPhoto;
+            if (file_exists($userPhoto)) {
+
+                @unlink($userPhoto);
+            }
+            
+            $update->photo = $request->photo;
+        }
+        // dd($request->photo);
+        
         if(isset($request->role_id) && strlen($request->role_id )){
             $update->role_id = $request->role_id;
         }

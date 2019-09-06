@@ -2343,6 +2343,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2689,6 +2691,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2702,7 +2715,8 @@ __webpack_require__.r(__webpack_exports__);
         email: '',
         password: '',
         expired_date: '',
-        role_id: ''
+        role_id: '',
+        photo: ''
       })
     };
   },
@@ -2711,6 +2725,34 @@ __webpack_require__.r(__webpack_exports__);
     console.log('Component mounted.');
   },
   methods: {
+    getProfilePhoto: function getProfilePhoto() {
+      var photo = this.form.photo.length > 200 ? this.form.photo : "img/profile/" + this.form.photo;
+      return photo; // let prefix = (this.form.photo.match(/\//)?"":'/img/profile');
+      // return prefix + this.form.photo;
+    },
+    updatePhoto: function updatePhoto(e) {
+      var _this = this;
+
+      // console.log('uploading');
+      var file = e.target.files[0]; // console.log(file);
+
+      var reader = new FileReader(); // let vm = this;
+
+      if (file['size'] < 2048000) {
+        reader.onloadend = function (file) {
+          // console.log('RESULT', reader.result)
+          _this.form.photo = reader.result;
+        };
+
+        reader.readAsDataURL(file);
+      } else {
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'You`re file is to biggest than the limit file size'
+        });
+      }
+    },
     changerole: function changerole(event) {
       console.log(event.target.value);
       axios.get("/api/users?req=update&id=" + event.target.value).then(function (_ref) {
@@ -2721,23 +2763,23 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     loadRoles: function loadRoles() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get("/api/userroles?req=userrole&id=profile").then(function (_ref2) {
         var data = _ref2.data;
-        return _this.roles = data;
+        return _this2.roles = data;
       });
     },
     loadUser: function loadUser() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("/api/users?getprofile=true").then(function (_ref3) {
         var data = _ref3.data;
-        return _this2.form.fill(data.data);
+        return _this3.form.fill(data.data);
       });
     },
     updateUser: function updateUser() {
-      var _this3 = this;
+      var _this4 = this;
 
       swal.fire({
         title: 'Apakah anda yakin untuk mengupdate data anda?',
@@ -2749,21 +2791,22 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, Update it!'
       }).then(function (result) {
         if (result.value) {
-          _this3.$Progress.start();
+          _this4.$Progress.start();
 
-          _this3.form.put('/api/user/' + _this3.form.id).then(function (response) {
+          _this4.form.put('/api/user/' + _this4.form.id).then(function (response) {
             //Fire.$emit('AfterCreate');
-            _this3.$Progress.finish();
+            _this4.$Progress.finish();
 
+            console.log(response.data.data);
             toast.fire({
               type: 'success',
               title: 'Request sucess, Please re-login'
             });
             Object(timers__WEBPACK_IMPORTED_MODULE_0__["setTimeout"])(function () {
-              document.getElementById('logout-form').submit();
-            }, 3000); //setInt document.getElementById('logout-form').submit();
+              document.getElementById('logout-form').submit(); //getProfilePhoto
+            }, 1000); //setInt document.getElementById('logout-form').submit();
           }, function (response) {
-            _this3.$Progress.fail();
+            _this4.$Progress.fail();
 
             toast.fire({
               type: 'error',
@@ -64113,6 +64156,8 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(page.note))]),
                 _vm._v(" "),
+                _c("td", [_c("i", { class: page.icons })]),
+                _vm._v(" "),
                 _c("td", [
                   _vm._v(_vm._s(_vm._f("simpledate")(page.created_at)))
                 ]),
@@ -64816,6 +64861,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Note")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Icons")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Create Date")]),
         _vm._v(" "),
         _c("th", [_vm._v("Modify")])
@@ -64925,7 +64972,7 @@ var staticRenderFns = [
       _vm._v("icons Name ref: "),
       _c(
         "a",
-        { attrs: { href: "https://fontawesome.com/iconss?d=gallery&m=free" } },
+        { attrs: { href: "https://fontawesome.com/icons?d=gallery&m=free" } },
         [_vm._v("Font Awesome")]
       )
     ])
@@ -64969,6 +65016,13 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
+            _c("div", { staticClass: "widget-user-image" }, [
+              _c("img", {
+                staticClass: "img-circle",
+                attrs: { src: _vm.getProfilePhoto(), alt: "User Avatar" }
+              })
+            ]),
+            _vm._v(" "),
             _c("div", { staticClass: "card-footer" }, [
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-sm-3 border-right" }, [
@@ -64980,6 +65034,8 @@ var render = function() {
                     ])
                   ])
                 ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "widget-user-image" }),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-sm-3 border-right" }, [
                   _c("div", { staticClass: "description-block" }, [
@@ -65229,6 +65285,27 @@ var render = function() {
                             ],
                             1
                           ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "custom-file mb-3" }, [
+                            _c("input", {
+                              staticClass: "custom-file-input",
+                              attrs: {
+                                type: "file",
+                                id: "customFile",
+                                name: "photo"
+                              },
+                              on: { change: _vm.updatePhoto }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-file-label",
+                                attrs: { for: "customFile" }
+                              },
+                              [_vm._v("Photo Profile")]
+                            )
+                          ]),
                           _vm._v(" "),
                           _c(
                             "div",

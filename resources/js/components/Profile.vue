@@ -22,6 +22,9 @@
                         <div class="widget-user-image">
                             <img class="img-circle" v-bind:src="'/img/user-profile.png'" alt="User Avatar">
                         </div>
+                        <div class="widget-user-image">
+                        <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
+                    </div>
                         <div class="card-footer">
                             <div class="row">
                             <div class="col-sm-3 border-right">
@@ -32,6 +35,9 @@
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
+                            <div class="widget-user-image">
+                        <!--<img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">-->
+                    </div>
                             <div class="col-sm-3 border-right">
                                 <div class="description-block">
                                 <h5 class="description-header">Username<span class="mandatory" >*</span></h5>
@@ -99,6 +105,11 @@
                                                 placeholder="email"
                                                 >
                                                 <has-error :form="form" field="email"></has-error>
+                                            </div>
+                                            <div class="custom-file mb-3">
+                                                
+                                            <input type="file" class="custom-file-input" id="customFile" name="photo" @change="updatePhoto" >
+                                            <label class="custom-file-label" for="customFile">Photo Profile</label>
                                             </div>
                                             <div class="form-group">
                                                     <label>Date</label>
@@ -171,6 +182,7 @@ import { setTimeout } from 'timers';
                     password :  '',
                     expired_date :  '',
                     role_id :  '',
+                    photo : ''
                 }),
 
             }
@@ -180,7 +192,33 @@ import { setTimeout } from 'timers';
             console.log('Component mounted.')
         },
         methods : {
-            
+               getProfilePhoto(){
+          let photo = (this.form.photo.length > 200) ? this.form.photo : "img/profile/"+this.form.photo ;
+          return photo;
+
+          // let prefix = (this.form.photo.match(/\//)?"":'/img/profile');
+          // return prefix + this.form.photo;
+        },
+            updatePhoto(e){
+          // console.log('uploading');
+          let file = e.target.files[0];
+          // console.log(file);
+          let reader = new FileReader();
+          // let vm = this;
+          if (file['size'] < 2048000) {
+            reader.onloadend = (file) =>{
+              // console.log('RESULT', reader.result)
+              this.form.photo = reader.result;
+            }
+            reader.readAsDataURL(file);
+          } else{
+            Swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'You`re file is to biggest than the limit file size',
+            })
+          }
+        },
             changerole: function(event){
                 console.log(event.target.value);
                 
@@ -217,14 +255,16 @@ import { setTimeout } from 'timers';
                     .then((response) => {
                         //Fire.$emit('AfterCreate');
                         this.$Progress.finish()
-                        
+                        console.log(response.data.data);
                         toast.fire({
                         type: 'success',
                         title: 'Request sucess, Please re-login'
                         })
+                      
                         setTimeout(function(){
                             document.getElementById('logout-form').submit();
-                        }, 3000);
+                           //getProfilePhoto
+                        }, 1000);
                         //setInt document.getElementById('logout-form').submit();
                     },(response)=>{
                         

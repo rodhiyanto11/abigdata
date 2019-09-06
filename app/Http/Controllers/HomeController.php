@@ -25,6 +25,7 @@ class HomeController extends Controller
      */
     public function index($getmenu = null)
     {
+        //echo urlencode('03/09');die();
         $datarole = DB::table('roles')->get()->toArray();
         
             $first_role = UserRole::where('user_id',Auth::user()->id)->get()->toArray();

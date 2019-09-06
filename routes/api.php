@@ -17,7 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     5 => array('name' => 'userrole', 'path' => 'API\UserRoleController'),
 );*/
 //dd($route);
-
+Route::apiResources([
+    '/user' => 'API\UserController'
+ ]);
+ Route::apiResources([
+    '/userlog' => 'API\UserLogController'
+ ]); 
 $route_tmp = new Page;
 foreach($route_tmp->getallroute() as $route){
     //dd($route);
