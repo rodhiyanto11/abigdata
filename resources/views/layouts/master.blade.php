@@ -233,8 +233,15 @@
                         @csrf
                     </form>
         </li>  --}}
-      
-        </ul>
+        <li class="nav-item">
+          <router-link to="/references"  class="nav-link">
+            <i class="nav-icon fas fa-ad" ></i>
+              <p>
+                  References
+              </p>                        
+          </router-link>
+        </li>
+        </ul> 
       </nav>
       <!-- /.sidebar-menu -->
     </div>
