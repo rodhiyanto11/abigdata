@@ -46,7 +46,7 @@
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 border-right">
                                 <div class="description-block">
                                 <h5 class="description-header">Expired Date</h5>
                                 <span class="description-text">{{ form.expired_date | completedate }}</span>
