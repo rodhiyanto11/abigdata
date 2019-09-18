@@ -13,7 +13,7 @@ class Page extends Model
     use HasApiTokens,Notifiable;
     protected $table = 'pages';
     protected $fillable = [
-        'name','model','controller','note','view','routename','create_at','status','pagelink','parent_id','icons'
+        'name','model','controller','note','view','routename','create_at','status','pagelink','parent_id','icons','stt_pages'
     ];
     public function rolepage(){
         return $this->hasMany('App\RolePage');

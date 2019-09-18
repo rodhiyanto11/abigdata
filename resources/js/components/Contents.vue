@@ -24,7 +24,9 @@
     export default {
         data(){
             return{
-                
+                pageID: '',
+                pageName : '',
+                action : 'view',
                 msg: 'Nama content apa?',
                 url: "",
                 location : "",
@@ -33,6 +35,19 @@
             }
         },
         methods: {
+            loginsert : function (){
+                axios.post('/api/userlog', {
+                    pageID: this.pageID,
+                    pageName: this.pageName,
+                    action : this.action
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
             initgetViz: function (url) {  
                 this.sheetexc.push("Branch by Total Active Member");
                 initViz(url, this.sheetexc);
@@ -48,12 +63,16 @@
                 let data = "";
                 data = response.data.data;
                 this.token = data;
+                
                   Fire.$emit('AfterCreate');
                 });
             },
             generatingTableau : function(){
+                
                 this.$Progress.start();
-                console.log(this.$route.params.t_url);
+                this.pageName = this.$route.params.t_url.pageName;
+                this.pageID = this.$route.params.t_url.pageID;
+                this.loginsert();
                 this.Token();
                 Fire.$on('AfterCreate',() =>{
                     this.url = 'https://dwh.admedika.co.id:7070/trusted/';
@@ -70,17 +89,8 @@
             }
         },
          watch: {
+             
             '$route' (to, from) {
-                /*console.log(this.$route.params.t_url);
-                    this.Token();
-                    Fire.$on('AfterCreate',() =>{
-                        this.$Progress.start();
-                        this.url = 'https://dwh.admedika.co.id:7070/trusted/';
-                        this.location = this.$route.params.t_path;
-                        var url = this.url+this.token+this.location;
-                    this.full =  this.initgetViz(url);
-                    this.$Progress.finish();
-                    })*/
                     this.generatingTableau(function(){
                         
                     });
@@ -88,6 +98,7 @@
              
         },
         created: function () {
+           
            /* console.log(this.$route.params.t_url);
             this.Token();
              Fire.$on('AfterCreate',() =>{

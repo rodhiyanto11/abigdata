@@ -33272,6 +33272,10 @@ readers do not read off random characters that represent icons */
   font-size: 10px;
 }
 
+.table-head-fixed {
+  font-size: 12px;
+}
+
 /*.page-enter-active, .page-leave-active {
     transition: opacity 1s, transform 1s;
   }

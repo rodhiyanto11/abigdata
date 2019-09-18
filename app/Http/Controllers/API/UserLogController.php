@@ -5,6 +5,11 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Fluent;
+use App\Country;
+use App\UserLogs;
+use Illuminate\Support\Facades\Auth;
+use App\Libraries\Logs;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserLogController extends Controller
 {
@@ -18,17 +23,16 @@ class UserLogController extends Controller
      */
     public function index(Request $request)
     {
-        
-        $dd = \Location::get(trim(shell_exec("dig +short myip.opendns.com @resolver1.opendns.com")));
-        $mm = new Fluent($dd);
-        echo "<pre>";
-        print_r($mm);
-        echo "<pre>";
-        echo "<pre>";
-        print_r($mm['countryCode']);
-        echo "<pre>";
-        dd($request->ip());
-        
+        if(isset($request->search) && strlen($request->search) > 0 ){
+            return UserLogs::latest()
+                        ->where('username', 'ilike', '%' . $request->search . '%')
+                        ->orWhere('page_name', 'ilike', '%' . $request->search . '%')
+                        ->orWhere('country_name', 'ilike', '%' . $request->search . '%')
+                        ->orWhere('city_name', 'ilike', '%' . $request->search . '%')
+                        ->orWhere('region', 'ilike', '%' . $request->search . '%')
+                        ->paginate(5);    
+        }
+        return UserLogs::latest()->paginate(5);
     }
 
     /**
@@ -37,10 +41,25 @@ class UserLogController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+ 
+
+
     public function store(Request $request)
     {
-        //
-
+      //dd($request->json()->all());
+       $logs = new Logs;
+        $data = array(
+           'user_id'       => Auth::user()->id,
+           'user_name'     => Auth::user()->username,
+           'page_id'       => $request->json('pageID'),
+           'page_name'     => $request->json('pageName'),
+           'action'        => $request->json('action'),
+        );
+        
+        $return = $logs->store($data) ;
+        return response([
+            'data' => $return
+        ],Response::HTTP_CREATED);
     }
 
     /**

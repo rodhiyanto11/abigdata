@@ -63,6 +63,7 @@ class PageController extends Controller
             'name'      => 'required|string|max:191',
             'model'     => 'required|string|max:191',
             'controller'=> 'required|string|max:191',
+            'stt_pages'=> 'required|integer',
             'routename'=> 'required|string|max:191',
             'status'    => 'required|integer',
             'view'      => 'string|max:191',
@@ -81,6 +82,7 @@ class PageController extends Controller
             'pagelink' => $request['pagelink'],
             'parent_id' => $request['parent_id'],
             'icons' => $request['icons'],
+            'stt_pages' => $request['stt_pages'],
         ]);
         return response([
             'data' => $data
@@ -112,13 +114,14 @@ class PageController extends Controller
       
        $this->validate($request,
        [
-           'name'      => 'required|string|max:191',
-           'model'     => 'required|string|max:191',
-           'controller'=> 'required|string|max:191',
-           'routename'=> 'required|string|max:191',
-           'status'    => 'required|integer',
-           'view'      => 'string|max:191',
+           'name'       => 'required|string|max:191',
+           'model'      => 'required|string|max:191',
+           'controller' => 'required|string|max:191',
+           'routename'  => 'required|string|max:191',
+           'status'     => 'required|integer',
+           'view'       => 'string|max:191',
            'icons'      => 'string|max:191',
+           'stt_pages'  => 'required|integer',
           
        ]);
        
@@ -132,7 +135,8 @@ class PageController extends Controller
        $update->note            = $request->note;
        $update->pagelink        = $request->pagelink;
        $update->parent_id       = $request->parent_id;
-       $update->icons            = $request->icons;
+       $update->icons           = $request->icons;
+       $update->stt_pages       = $request->stt_pages;
        $update->save();
 
        return response([

@@ -35,7 +35,7 @@ class HomeController extends Controller
                             ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
                             ->join('pages', 'pages.id', '=', 'role_pages.page_id')
                             ->join('roles', 'roles.id', '=', 'users.role_id')
-                            ->select('pages.*', 'pages.id', 'role_pages.page_id')
+                            ->select('pages.*', 'pages.id', 'role_pages.page_id','role_pages.stt_rp')
                             ->where('users.id','=',Auth::user()->id)
                             ->whereIn('pages.status',[5])
                             ->whereNull('pages.parent_id')
@@ -53,13 +53,15 @@ class HomeController extends Controller
                                     $arrmenu[$i]['status']      = $datapages['admin'][$i]->status;
                                     $arrmenu[$i]['parent_id']   = $datapages['admin'][$i]->parent_id;
                                     $arrmenu[$i]['view']        = $datapages['admin'][$i]->view;
-                                    $arrmenu[$i]['icons']        = $datapages['admin'][$i]->icons;
+                                    $arrmenu[$i]['icons']       = $datapages['admin'][$i]->icons;
+                                    $arrmenu[$i]['stt_pages']   = $datapages['admin'][$i]->stt_pages;
+                                    $arrmenu[$i]['stt_rp']      = $datapages['admin'][$i]->stt_rp;
                                     $arrmenu[$i]['pagelink']    =  (strlen($datapages['admin'][$i]->pagelink) > 0 ? "{path:'/".$datapages['admin'][$i]->view."',name:'".$datapages['admin'][$i]->routename."',params : {t_path : '".$datapages['admin'][$i]->pagelink."',t_url : {filter : {select : {data : ['abc','abc','abd']}}}}}": "{path:'/".$datapages['admin'][$i]->view."',name:'".$datapages['admin'][$i]->routename."',params : {t_path : 'View',t_url : 'False'}}");
                                     $countsub = DB::table('users')
                                                 ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
                                                 ->join('pages', 'pages.id', '=', 'role_pages.page_id')
                                                 ->join('roles', 'roles.id', '=', 'users.role_id')
-                                                ->select('pages.*', 'pages.id', 'role_pages.page_id')
+                                                ->select('pages.*', 'pages.id', 'role_pages.page_id','role_pages.stt_rp')
                                                 ->where('users.id','=',Auth::user()->id)
                                                 ->where('pages.parent_id','=',$datapages['admin'][$i]->id)
                                                // ->where('pages.status','<>','2')
@@ -77,7 +79,9 @@ class HomeController extends Controller
                                                 $arrmenu[$i]['submenu'][$j]['status']      = $countsub[$j]->status;
                                                 $arrmenu[$i]['submenu'][$j]['parent_id']   = $countsub[$j]->parent_id; 
                                                 $arrmenu[$i]['submenu'][$j]['view']        = $countsub[$j]->view;
-                                                $arrmenu[$i]['submenu'][$j]['icons']        = $countsub[$j]->icons;
+                                                $arrmenu[$i]['submenu'][$j]['icons']       = $countsub[$j]->icons;
+                                                $arrmenu[$i]['submenu'][$j]['stt_pages']   = $countsub[$j]->stt_pages;
+                                                $arrmenu[$i]['submenu'][$j]['stt_rp']      = $countsub[$j]->stt_rp;
                                                 //$arrmenu[$i]['submenu'][$j]['pagelink']    =  "{path:'/".$countsub[$j]->view."',name:'".$countsub[$j]->routename."',params : { t_path : '".(strlen($countsub[$j]->pagelink) > 0 ? $countsub[$j]->pagelink : 'View')."',t_url : {filter : {select : {data : ['abc','abc','abd']}}}} }";
                                                 $arrmenu[$i]['submenu'][$j]['pagelink']    =  (strlen($countsub[$j]->pagelink) > 0 ? "{path:'/".$countsub[$j]->view."',name:'".$countsub[$j]->routename."',params : {t_path : '".$countsub[$j]->pagelink."',t_url : {filter : {select : {data : ['abc','abc','abd']}}}}}": "{path:'/".$countsub[$j]->view."',name:'".$countsub[$j]->routename."',params : {t_path : 'View',t_url : 'False'}}");
 
@@ -85,7 +89,7 @@ class HomeController extends Controller
                                                 ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
                                                 ->join('pages', 'pages.id', '=', 'role_pages.page_id')
                                                 ->join('roles', 'roles.id', '=', 'users.role_id')
-                                                ->select('pages.*', 'pages.id', 'role_pages.page_id')
+                                                ->select('pages.*', 'pages.id', 'role_pages.page_id','role_pages.stt_rp')
                                                 ->where('users.id','=',Auth::user()->id)
                                                 ->where('pages.parent_id','=',$countsub[$j]->id)
                                                // ->where('pages.status','<>','2')
@@ -101,13 +105,15 @@ class HomeController extends Controller
                                                              $arrmenu[$i]['submenu'][$j]['submenu'][$k]['parent_id']   = $b[$k]->parent_id; 
                                                              $arrmenu[$i]['submenu'][$j]['submenu'][$k]['view']        = $b[$k]->view;
                                                              $arrmenu[$i]['submenu'][$j]['submenu'][$k]['icons']       = $b[$k]->icons;
+                                                             $arrmenu[$i]['submenu'][$j]['submenu'][$k]['stt_pages']   = $b[$k]->stt_pages;
+                                                             $arrmenu[$i]['submenu'][$j]['submenu'][$k]['stt_rp']      = $b[$k]->stt_rp;
                                                              //$arrmenu[$i]['submenu'][$j]['submenu'][$k]['pagelink']    = "{path:'/".$b[$k]->view."',name:'".$b[$k]->routename."',params : { t_path : '".(strlen($b[$k]->pagelink) > 0 ? $b[$k]->pagelink : 'View') ."',t_url : {filter : {select : {data : ['abc','abc','abd']}}}} }";
-                                                             $arrmenu[$i]['submenu'][$j]['submenu'][$k]['pagelink']    =  strlen($b[$k]->pagelink) > 0 ? "{path:'/".$b[$k]->view."',name:'".$b[$k]->routename."',params : {t_path : '".$b[$k]->pagelink."',t_url : {filter : {select : {data : ['abc','abc','abd']}}}}}": "{path:'/".$b[$k]->view."',name:'".$b[$k]->routename."',params : {t_path : 'View',t_url : 'False'}}";
+                                                             $arrmenu[$i]['submenu'][$j]['submenu'][$k]['pagelink']    =  strlen($b[$k]->pagelink) > 0 ? "{path:'/".$b[$k]->view."',name:'".$b[$k]->routename."',params : {t_path : '".$b[$k]->pagelink."',t_url : {pageID: '".$b[$k]->id."',pageName : '".$b[$k]->name."',filter : {select : {data : ['abc','abc','abd']} }} }}": "{path:'/".$b[$k]->view."',name:'".$b[$k]->routename."',params : {t_path : 'View',t_url : {pageID: '".$b[$k]->id."',pageName : '".$b[$k]->name."'}}}";
                                                              $c = DB::table('users')
                                                              ->join('role_pages', 'role_pages.role_id', '=', 'users.role_id')
                                                              ->join('pages', 'pages.id', '=', 'role_pages.page_id')
                                                              ->join('roles', 'roles.id', '=', 'users.role_id')
-                                                             ->select('pages.*', 'pages.id', 'role_pages.page_id')
+                                                             ->select('pages.*', 'pages.id', 'role_pages.page_id','role_pages.stt_rp')
                                                              ->where('users.id','=',Auth::user()->id)
                                                              ->where('pages.parent_id','=',$b[$k]->id)
                                                              //->where('pages.status','<>','2')
@@ -122,7 +128,9 @@ class HomeController extends Controller
                                                                           $arrmenu[$i]['submenu'][$j]['submenu'][$k]['submenu'][$l]['status']      = $c[$l]->status;
                                                                           $arrmenu[$i]['submenu'][$j]['submenu'][$k]['submenu'][$l]['parent_id']   = $c[$l]->parent_id; 
                                                                           $arrmenu[$i]['submenu'][$j]['submenu'][$k]['submenu'][$l]['view']        = $c[$l]->view;
-                                                                          $arrmenu[$i]['submenu'][$j]['submenu'][$k]['submenu'][$l]['icons']        = $c[$l]->icons;
+                                                                          $arrmenu[$i]['submenu'][$j]['submenu'][$k]['submenu'][$l]['icons']       = $c[$l]->icons;
+                                                                          $arrmenu[$i]['submenu'][$j]['submenu'][$k]['submenu'][$l]['stt_pages']   = $c[$l]->stt_pages;
+                                                                          $arrmenu[$i]['submenu'][$j]['submenu'][$k]['submenu'][$l]['stt_rp']      = $c[$l]->stt_rp;
                                                                           //$arrmenu[$i]['submenu'][$j]['submenu'][$k]['submenu'][$l]['pagelink']    = "{path:'/".$c[$l]->view."',name:'".$c[$l]->routename."',params : { t_path : '".(strlen($c[$l]->pagelink) > 0 ? $c[$l]->pagelink : false)."',t_url : {filter : {select : {data : ['abc','abc','abd']}}}} }";
                                                                           $arrmenu[$i]['submenu'][$j]['pagelink'][$k]['submenu'][$l]['pagelink']    =  (strlen($c[$l]->pagelink) > 0 ?"{path:'/".$c[$l]->view."',name:'".$c[$l]->routename."',params : {t_path : '".$c[$l]->pagelink."',t_url : {filter : {select : {data : ['abc','abc','abd']}}}}}": "{path:'/".$c[$l]->view."',name:'".$c[$l]->routename."',params : {t_path : 'View',t_url : 'False'}}");
                                                              

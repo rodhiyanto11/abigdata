@@ -35,7 +35,8 @@ class RoleController extends Controller
                     return DB::table('role_pages')
                     ->join('roles','roles.id','=','role_pages.role_id')
                     ->join('pages','pages.id','=','role_pages.page_id')
-                    ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at','pages.note as pagenote')
+                    ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at','pages.note as pagenote'
+                    ,'role_pages.stt_rp')
                     ->where('roles.id','=',$request->id)
                     ->where('pages.name', 'ilike', '%' . $request->search . '%')
                     ->get();      
@@ -43,7 +44,8 @@ class RoleController extends Controller
                     return DB::table('role_pages')
                     ->join('roles','roles.id','=','role_pages.role_id')
                     ->join('pages','pages.id','=','role_pages.page_id')
-                    ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at','pages.note as pagenote')
+                    ->select('role_pages.id','role_pages.role_id','role_pages.page_id','roles.name as role_name','pages.name as page_name','role_pages.created_at','pages.note as pagenote'
+                    ,'role_pages.stt_rp')
                     ->where('roles.id','=',$request->id)
                     ->get();  
                 }
@@ -70,6 +72,14 @@ class RoleController extends Controller
         $delete = $delete->delete();
         return response([
             'data' => $delete
+        ],Response::HTTP_CREATED);
+      }else if(isset($request->req) && $request->req == 'update'){
+         
+          $update = RolePage::findOrFail($request->id);
+        $update->stt_rp = $request->st == 1 ? 0 : 1;
+        $update->save();
+        return response([
+            'data' => $update
         ],Response::HTTP_CREATED);
       }
     return Role::latest()->paginate(100);
@@ -99,6 +109,7 @@ class RoleController extends Controller
             $data = RolePage::create([
                 'role_id'      => $request['role_id'],
                 'page_id'      => $request['page_id'],
+                'stt_rp'      => 1,
             ]);
             return response([
                 'data' => $data

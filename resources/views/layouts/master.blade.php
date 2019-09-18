@@ -111,42 +111,13 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Sidebar user panel (optional)-->
-      {{-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="{{ asset('img/user-profile.png') }}" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-        <a href="#" class="d-block">{{ ucwords(Auth::user()->name) }}</a>
-        </div>
-      </div> --}}
-
-      <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-            {{-- <li class="nav-item">
-             <router-link to="/home" class="nav-link">
-               <i class="nav-icon fas fa-home" ></i>
-               <p>
-                 Home
-               </p>
-             </router-link>
-            </li>   
-            
-            <li class="nav-item">
-                    <router-link to="/profile" class="nav-link">
-                      <i class="nav-icon fas fa-user-alt"></i>
-                      <p>
-                        Profile
-                      </p>
-                    </router-link>
-            </li>  --}}
               <?php $pages = $menus['menu'] ?>
               
               @for($i= 0 ; $i < count($pages) ; $i++)
                   @if(isset($pages[$i]['submenu']))
+                  @if($pages[$i]['stt_rp'] == 1 && $pages[$i]['stt_pages'])
                   <li class="nav-item has-treeview">
                       <a href="#" class="nav-link">
                       <i class="nav-icon {{$pages[$i]['icons']}}"></i>
@@ -159,41 +130,48 @@
                     <ul class="nav nav-treeview">
                     @for($j = 0 ; $j < count($pages[$i]['submenu']) ; $j++)
                       @if(isset($pages[$i]['submenu'][$j]['submenu']))
-                      <li class="nav-item has-treeview">
-                          <a href="#" class="nav-link">
-                          <i class="nav-icon {{ $pages[$i]['submenu'][$j]['icons'] }}"></i>
-                            <p>
-                              {{ $pages[$i]['submenu'][$j]['name'] }}
-                              <i class="right fas fa-angle-left"></i>
-                            </p>
-                          </a>
-                          <ul class="nav nav-treeview">
-                              @for($k = 0 ; $k < count($pages[$i]['submenu'][$j]['submenu']) ; $k++)
-                              @if(isset($pages[$i]['submenu'][$j]['submenu'][$k]['submenu']))
-                              <li class="nav-item has-treeview">
-                                  <a href="#" class="nav-link">
-                                    <i class="nav-icon {{$pages[$i]['submenu'][$j]['submenu'][$k]['icons']}}"></i>
-                                    <p>
-                                      {{ $pages[$i]['submenu'][$j]['submenu'][$k]['name'] }}
-                                      <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                  </a>
-                                </li>
-                              @else
-                              <li class="nav-item">
-                                  <router-link :to="{{ $pages[$i]['submenu'][$j]['submenu'][$k]['pagelink'] }}" class="nav-link">
-                                    
-                                      <i class="nav-icon {{ $pages[$i]['submenu'][$j]['submenu'][$k]['icons'] }}" ></i>
-                                      <p>
+                        @if($pages[$i]['submenu'][$j]['stt_rp'] == 1 && $pages[$i]['submenu'][$j]['stt_pages'])
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                            <i class="nav-icon {{ $pages[$i]['submenu'][$j]['icons'] }}"></i>
+                              <p>
+                                {{ $pages[$i]['submenu'][$j]['name'] }}
+                                <i class="right fas fa-angle-left"></i>
+                              </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                @for($k = 0 ; $k < count($pages[$i]['submenu'][$j]['submenu']) ; $k++)
+                                @if(isset($pages[$i]['submenu'][$j]['submenu'][$k]['submenu']))
+                                  @if($pages[$i]['submenu'][$j]['submenu'][$k]['stt_pages'] == 1 && $pages[$i]['submenu'][$j]['submenu'][$k]['stt_rp'] == 1)
+                                  <li class="nav-item has-treeview">
+                                      <a href="#" class="nav-link">
+                                        <i class="nav-icon {{$pages[$i]['submenu'][$j]['submenu'][$k]['icons']}}"></i>
+                                        <p>
                                           {{ $pages[$i]['submenu'][$j]['submenu'][$k]['name'] }}
-                                      </p>
-                                    </router-link>
-                                  </li>
-                              @endif
-                              @endfor
-                          </ul>
-                        </li>
+                                          <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                      </a>
+                                    </li>
+                                  @endif
+                                @else
+                                  @if($pages[$i]['submenu'][$j]['submenu'][$k]['stt_pages'] == 1 && $pages[$i]['submenu'][$j]['submenu'][$k]['stt_rp'] == 1)
+                                  <li class="nav-item">
+                                      <router-link :to="{{ $pages[$i]['submenu'][$j]['submenu'][$k]['pagelink'] }}" class="nav-link">
+                                        
+                                          <i class="nav-icon {{ $pages[$i]['submenu'][$j]['submenu'][$k]['icons'] }}" ></i>
+                                          <p>
+                                              {{ $pages[$i]['submenu'][$j]['submenu'][$k]['name'] }}
+                                          </p>
+                                        </router-link>
+                                      </li>
+                                  @endif
+                                @endif
+                                @endfor
+                            </ul>
+                          </li>
+                          @endif
                       @else
+                      @if($pages[$i]['submenu'][$j]['stt_rp'] == 1 && $pages[$i]['submenu'][$j]['stt_pages'])
                       <li class="nav-item">
                           <router-link :to="{{ $pages[$i]['submenu'][$j]['pagelink']}}" class="nav-link">
                             
@@ -203,36 +181,26 @@
                               </p>
                             </router-link>
                           </li>
+                          @endif
                       @endif
                     @endfor
                     </ul>
                   </li>
+                  @endif
                   @else
-                  <li class="nav-item">
-                      <router-link :to="{{ $pages[$i]['pagelink'] }}" class="nav-link">
-                        
-                          <i class="nav-icon {{ $pages[$i]['icons'] }}" ></i>
-                          <p>
-                              {{ $pages[$i]['name'] }} 
-                          </p>
+                    @if($pages[$i]['stt_pages'] == 1 && $pages[$i]['stt_rp'] == 1)
+                    <li class="nav-item">
+                        <router-link :to="{{ $pages[$i]['pagelink'] }}" class="nav-link">
+                            <i class="nav-icon {{ $pages[$i]['icons'] }}" ></i>
+                            <p>
+                                {{ $pages[$i]['name'] }} 
+                            </p>
                         </router-link>
                       </li>
+                    @endif
                   @endif
                @endfor     
-              {{-- <li class="nav-item">
-                <a href="{{ route('logout') }}" class="nav-link"
-                onclick="event.preventDefault();
-                document.getElementById('logout-form').submit();">
-               
-                  <i class="nav-icon fas fa-power-off"></i>
-                  <p>
-                        {{ __('Logout') }}
-                  </p>
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-        </li>  --}}
+             
         <li class="nav-item">
           <router-link to="/references"  class="nav-link">
             <i class="nav-icon fas fa-ad" ></i>

@@ -20,6 +20,7 @@
                     <tr>
                       <th>Role Name</th>
                       <th>Page Name</th>
+                      <th>Status Role Page</th>
                       <th>Create Date</th>
                       <th>Modify</th>
                     </tr>
@@ -28,10 +29,14 @@
                     <tr v-for="datarole in dataroles" :key="datarole.id">
                       <td>{{ datarole.role_name | ucWords }}</td>
                       <td>{{ datarole.page_name +' '+ datarole.role_name  }}</td>
+                      <td>{{ datarole.stt_rp  == 0 ? 'Tidak Aktif' : 'Aktif' }}</td>
                       <td>{{ datarole.created_at | completedate}}</td>
                       <td> 
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Delete" @click = "deleterolepage(datarole.id)">
                             <i class="fas fa-trash red" ></i>
+                        </a>
+                        <a href="#" data-toggle="tooltip" data-placement="right" title="Update Status" @click = "updaterolepage(datarole.id,datarole.stt_rp)">
+                            <i :class="datarole.stt_rp == 0 ? 'fas fa-toggle-on green' : ' fas fa-toggle-off orange'"></i>
                         </a>
                       </td>
                     </tr>
@@ -197,6 +202,41 @@ import { setTimeout } from 'timers';
               })
               this.deadLoading();
           },
+          updaterolepage : function(id,st){
+            
+             this.isLoading = true;
+              swal.fire({
+                  title: 'Are you sure?',
+                  text: "You won't be able to revert this!",
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Yes, update it!'
+                }).then((result) => {
+                  if (result.value) {
+                    console.log(id);
+                    this.$Progress.start();
+                    this.form.get('/api/roles?req=update&id='+id+'&st='+st)
+                    .then((response) => {
+                      Fire.$emit('AfterCreate');
+                      this.$Progress.finish()
+                      toast.fire({
+                        type: 'success',
+                        title: 'Request Success'
+                        })
+                    },(response)=>{
+                      this.$Progress.fail()
+                      toast.fire({
+                        type: 'error',
+                        title: 'Request Error'
+                        })
+                    })
+                    
+                  }
+                })
+              this.deadLoading();
+          },
           create : function(){
             this.isLoading = true;
              this.$Progress.start();
@@ -233,7 +273,7 @@ import { setTimeout } from 'timers';
           //this.addRoute();
           //this.form.id = this.$route.params.roles_role_id;
           Fire.$on('AfterCreate',() =>{
-            console.log(this.rolepages_role_data.id);
+            //console.log(this.rolepages_role_data.id);
               this.loadpagerole(this.rolepages_role_data);
             })
            Fire.$on('searching',()=>{

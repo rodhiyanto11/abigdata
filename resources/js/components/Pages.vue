@@ -22,6 +22,7 @@
                       <th>Page link</th>
                       <th>Route Name</th>
                       <th>Status</th>
+                      <th>Status Page</th>
                       <th>Note</th>
                       <th>Icons</th>
                       <th>Create Date</th>
@@ -37,6 +38,7 @@
                       <td>{{ page.pagelink  }}</td>
                       <td>{{ page.routename | ucWords }}</td>
                       <td>{{ page.status  == 1 ?  'Menu + Route' : ( page.status  == 2 ? 'Route'  : (page.status  == 3 ? 'Tableau' : ( page.status == 4 ? 'Menu' : '(Menu/Tableau)+Parent Page' )) ) }}</td>
+                      <td>{{ page.stt_pages == 0 ? 'Tidak Aktif' : 'Aktif' }}</td>
                       <td>{{ page.note }}</td>
                       <td><i :class="page.icons"></i></td>
                       <td>{{ page.created_at | simpledate}}</td>
@@ -128,15 +130,23 @@
                                           <option value="4">Menu</option>
                                           <option value="5">Menu/Tableau)+Parent Page</option>
                                       </select>
-                                    <has-error :form="form" field="name"></has-error>
+                                    <has-error :form="form" field="status"></has-error>
                                 </div>
+                              <div class="form-group">
+                                    <label>Status Pages<span class="mandatory" >*</span></label>
+                                     <select name="status" id="status" v-model="form.stt_pages"  class="form-control" :class="{ 'is-invalid': form.errors.has('stt_pages') }">
+                                          <option value="0">Tidak Aktif</option>
+                                          <option value="1">Aktif</option>
+                                      </select>
+                                    <has-error :form="form" field="stt_pages"></has-error>
+                                </div>  
                             <div class="form-group">
                                     <label>Parent Page<span class="mandatory" >*</span></label>
                                      <select name="parent_id" id="status" v-model="form.parent_id"  class="form-control" :class="{ 'is-invalid': form.errors.has('status') }">
                                           <option value="0">Head Menu</option>
                                           <option v-for="datapage in pagesall" :key="datapage.id" v-bind:value="datapage.id">{{ datapage.name | ucWords }}</option>
                                       </select>
-                                    <has-error :form="form" field="name"></has-error>
+                                    <has-error :form="form" field="parent_id"></has-error>
                                 </div>
                            <div class="form-group">
                                 <label>icons Name ref: <a href="https://fontawesome.com/icons?d=gallery&m=free">Font Awesome</a> </label>
@@ -197,7 +207,8 @@ import { setTimeout } from 'timers';
                     status      : '',
                     pagelink    : '',
                     parent_id   : '',
-                    icons        : ''
+                    icons       : '',
+                    stt_pages   : ''
                 })
             }
             

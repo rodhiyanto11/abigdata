@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\User;
 use App\UserRole;
+use App\Page;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Image;
+use App\Libraries\Logs;
 class UserController extends Controller
 {
     /**
@@ -18,8 +20,20 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function __construct(){
         $this->middleware('auth:api');
+        
+    }
+    public function logs($attribute){
+        // $logs = new Logs;
+        // $data = array(
+        //    'user_id'       => Auth::user()->id,
+        //    'user_name'     => Auth::user()->username,
+        //    'page_id'       => ,
+        //    'page_name'     => 4,
+        //    'action'        => 5,
+        // );
     }
     public function index(Request $request)
     {
