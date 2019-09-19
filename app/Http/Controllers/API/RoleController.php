@@ -109,7 +109,7 @@ class RoleController extends Controller
             $data = RolePage::create([
                 'role_id'      => $request['role_id'],
                 'page_id'      => $request['page_id'],
-                'stt_rp'      => 1,
+                'stt_rp'      => '1',
             ]);
             return response([
                 'data' => $data

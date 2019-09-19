@@ -55,23 +55,22 @@ class LoginController extends Controller
         $message = [
             "{$this->username()}.exists" => 'Failed Login',
             "password.required" => "Password required",
-           // "g-recaptcha-response.required" => "Token is empty"
+            "g-recaptcha-response.required" => "Token is empty"
         ];
         $request->validate([
             $this->username() => "required|string|exists:users,{$field}",
             'password' => 'required|string',
-         //  'g-recaptcha-response' => 'required|string'
+           'g-recaptcha-response' => 'required|string'
         ],$message);
-       // dd($message);
+       //dd($message);
     }
     protected function credentials(Request $request)
     {
-        //dd(Hash::make('123123123'));
+       
        $field = $this->field($request);
-       $user = User::where($field,$request->get($this->username()))->where('status','<>','3')->where('status','<>','0')->first();
-       //dd($user);
-       $is_expired   = $user->is_expired;
-       $expired_date = $user->expired_date;
+       $user = User::where($field,$request->get($this->username()))->get();
+       $is_expired   = $user[0]->is_expired;
+       $expired_date = $user[0]->expired_date;
        $result = false;
        if($is_expired == 1){
            
@@ -89,17 +88,17 @@ class LoginController extends Controller
         $value = [
             $field => $request->get($this->username()),
             'password' => $request->get('password'),
-            'status' => $user->status
+            'status' => 1
             ];
        }else{
         $value = [
             $field => '',
             'password' => '',
-            'status' => $user->status
+            'status' => 1
             ];
        }
        
-       // dd($value);
+     dd($value);
         return $value; 
     }
     

@@ -86612,6 +86612,7 @@ var routes = [{
 //{ path: '/developer', component: require('./components/Developer.vue').default },
 {
   path: '/profile',
+  name: 'profile',
   component: __webpack_require__(/*! ./components/Profile.vue */ "./resources/js/components/Profile.vue")["default"]
 }, {
   path: '/references',
@@ -86655,8 +86656,8 @@ Vue.component('passport-personal-access-tokens', __webpack_require__(/*! ./compo
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 //Axios.defaults.baseURL = 'http://192.168.43.70:2122';
-//Axios.defaults.baseURL = 'http://192.168.212.133:2122';
-//Axios.defaults.baseURL = 'http://192.168.212.229:2122';
+
+axios__WEBPACK_IMPORTED_MODULE_6___default.a.defaults.baseURL = 'http://192.168.212.133:2122'; //Axios.defaults.baseURL = 'http://192.168.212.229:2122';
 //114.4.83.8
 
 var app = new Vue({

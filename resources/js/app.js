@@ -58,7 +58,7 @@ let routes = [
     { path: '/home', component: require('./components/Dashboard.vue').default },
     //{ path: '/dashboard', component: require('./components/Dashboard.vue').default },
     //{ path: '/developer', component: require('./components/Developer.vue').default },
-    { path: '/profile', component: require('./components/Profile.vue').default },
+    { path: '/profile',name:'profile', component: require('./components/Profile.vue').default },
     { path: '/references', component: require('./components/References.vue').default },
     { path: '*', component: require('./components/Dashboard.vue').default },
    // ////{ path: '/pages', component: require('./components/Pages.vue').default },
@@ -116,7 +116,7 @@ Vue.component(
  */
 
 //Axios.defaults.baseURL = 'http://192.168.43.70:2122';
-//Axios.defaults.baseURL = 'http://192.168.212.133:2122';
+Axios.defaults.baseURL = 'http://192.168.212.133:2122';
 //Axios.defaults.baseURL = 'http://192.168.212.229:2122';
 
 //114.4.83.8

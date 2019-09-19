@@ -13,7 +13,7 @@ class RolePage extends Model
     use HasApiTokens,Notifiable;
     protected $table = 'role_pages';
     protected $fillable = [
-        'id','role_id','page_id'
+        'id','role_id','page_id','stt_rp'
     ];
   
    

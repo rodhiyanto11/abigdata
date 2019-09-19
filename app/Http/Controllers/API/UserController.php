@@ -92,8 +92,9 @@ class UserController extends Controller
             'status' => 2,
             'is_expired' => $request['is_expired'], 
             //'role_id' => $request['role_id'],
+            'photo' => '1567588707.png',
             'expired_date' => isset($request['expired_date']) && strlen($request['expired_date']) > 0 ? $request['expired_date'] : null ,
-            'password' => Hash::make($request['password']),
+            'password' => bcrypt($request['password']),
         ]);
 
         
@@ -126,20 +127,27 @@ class UserController extends Controller
         //
         //dd($request->photo);
         $user = auth('api')->user();
-        $validatepwd = strlen($request->password) > 0 ? 'required|string|min:8|confirmed' : '';
-
-        // $this->validate($request,
-        // [
-        //     'name'      => 'required|string|max:191',
-        //     'username'  => 'required|string|max:191',
-        //     'email'     => 'required|string|email|max:191',
-        //     'is_expired'     => 'required|int',
-        //     //'role_id'    => 'required|int',
-        //     'password'  =>  $validatepwd
-        // ]);
-
-        
         $update = User::findOrFail($request->id);
+        $userdata = User::where('id',$request->id)->first();
+        $validatepwd = strlen($request->password) > 0  ||  $userdata->status == 2 ? 'required|string|min:8|confirmed' : '';
+        
+        $this->validate($request,
+        [
+            'name'      => 'required|string|max:191',
+            'username'  => 'required|string|max:191',
+            'email'     => 'required|string|email|max:191',
+           // 'is_expired'     => 'required|int',
+            //'role_id'    => 'required|int',
+            'password'  =>  $validatepwd
+        ]);
+
+       // dd($validatepwd);
+        // return response([
+        //     'data' => $userdata,
+        //     'v' => $validatepwd
+        // ],Response::HTTP_NOT_FOUND);
+       
+        //dd($userdata);
         $update->name = $request->name; 
         $update->username = $request->username; 
         $update->email = $request->email;
@@ -166,8 +174,13 @@ class UserController extends Controller
             $update->role_id = $request->role_id;
         }
         
-        if(strlen($request->password) > 0){
-            $update->password = Hash::make($request->password);
+        if(strlen($request->password) > 0  && $userdata->status == 2){
+            $update->password = 1;
+            $update->password = bcrypt::make($request->password);
+        }
+        if(strlen($request->password) > 0  && $userdata->status != 2){
+           // $update->password = 1;
+            $update->password = bcrypt::make($request->password);
         }
         if(strlen($request->expired_date) > 0){
             $update->expired_date = $request->expired_date;
