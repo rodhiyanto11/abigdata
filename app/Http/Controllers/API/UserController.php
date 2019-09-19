@@ -89,7 +89,7 @@ class UserController extends Controller
             'name' => $request['name'],
             'username' => $request['username'],
             'email' => $request['email'],
-            'status' => 1,
+            'status' => 2,
             'is_expired' => $request['is_expired'], 
             //'role_id' => $request['role_id'],
             'expired_date' => isset($request['expired_date']) && strlen($request['expired_date']) > 0 ? $request['expired_date'] : null ,

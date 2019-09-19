@@ -52,6 +52,7 @@ import { setInterval } from 'timers';
           return {
                 isLoading: true,
                 fullPage: true,
+                statusLogin : '',
                 no : 0,
           }
        },  
@@ -65,8 +66,20 @@ import { setInterval } from 'timers';
                   this.isLoading = false;
                 },200
               );
-            }
-           ,
+            },
+            cekLogin(){
+              axios.get('/api/users?getprofile=true')
+             .then(response => {
+              if(response.data.data.status == 1){
+                 this.addRoute();
+                 this.deadLoading();
+              }else{
+                this.deadLoading();
+                this.$router.push({path : '/profile',name : 'profile',component :'Profile'});
+              }
+              console.log(response.data.data.status);
+             })
+              },
             onCancel() {
               console.log('Loading finnissssssh')
             },
@@ -99,8 +112,19 @@ import { setInterval } from 'timers';
         created (){
          
             this.$parent.searchmode =  false;
-            this.addRoute();
-            this.deadLoading();
+            this.cekLogin();
+            // console.log(this.statusLogin);
+            // this.deadLoading();
+            // if(this.statusLogin !== 1){
+            //   this.$router.push({path : '/profile',name : 'profile',component :'Profile'});
+            // }else{
+            //    this.addRoute();
+            //    this.deadLoading();
+            // }
+           
+            
+            //this.$router.push({path : '/profile',name : 'profile',component :'Profile'})
+            
         },
         mounted() {
             console.log('Component mounted.')

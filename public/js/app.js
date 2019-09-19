@@ -1886,6 +1886,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       isLoading: true,
       fullPage: true,
+      statusLogin: '',
       no: 0
     };
   },
@@ -1900,18 +1901,39 @@ __webpack_require__.r(__webpack_exports__);
         _this.isLoading = false;
       }, 200);
     },
+    cekLogin: function cekLogin() {
+      var _this2 = this;
+
+      axios.get('/api/users?getprofile=true').then(function (response) {
+        if (response.data.data.status == 1) {
+          _this2.addRoute();
+
+          _this2.deadLoading();
+        } else {
+          _this2.deadLoading();
+
+          _this2.$router.push({
+            path: '/profile',
+            name: 'profile',
+            component: 'Profile'
+          });
+        }
+
+        console.log(response.data.data.status);
+      });
+    },
     onCancel: function onCancel() {
       console.log('Loading finnissssssh');
     },
     addRoute: function addRoute() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get('/api/users?req=menu').then(function (response) {
         for (var i = 0; i < response.data.data.length; i++) {
           var type = response.data.data[i];
           console.log(type);
 
-          _this2.$router.addRoutes([{
+          _this3.$router.addRoutes([{
             path: '/' + response.data.data[i].routename + "/:t_path/:t_url",
             name: response.data.data[i].routename,
             component: __webpack_require__("./resources/js/components sync recursive ^\\.\\/.*\\.vue$")("./" + response.data.data[i].view + ".vue")["default"] //props: {entity_type_id: response.data.data[i].routename}
@@ -1919,14 +1941,21 @@ __webpack_require__.r(__webpack_exports__);
           }]);
         }
 
-        _this2.isLoading = false;
+        _this3.isLoading = false;
       })["catch"](function (error) {});
     }
   },
   created: function created() {
     this.$parent.searchmode = false;
-    this.addRoute();
-    this.deadLoading();
+    this.cekLogin(); // console.log(this.statusLogin);
+    // this.deadLoading();
+    // if(this.statusLogin !== 1){
+    //   this.$router.push({path : '/profile',name : 'profile',component :'Profile'});
+    // }else{
+    //    this.addRoute();
+    //    this.deadLoading();
+    // }
+    //this.$router.push({path : '/profile',name : 'profile',component :'Profile'})
   },
   mounted: function mounted() {
     console.log('Component mounted.');
